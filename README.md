@@ -18,15 +18,8 @@ npx shadcn@latest add https://swagui.rohoswagger.com/r/button.json
 ```
 
 Every component declares the theme as a registry dependency, so the first install
-also writes `app/swagui.css`. Import it after Tailwind:
-
-```css
-/* app/globals.css */
-@import "tailwindcss";
-@import "./swagui.css";
-```
-
-Without that import the components render with stock shadcn colours.
+writes the whole token layer straight into your `globals.css`. There is no file to
+import and no manual step.
 
 ## Theme
 
