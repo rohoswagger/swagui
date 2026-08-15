@@ -1,23 +1,113 @@
-# registry-template
+# swagui
 
-You can use the `shadcn` CLI to run your own component registry. Running your own
-component registry allows you to distribute your custom components, hooks, pages, and
-other files to any React project.
+A personal, shadcn-compatible component registry. 51 components plus a design-token
+theme, served from `https://swagui.rohoswagger.com`.
 
-> [!IMPORTANT]  
-> This template uses Tailwind v4. For Tailwind v3, see [registry-template-v3](https://github.com/shadcn-ui/registry-template-v3).
+swagui replaces shadcn/ui rather than layering on top of it — the components are
+vendored and restyled, so upstream changes are not inherited.
 
-## Getting Started
+## Requirements
 
-This is a template for creating a custom registry using Next.js.
+- Tailwind CSS v4
+- React 19
 
-- The template uses a `registry.json` file to define components and their files.
-- The `shadcn build` command is used to build the registry.
-- The registry items are served as static files under `public/r/[name].json`.
-- The template also includes a route handler for serving registry items.
-- Every registry item are compatible with the `shadcn` CLI.
-- We have also added v0 integration using the `Open in v0` api.
+## Install
 
-## Documentation
+```bash
+npx shadcn@latest add https://swagui.rohoswagger.com/r/button.json
+```
 
-Visit the [shadcn documentation](https://ui.shadcn.com/docs/registry) to view the full documentation.
+Every component declares the theme as a registry dependency, so the first install
+also writes `app/swagui.css`. Import it after Tailwind:
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+@import "./swagui.css";
+```
+
+Without that import the components render with stock shadcn colours.
+
+## Theme
+
+There are no presets. Every value is a knob; a project sets the ones it cares about
+and inherits the rest. The permutation *is* the theme.
+
+```css
+:root {
+  /* Type — wire these to real faces (next/font, @font-face, …). */
+  --font-display: var(--font-my-display);
+  --font-body: var(--font-my-body);
+  --font-mono-face: var(--font-my-mono);
+  --display-tracking: -0.03em;
+
+  /* Geometry. 1 gives stock Tailwind corners. */
+  --squircle-factor: 1.4;
+
+  /* The one hot colour. Deliberately withheld from buttons and component
+     surfaces — it appears on links, focus rings, status dots and glows. */
+  --brand: oklch(0.58 0.16 250);
+  --brand-content: oklch(0.5 0.16 250);
+
+  /* Canvas */
+  --background: oklch(0.995 0.004 85);
+  --foreground: oklch(0.2 0.012 260);
+}
+```
+
+### Scopes
+
+Three attribute scopes compose on any wrapper element.
+
+| Attribute | Values | Effect |
+| --- | --- | --- |
+| `data-canvas` | `white`, `warm`, `grey` | Swaps the ground and ink |
+| `data-surface` | `elevation`, `bevel`, `glass` | Swaps the shadow tokens, so every component follows |
+| `data-density` | `comfortable`, `compact` | Retunes `--spacing`, radius and line-height |
+
+`data-density="compact"` is the app-interior register: it overrides `--spacing`,
+which every Tailwind spacing utility derives from, so padding, margins, gaps,
+control heights and icon sizes all tighten at once. Colour is untouched.
+
+```tsx
+<div data-density="compact">
+  <DataTable />
+</div>
+```
+
+Dark mode is class-driven — put `dark` on `<html>` or any wrapper.
+
+## Development
+
+```bash
+pnpm install
+pnpm dev            # docs + live token preview at /
+pnpm registry:build # writes public/r/*.json
+pnpm build          # registry:build + static export to ./out
+```
+
+The preview at `/` renders every component against live token controls, with
+Marketing, Components and App views.
+
+## Adding a component
+
+1. Add the file to `registry/ui/`.
+2. Add an entry to `registry.json`. Cross-references must use full URLs —
+   a bare `"button"` resolves against `ui.shadcn.com`, not swagui.
+
+```json
+{
+  "name": "my-component",
+  "type": "registry:ui",
+  "title": "My Component",
+  "description": "…",
+  "registryDependencies": ["https://swagui.rohoswagger.com/r/theme.json"],
+  "files": [{ "path": "registry/ui/my-component.tsx", "type": "registry:ui" }]
+}
+```
+
+3. `pnpm registry:build`
+
+## Deployment
+
+Static export to Cloudflare Workers static assets. `pnpm build` produces `./out`.

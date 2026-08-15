@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "swagui button component.",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/button.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Slot } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst buttonVariants = cva(\n  [\n    \"inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm font-medium whitespace-nowrap outline-none\",\n    \"disabled:pointer-events-none disabled:opacity-40\",\n    \"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n    // swagui: hover is a brightness filter rather than a colour swap, so\n    // gradients and inset rings survive it. Press is a universal 120ms scale.\n    \"transition-[transform,filter,background-color,border-color,box-shadow] duration-(--duration-press) ease-(--ease-swagui)\",\n    \"active:scale-[0.97]\",\n    // The focus ring is the one control surface where the brand colour lands.\n    \"focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n    \"aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40\",\n  ],\n  {\n    variants: {\n      variant: {\n        default:\n          \"bg-primary text-primary-foreground shadow-(--shadow-raised) hover:brightness-125\",\n        destructive:\n          \"bg-destructive text-white shadow-(--shadow-raised) hover:brightness-110 focus-visible:ring-destructive/40 dark:bg-destructive/70\",\n        outline:\n          \"border border-border/80 bg-background shadow-(--shadow-hairline) hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30\",\n        secondary:\n          \"bg-secondary text-secondary-foreground shadow-(--shadow-hairline) hover:brightness-[0.97] dark:hover:brightness-125\",\n        ghost:\n          \"hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50\",\n        link: \"text-primary underline-offset-4 decoration-from-font hover:underline active:scale-100\",\n      },\n      size: {\n        default: \"h-9 px-4 py-2 has-[>svg]:px-3.5\",\n        xs: \"h-6 gap-1 px-2.5 text-xs has-[>svg]:px-2 [&_svg:not([class*='size-'])]:size-3\",\n        sm: \"h-8 gap-1.5 px-3.5 text-[0.8125rem] has-[>svg]:px-3\",\n        lg: \"h-11 px-6 text-[0.9375rem] has-[>svg]:px-5\",\n        icon: \"size-9\",\n        \"icon-xs\": \"size-6 [&_svg:not([class*='size-'])]:size-3\",\n        \"icon-sm\": \"size-8\",\n        \"icon-lg\": \"size-11\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n    },\n  }\n)\n\nfunction Button({\n  className,\n  variant = \"default\",\n  size = \"default\",\n  asChild = false,\n  ...props\n}: React.ComponentProps<\"button\"> &\n  VariantProps<typeof buttonVariants> & {\n    asChild?: boolean\n  }) {\n  const Comp = asChild ? Slot.Root : \"button\"\n\n  return (\n    <Comp\n      data-slot=\"button\"\n      data-variant={variant}\n      data-size={size}\n      className={cn(buttonVariants({ variant, size, className }))}\n      {...props}\n    />\n  )\n}\n\nexport { Button, buttonVariants }\n",
+      "type": "registry:ui"
+    }
+  ]
+}
