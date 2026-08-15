@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "swagui",
+  "compatibility_date": "2026-08-14",
+  // Pure static assets — the registry is JSON under /r plus the docs site,
+  // so there is no Worker script and no server runtime to pay for.
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  },
+  // Cloudflare manages the DNS record for this automatically.
+  "routes": [
+    {
+      "pattern": "swagui.rohoswagger.com",
+      "custom_domain": true
+    }
+  ]
+}
