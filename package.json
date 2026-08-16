@@ -53,5 +53,11 @@
       "@types/react-dom": "19.1.2"
     }
   },
-  "description": "A shadcn-compatible component registry."
+  "description": "A shadcn-compatible component registry.",
+  "browserslist": [
+    "chrome >= 111",
+    "safari >= 16.4",
+    "firefox >= 128",
+    "edge >= 111"
+  ]
 }

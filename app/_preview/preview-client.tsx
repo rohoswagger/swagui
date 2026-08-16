@@ -218,7 +218,9 @@ export function PreviewClient() {
         <main
           className={`preview-root relative min-h-0 flex-1 ${isDark ? "dark" : ""} ${
             state.grain ? "grain" : ""
-          } ${horizontal ? "overflow-x-auto overflow-y-hidden" : "overflow-y-auto"}`}
+          } ${horizontal ? "overflow-x-auto overflow-y-hidden" : "overflow-y-auto"} ${
+            state.surface === "glass" ? "glass-ground" : ""
+          }`}
           data-theme={state.theme}
           data-base={state.base}
           data-surface={state.surface}

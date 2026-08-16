@@ -184,10 +184,58 @@
       "--inset-highlight": "inset 0 0 0 1px color-mix(in oklch, white 70%, transparent)"
     },
     "[data-surface=\"glass\"]": {
-      "--shadow-hairline": "0 0 0 1px color-mix(in oklch, var(--foreground) 8%, transparent)",
-      "--shadow-raised": "0 10px 30px -10px color-mix(in oklch, var(--foreground) 12%, transparent),\n    inset 0 1px 1px color-mix(in oklch, var(--foreground) 10%, transparent)",
-      "--shadow-overlay": "0 16px 48px -12px color-mix(in oklch, var(--foreground) 18%, transparent),\n    inset 0 1px 1px color-mix(in oklch, var(--foreground) 12%, transparent)",
-      "--inset-highlight": "inset 0 1px 1px color-mix(in oklch, var(--foreground) 10%, transparent)"
+      "--card": "color-mix(in oklch, var(--background) 62%, transparent)",
+      "--popover": "color-mix(in oklch, var(--background) 74%, transparent)",
+      "--glass-blur": "20px",
+      "--glass-saturate": "180%",
+      "--glass-rim": "rgb(255 255 255 / 0.55)",
+      "--glass-rim-soft": "rgb(255 255 255 / 0.14)",
+      "--glass-shade": "rgb(0 0 0 / 0.07)",
+      "--shadow-hairline": "0 0 0 1px var(--glass-rim-soft)",
+      "--shadow-raised": "inset 0 1px 0 0 var(--glass-rim), inset 0 0 0 1px var(--glass-rim-soft),\n    inset 0 -1px 0 0 var(--glass-shade), 0 8px 32px -8px rgb(0 0 0 / 0.18)",
+      "--shadow-overlay": "inset 0 1px 0 0 var(--glass-rim), inset 0 0 0 1px var(--glass-rim-soft),\n    inset 0 -1px 0 0 var(--glass-shade), 0 24px 64px -16px rgb(0 0 0 / 0.28)",
+      "--inset-highlight": "inset 0 1px 0 0 var(--glass-rim)"
+    },
+    ".dark[data-surface=\"glass\"],\n.dark [data-surface=\"glass\"]": {
+      "--card": "color-mix(in oklch, var(--background) 58%, transparent)",
+      "--popover": "color-mix(in oklch, var(--background) 70%, transparent)",
+      "--glass-rim": "rgb(255 255 255 / 0.16)",
+      "--glass-rim-soft": "rgb(255 255 255 / 0.08)",
+      "--glass-shade": "rgb(0 0 0 / 0.3)"
+    },
+    "[data-surface=\"glass\"] .surface,\n[data-surface=\"glass\"] [data-slot=\"card\"],\n[data-surface=\"glass\"] [data-slot=\"alert\"],\n[data-surface=\"glass\"] [data-slot=\"popover-content\"],\n[data-surface=\"glass\"] [data-slot=\"dropdown-menu-content\"],\n[data-surface=\"glass\"] [data-slot=\"dialog-content\"],\n[data-surface=\"glass\"] [data-slot=\"alert-dialog-content\"],\n[data-surface=\"glass\"] [data-slot=\"sheet-content\"],\n[data-surface=\"glass\"] [data-slot=\"drawer-content\"],\n[data-surface=\"glass\"] [data-slot=\"select-content\"],\n[data-surface=\"glass\"] [data-slot=\"command\"],\n[data-surface=\"glass\"] [data-slot=\"menubar-content\"],\n[data-surface=\"glass\"] [data-slot=\"context-menu-content\"],\n[data-surface=\"glass\"] [data-slot=\"hover-card-content\"],\n[data-surface=\"glass\"] [data-slot=\"navigation-menu-content\"]": {
+      "position": "relative",
+      "isolation": "isolate",
+      "-webkit-backdrop-filter": "blur(var(--glass-blur)) saturate(var(--glass-saturate))",
+      "border-color": "transparent"
+    },
+    "@supports (backdrop-filter: blur(1px))": {
+      "[data-surface=\"glass\"] .surface,\n  [data-surface=\"glass\"] [data-slot=\"card\"],\n  [data-surface=\"glass\"] [data-slot=\"alert\"],\n  [data-surface=\"glass\"] [data-slot=\"popover-content\"],\n  [data-surface=\"glass\"] [data-slot=\"dropdown-menu-content\"],\n  [data-surface=\"glass\"] [data-slot=\"dialog-content\"],\n  [data-surface=\"glass\"] [data-slot=\"alert-dialog-content\"],\n  [data-surface=\"glass\"] [data-slot=\"sheet-content\"],\n  [data-surface=\"glass\"] [data-slot=\"drawer-content\"],\n  [data-surface=\"glass\"] [data-slot=\"select-content\"],\n  [data-surface=\"glass\"] [data-slot=\"command\"],\n  [data-surface=\"glass\"] [data-slot=\"menubar-content\"],\n  [data-surface=\"glass\"] [data-slot=\"context-menu-content\"],\n  [data-surface=\"glass\"] [data-slot=\"hover-card-content\"],\n  [data-surface=\"glass\"] [data-slot=\"navigation-menu-content\"]": {
+        "backdrop-filter": "blur(var(--glass-blur)) saturate(var(--glass-saturate))"
+      }
+    },
+    "[data-surface=\"glass\"] .surface::before,\n[data-surface=\"glass\"] [data-slot=\"card\"]::before,\n[data-surface=\"glass\"] [data-slot=\"popover-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"dropdown-menu-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"dialog-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"sheet-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"select-content\"]::before": {
+      "content": "\"\"",
+      "position": "absolute",
+      "inset": "0",
+      "z-index": "-1",
+      "pointer-events": "none",
+      "border-radius": "inherit",
+      "background": "linear-gradient(\n    135deg,\n    rgb(255 255 255 / 0.22) 0%,\n    rgb(255 255 255 / 0.04) 34%,\n    transparent 58%,\n    rgb(255 255 255 / 0.08) 100%\n  )"
+    },
+    ".dark [data-surface=\"glass\"] [data-slot=\"card\"]::before,\n.dark[data-surface=\"glass\"] [data-slot=\"card\"]::before,\n.dark [data-surface=\"glass\"] .surface::before,\n.dark[data-surface=\"glass\"] .surface::before": {
+      "background": "linear-gradient(\n    135deg,\n    rgb(255 255 255 / 0.09) 0%,\n    transparent 46%,\n    transparent 62%,\n    rgb(255 255 255 / 0.04) 100%\n  )"
+    },
+    "@supports not (backdrop-filter: blur(1px))": {
+      "[data-surface=\"glass\"]": {
+        "--card": "var(--background)",
+        "--popover": "var(--background)"
+      }
+    },
+    ".glass-ground": {
+      "position": "relative",
+      "background-image": "radial-gradient(\n      42rem 32rem at 12% 8%,\n      color-mix(in oklch, var(--brand) 18%, transparent),\n      transparent 60%\n    ),\n    radial-gradient(\n      34rem 28rem at 88% 22%,\n      color-mix(in oklch, var(--foreground) 12%, transparent),\n      transparent 62%\n    ),\n    radial-gradient(\n      38rem 30rem at 62% 88%,\n      color-mix(in oklch, var(--brand) 12%, transparent),\n      transparent 58%\n    )",
+      "background-attachment": "local"
     },
     "[data-density=\"compact\"]": {
       "--spacing": "0.2rem",

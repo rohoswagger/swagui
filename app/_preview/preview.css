@@ -50,7 +50,7 @@
   --r-lg: var(--radius-lg);
   --r-xl: var(--radius-xl);
 
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--fg);
   font-family: var(--body-font);
   -webkit-font-smoothing: antialiased;
