@@ -161,11 +161,11 @@ export function PreviewClient() {
     }`
 
   return (
-    <div className="flex min-h-screen flex-col bg-white lg:flex-row">
+    <div className="flex min-h-screen flex-col bg-white md:flex-row">
       {/* ---------------- Sidebar ----------------
-          Stacks above the canvas below lg; a fixed 248px column would leave a
-          phone viewport almost nothing to render into. */}
-      <aside className="flex w-full shrink-0 flex-col border-b border-neutral-200 bg-white px-4 py-5 lg:sticky lg:top-0 lg:h-screen lg:w-[248px] lg:overflow-y-auto lg:border-r lg:border-b-0">
+          Side by side wherever there is room. Stacks only on phones, where a
+          fixed 248px column would leave the canvas almost nothing. */}
+      <aside className="flex w-full shrink-0 flex-col border-b border-neutral-200 bg-white px-4 py-5 md:sticky md:top-0 md:h-screen md:w-[212px] md:overflow-y-auto md:border-r md:border-b-0 lg:w-[248px]">
         <div className="mb-5">
           <span className="text-sm font-semibold tracking-tight">swagui</span>
           <p className="text-[10px] text-neutral-500">token preview</p>
