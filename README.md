@@ -42,11 +42,21 @@ and inherits the rest. The permutation *is* the theme.
   --brand: oklch(0.58 0.16 250);
   --brand-content: oklch(0.5 0.16 250);
 
-  /* Canvas */
-  --background: oklch(0.995 0.004 85);
-  --foreground: oklch(0.2 0.012 260);
+  /* Base colour — untinted by default; pick a temperature with data-base. */
+  --background: oklch(0.991 0 0);
+  --foreground: oklch(0.18 0 0);
 }
 ```
+
+### Base colours
+
+Six tinted neutrals, not colours. The hue sits at 0.007 chroma in the ground and
+0.020–0.028 in the ink, so it reads as a temperature rather than a tint. Hues are
+spread around the wheel on purpose — defaulting warm is how every design system
+ends up looking like every other one.
+
+Every pair is verified by `scripts/check-contrast.mjs`. Worst case is 5.83:1 in
+light and 7.15:1 in dark, against a 4.5:1 requirement.
 
 ### Scopes
 
@@ -54,7 +64,7 @@ Three attribute scopes compose on any wrapper element.
 
 | Attribute | Values | Effect |
 | --- | --- | --- |
-| `data-canvas` | `white`, `warm`, `grey` | Swaps the ground and ink |
+| `data-base` | `ash`, `slate`, `clay`, `sage`, `mauve`, `olive` | Tints the whole neutral ramp |
 | `data-surface` | `elevation`, `bevel`, `glass` | Swaps the shadow tokens, so every component follows |
 | `data-density` | `comfortable`, `compact` | Retunes `--spacing`, radius and line-height |
 

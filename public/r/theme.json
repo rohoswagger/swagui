@@ -57,10 +57,10 @@
       "radius": "calc(0.625rem * var(--squircle-factor))",
       "brand": "oklch(0.58 0.16 250)",
       "brand-content": "oklch(0.5 0.16 250)",
-      "background": "oklch(0.995 0.004 85)",
-      "foreground": "oklch(0.2 0.012 260)",
-      "card": "oklch(0.998 0.003 85)",
-      "muted-foreground": "oklch(0.556 0 0)",
+      "background": "oklch(0.991 0 0)",
+      "foreground": "oklch(0.18 0 0)",
+      "card": "oklch(0.999 0 0)",
+      "muted-foreground": "oklch(0.498 0 0)",
       "card-foreground": "var(--foreground)",
       "popover": "var(--card)",
       "popover-foreground": "var(--foreground)",
@@ -84,10 +84,10 @@
       "chart-5": "oklch(0.769 0.188 70.08)"
     },
     "dark": {
-      "background": "oklch(0.15 0.008 260)",
-      "foreground": "oklch(0.94 0.008 80)",
-      "card": "oklch(0.21 0.008 260)",
-      "muted-foreground": "oklch(0.68 0 0)",
+      "background": "oklch(0.148 0 0)",
+      "foreground": "oklch(0.958 0 0)",
+      "card": "oklch(0.2 0 0)",
+      "muted-foreground": "oklch(0.716 0 0)",
       "brand": "oklch(0.7 0.14 250)",
       "brand-content": "oklch(0.7 0.14 250)",
       "destructive": "oklch(0.68 0.18 25)",
@@ -99,20 +99,77 @@
   "css": {
     "@import \"tw-animate-css\"": "",
     "@custom-variant dark (&:is(.dark *))": "",
-    "[data-canvas=\"white\"]": {
-      "--background": "oklch(1 0 0)",
+    "[data-base=\"ash\"]": {
+      "--background": "oklch(0.991 0 0)",
+      "--card": "oklch(0.999 0 0)",
       "--foreground": "oklch(0.18 0 0)",
-      "--card": "oklch(1 0 0)"
+      "--muted-foreground": "oklch(0.498 0 0)"
     },
-    "[data-canvas=\"grey\"]": {
-      "--background": "oklch(0.965 0 0)",
-      "--foreground": "oklch(0.18 0 0)",
-      "--card": "oklch(1 0 0)"
+    "[data-base=\"slate\"]": {
+      "--background": "oklch(0.991 0.007 255)",
+      "--card": "oklch(0.999 0.003 255)",
+      "--foreground": "oklch(0.18 0.020 255)",
+      "--muted-foreground": "oklch(0.498 0.028 255)"
     },
-    ".dark[data-canvas=\"white\"],\n.dark [data-canvas=\"white\"],\n.dark[data-canvas=\"grey\"],\n.dark [data-canvas=\"grey\"]": {
-      "--background": "oklch(0.145 0 0)",
-      "--foreground": "oklch(0.97 0 0)",
-      "--card": "oklch(0.205 0 0)"
+    "[data-base=\"clay\"]": {
+      "--background": "oklch(0.991 0.007 45)",
+      "--card": "oklch(0.999 0.003 45)",
+      "--foreground": "oklch(0.18 0.020 45)",
+      "--muted-foreground": "oklch(0.498 0.028 45)"
+    },
+    "[data-base=\"sage\"]": {
+      "--background": "oklch(0.991 0.007 150)",
+      "--card": "oklch(0.999 0.003 150)",
+      "--foreground": "oklch(0.18 0.020 150)",
+      "--muted-foreground": "oklch(0.498 0.028 150)"
+    },
+    "[data-base=\"mauve\"]": {
+      "--background": "oklch(0.991 0.007 315)",
+      "--card": "oklch(0.999 0.003 315)",
+      "--foreground": "oklch(0.18 0.020 315)",
+      "--muted-foreground": "oklch(0.498 0.028 315)"
+    },
+    "[data-base=\"olive\"]": {
+      "--background": "oklch(0.991 0.007 110)",
+      "--card": "oklch(0.999 0.003 110)",
+      "--foreground": "oklch(0.18 0.020 110)",
+      "--muted-foreground": "oklch(0.498 0.028 110)"
+    },
+    ".dark[data-base=\"ash\"],\n.dark [data-base=\"ash\"]": {
+      "--background": "oklch(0.148 0 0)",
+      "--card": "oklch(0.2 0 0)",
+      "--foreground": "oklch(0.958 0 0)",
+      "--muted-foreground": "oklch(0.716 0 0)"
+    },
+    ".dark[data-base=\"slate\"],\n.dark [data-base=\"slate\"]": {
+      "--background": "oklch(0.148 0.015 255)",
+      "--card": "oklch(0.2 0.017 255)",
+      "--foreground": "oklch(0.958 0.009 255)",
+      "--muted-foreground": "oklch(0.716 0.024 255)"
+    },
+    ".dark[data-base=\"clay\"],\n.dark [data-base=\"clay\"]": {
+      "--background": "oklch(0.148 0.015 45)",
+      "--card": "oklch(0.2 0.017 45)",
+      "--foreground": "oklch(0.958 0.009 45)",
+      "--muted-foreground": "oklch(0.716 0.024 45)"
+    },
+    ".dark[data-base=\"sage\"],\n.dark [data-base=\"sage\"]": {
+      "--background": "oklch(0.148 0.015 150)",
+      "--card": "oklch(0.2 0.017 150)",
+      "--foreground": "oklch(0.958 0.009 150)",
+      "--muted-foreground": "oklch(0.716 0.024 150)"
+    },
+    ".dark[data-base=\"mauve\"],\n.dark [data-base=\"mauve\"]": {
+      "--background": "oklch(0.148 0.015 315)",
+      "--card": "oklch(0.2 0.017 315)",
+      "--foreground": "oklch(0.958 0.009 315)",
+      "--muted-foreground": "oklch(0.716 0.024 315)"
+    },
+    ".dark[data-base=\"olive\"],\n.dark [data-base=\"olive\"]": {
+      "--background": "oklch(0.148 0.015 110)",
+      "--card": "oklch(0.2 0.017 110)",
+      "--foreground": "oklch(0.958 0.009 110)",
+      "--muted-foreground": "oklch(0.716 0.024 110)"
     },
     ":root,\n[data-surface=\"elevation\"]": {
       "--shadow-hairline": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 12%, transparent)",

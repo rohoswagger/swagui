@@ -83,7 +83,7 @@ export const PAIRINGS: Pairing[] = [
     body: "var(--font-jakarta), sans-serif",
     mono: "var(--font-jetbrains), ui-monospace, monospace",
     displayWeight: 800,
-    displayTracking: "-0.05em",
+    displayTracking: "-0.04em",
   },
 ]
 
@@ -165,8 +165,11 @@ export const SURFACES = [
   { id: "bevel", label: "Bevel", note: "0.5px outer hairline over a 1px white inner bevel" },
 ] as const
 
-export const CANVASES = [
-  { id: "white", label: "Pure white", note: "Pure white. Maximum contrast, most neutral." },
-  { id: "warm", label: "Warm paper", note: "Warm off-white canvas with faintly cool ink. Reads as printed." },
-  { id: "grey", label: "Cool grey", note: "Cool light grey. Surfaces float above the canvas." },
+export const BASES = [
+  { id: "ash", label: "Ash", note: "Pure neutral. No hue at all." },
+  { id: "slate", label: "Slate", note: "Cool blue undertone. Technical, recedes." },
+  { id: "clay", label: "Clay", note: "Warm red-brown. The most tactile." },
+  { id: "sage", label: "Sage", note: "Desaturated green. Calm, unusual." },
+  { id: "mauve", label: "Mauve", note: "Muted purple. Soft without being sweet." },
+  { id: "olive", label: "Olive", note: "Yellow-green. Dry, editorial." },
 ] as const

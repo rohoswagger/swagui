@@ -11,14 +11,14 @@ import {
 
 import { BlocksView } from "./blocks-view"
 import { ComponentsView } from "./components-view"
-import { ACCENTS, CANVASES, PAIRINGS, SURFACES } from "./config"
+import { ACCENTS, BASES, PAIRINGS, SURFACES } from "./config"
 import { ArrowRight, IconLib, IconProvider, IconWeight, Search } from "./icons"
 
 type State = {
   font: string
   accent: string
   surface: string
-  canvas: string
+  base: string
   theme: "light" | "dark"
   view: "marketing" | "blocks" | "app" | "components"
   density: "comfortable" | "compact"
@@ -32,7 +32,7 @@ const DEFAULTS: State = {
   font: "geist",
   accent: "ocean",
   surface: "elevation",
-  canvas: "white",
+  base: "ash",
   theme: "light",
   view: "marketing",
   density: "comfortable",
@@ -123,7 +123,7 @@ export function PreviewClient() {
     font: params.get("font") ?? DEFAULTS.font,
     accent: params.get("accent") ?? DEFAULTS.accent,
     surface: params.get("surface") ?? DEFAULTS.surface,
-    canvas: params.get("canvas") ?? DEFAULTS.canvas,
+    base: params.get("base") ?? DEFAULTS.base,
     theme: (params.get("theme") as State["theme"]) ?? DEFAULTS.theme,
     view: (params.get("view") as State["view"]) ?? DEFAULTS.view,
     density: (params.get("density") as State["density"]) ?? DEFAULTS.density,
@@ -144,7 +144,7 @@ export function PreviewClient() {
       font: state.font,
       accent: state.accent,
       surface: state.surface,
-      canvas: state.canvas,
+      base: state.base,
       theme: state.theme,
       view: state.view,
       density: state.density,
@@ -201,7 +201,7 @@ export function PreviewClient() {
       font: pick(PAIRINGS).id,
       accent: pick(ACCENTS).id,
       surface: pick(SURFACES).id,
-      canvas: pick(CANVASES).id,
+      base: pick(BASES).id,
       theme: pick(["light", "dark"] as const),
       squircle: Math.random() > 0.35,
     }))
@@ -213,14 +213,14 @@ export function PreviewClient() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-white">
-      {/* ---------------- Canvas ---------------- */}
+      {/* ---------------- Canvas */}
       <IconProvider value={{ lib: state.icons, weight: state.iconWeight }}>
         <main
           className={`preview-root relative min-h-0 flex-1 ${isDark ? "dark" : ""} ${
             state.grain ? "grain" : ""
           } ${horizontal ? "overflow-x-auto overflow-y-hidden" : "overflow-y-auto"}`}
           data-theme={state.theme}
-          data-canvas={state.canvas}
+          data-base={state.base}
           data-surface={state.surface}
           data-density={state.density}
           data-layout={horizontal ? "columns" : "flow"}
@@ -271,10 +271,10 @@ export function PreviewClient() {
             onChange={(v) => set("surface", v)}
           />
           <Control
-            label="Canvas"
-            value={state.canvas}
-            options={CANVASES}
-            onChange={(v) => set("canvas", v)}
+            label="Base"
+            value={state.base}
+            options={BASES}
+            onChange={(v) => set("base", v)}
           />
           <Control
             label="Density"
