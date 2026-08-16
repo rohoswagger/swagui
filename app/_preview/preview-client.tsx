@@ -2,7 +2,12 @@
 
 import * as React from "react"
 import { useSearchParams } from "next/navigation"
-import { Check as ChromeCheck, Copy as ChromeCopy } from "lucide-react"
+import {
+  Check as ChromeCheck,
+  ChevronDown,
+  Copy as ChromeCopy,
+  Shuffle,
+} from "lucide-react"
 
 import { BlocksView } from "./blocks-view"
 import { ComponentsView } from "./components-view"
@@ -37,7 +42,8 @@ const DEFAULTS: State = {
   grain: true,
 }
 
-function Group<T extends string>({
+/** A control card in the docked bar: muted label above, current value below. */
+function Control<T extends string>({
   label,
   value,
   options,
@@ -50,31 +56,63 @@ function Group<T extends string>({
 }) {
   const active = options.find((o) => o.id === value)
   return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-neutral-500">
+    <label
+      title={active?.note}
+      className="group relative flex shrink-0 cursor-pointer flex-col gap-0.5 rounded-lg border border-neutral-200 bg-white px-3 py-2 transition-colors hover:border-neutral-300"
+    >
+      <span className="text-[10px] leading-none text-neutral-400">{label}</span>
+      <span className="pr-4 text-[12.5px] leading-tight font-medium text-neutral-900">
+        {active?.label ?? value}
+      </span>
+      <ChevronDown className="pointer-events-none absolute right-2.5 bottom-2.5 size-3 text-neutral-400" />
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as T)}
+        className="absolute inset-0 cursor-pointer opacity-0"
+        aria-label={label}
+      >
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
+/** A boolean control styled to match the cards. */
+function Toggle({
+  label,
+  on,
+  onChange,
+  title,
+}: {
+  label: string
+  on: boolean
+  onChange: (v: boolean) => void
+  title?: string
+}) {
+  return (
+    <button
+      type="button"
+      title={title}
+      onClick={() => onChange(!on)}
+      className={`flex shrink-0 flex-col gap-0.5 rounded-lg border px-3 py-2 text-left transition-colors ${
+        on
+          ? "border-neutral-900 bg-neutral-900"
+          : "border-neutral-200 bg-white hover:border-neutral-300"
+      }`}
+    >
+      <span className={`text-[10px] leading-none ${on ? "text-neutral-400" : "text-neutral-400"}`}>
         {label}
       </span>
-      <div className="flex flex-wrap gap-1">
-        {options.map((o) => (
-          <button
-            key={o.id}
-            type="button"
-            title={o.note}
-            onClick={() => onChange(o.id)}
-            className={`rounded-md px-2 py-1 text-[11px] transition-colors ${
-              value === o.id
-                ? "bg-neutral-900 text-white"
-                : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
-            }`}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
-      {active?.note ? (
-        <p className="text-[10px] leading-snug text-neutral-400">{active.note}</p>
-      ) : null}
-    </div>
+      <span
+        className={`text-[12.5px] leading-tight font-medium ${on ? "text-white" : "text-neutral-900"}`}
+      >
+        {on ? "On" : "Off"}
+      </span>
+    </button>
   )
 }
 
@@ -147,165 +185,45 @@ export function PreviewClient() {
       : {}),
   }
 
+
   const copyLink = async () => {
     await navigator.clipboard.writeText(window.location.href)
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
   }
 
-  const toggleCls = (active: boolean) =>
-    `rounded-md px-2 py-1 text-[11px] transition-colors ${
-      active
-        ? "bg-neutral-900 text-white"
-        : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
-    }`
+  /** Randomise the whole permutation — the fastest way to find combinations
+      you would never have assembled deliberately. */
+  const shuffle = () => {
+    const pick = <T,>(xs: readonly T[]) => xs[Math.floor(Math.random() * xs.length)]
+    setState((s) => ({
+      ...s,
+      font: pick(PAIRINGS).id,
+      accent: pick(ACCENTS).id,
+      surface: pick(SURFACES).id,
+      canvas: pick(CANVASES).id,
+      theme: pick(["light", "dark"] as const),
+      squircle: Math.random() > 0.35,
+    }))
+  }
+
+  // Only the component gallery flows into horizontal columns; the other views
+  // are page-shaped and would be destroyed by it.
+  const horizontal = state.view === "components"
 
   return (
-    <div className="flex min-h-screen flex-col bg-white md:flex-row">
-      {/* ---------------- Sidebar ----------------
-          Side by side wherever there is room. Stacks only on phones, where a
-          fixed 248px column would leave the canvas almost nothing. */}
-      <aside className="flex w-full shrink-0 flex-col border-b border-neutral-200 bg-white px-4 py-5 md:sticky md:top-0 md:h-screen md:w-[212px] md:overflow-y-auto md:border-r md:border-b-0 lg:w-[248px]">
-        <div className="mb-5">
-          <span className="text-sm font-semibold tracking-tight">swagui</span>
-          <p className="text-[10px] text-neutral-500">token preview</p>
-        </div>
-
-        <div className="flex flex-col gap-5">
-          <Group
-            label="View"
-            value={state.view}
-            options={[
-              { id: "marketing" as const, label: "Marketing" },
-              { id: "blocks" as const, label: "Blocks" },
-              { id: "components" as const, label: "Components" },
-              { id: "app" as const, label: "App" },
-            ]}
-            onChange={(v) => set("view", v)}
-          />
-          <Group
-            label="Type"
-            value={pairing.id}
-            options={PAIRINGS.map((p) => ({ id: p.id, label: p.label, note: p.note }))}
-            onChange={(v) => set("font", v)}
-          />
-          <Group
-            label="Accent"
-            value={accent.id}
-            options={ACCENTS.map((a) => ({ id: a.id, label: a.label, note: a.note }))}
-            onChange={(v) => set("accent", v)}
-          />
-          <Group
-            label="Surface"
-            value={state.surface}
-            options={SURFACES}
-            onChange={(v) => set("surface", v)}
-          />
-          <Group
-            label="Canvas"
-            value={state.canvas}
-            options={CANVASES}
-            onChange={(v) => set("canvas", v)}
-          />
-          <Group
-            label="Density"
-            value={state.density}
-            options={[
-              { id: "comfortable" as const, label: "Comfortable", note: "Marketing register." },
-              {
-                id: "compact" as const,
-                label: "Compact",
-                note: 'data-density="compact" — app interiors.',
-              },
-            ]}
-            onChange={(v) => set("density", v)}
-          />
-          <Group
-            label="Icons"
-            value={state.icons}
-            options={[
-              { id: "lucide" as const, label: "Lucide", note: "The most common set. Broad coverage, 1500+ icons." },
-              {
-                id: "phosphor" as const,
-                label: "Phosphor",
-                note: "~9k icons, six weights. You own the import mapping.",
-              },
-            ]}
-            onChange={(v) => set("icons", v)}
-          />
-          <Group
-            label="Icon weight"
-            value={state.iconWeight}
-            options={[
-              { id: "thin" as const, label: "Thin", note: "Lucide stroke 1.25 / Phosphor thin." },
-              { id: "light" as const, label: "Light", note: "Lucide stroke 1.5 / Phosphor light." },
-              {
-                id: "regular" as const,
-                label: "Regular",
-                note: "Lucide stroke 2 (stock) / Phosphor regular.",
-              },
-            ]}
-            onChange={(v) => set("iconWeight", v)}
-          />
-          <Group
-            label="Theme"
-            value={state.theme}
-            options={[
-              { id: "light" as const, label: "Light" },
-              { id: "dark" as const, label: "Dark" },
-            ]}
-            onChange={(v) => set("theme", v)}
-          />
-
-          <div className="flex flex-col gap-1.5">
-            <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-neutral-500">
-              Toggles
-            </span>
-            <div className="flex flex-wrap gap-1">
-              <button
-                type="button"
-                onClick={() => set("squircle", !state.squircle)}
-                title="Multiply every radius token by 1.4 for continuous, Apple-like corners"
-                className={toggleCls(state.squircle)}
-              >
-                Squircle
-              </button>
-              <button
-                type="button"
-                onClick={() => set("grain", !state.grain)}
-                title="SVG fractal-noise grain plus a fine dot grid"
-                className={toggleCls(state.grain)}
-              >
-                Grain
-              </button>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={copyLink}
-            className="flex items-center justify-center gap-1.5 rounded-md bg-neutral-100 px-2 py-1.5 text-[11px] text-neutral-600 transition-colors hover:bg-neutral-200"
-          >
-            {copied ? <ChromeCheck className="size-3" /> : <ChromeCopy className="size-3" />}
-            {copied ? "Link copied" : "Copy share link"}
-          </button>
-        </div>
-      </aside>
-
+    <div className="flex h-screen flex-col overflow-hidden bg-white">
       {/* ---------------- Canvas ---------------- */}
       <IconProvider value={{ lib: state.icons, weight: state.iconWeight }}>
-        <div
-          // `dark` drives shadcn's @custom-variant dark (&:is(.dark *)) so the
-          // vendored components' dark: utilities fire inside this subtree.
-          // min-w-0: a flex item defaults to min-width:auto, so any wide
-          // descendant would stretch the canvas past the viewport.
-          className={`preview-root relative min-w-0 flex-1 ${isDark ? "dark" : ""} ${
+        <main
+          className={`preview-root relative min-h-0 flex-1 ${isDark ? "dark" : ""} ${
             state.grain ? "grain" : ""
-          }`}
+          } ${horizontal ? "overflow-x-auto overflow-y-hidden" : "overflow-y-auto"}`}
           data-theme={state.theme}
           data-canvas={state.canvas}
           data-surface={state.surface}
           data-density={state.density}
+          data-layout={horizontal ? "columns" : "flow"}
           style={rootStyle}
         >
           {state.view === "marketing" ? (
@@ -317,8 +235,116 @@ export function PreviewClient() {
           ) : (
             <AppView displayStyle={displayStyle} />
           )}
-        </div>
+        </main>
       </IconProvider>
+
+      {/* ---------------- Docked config ---------------- */}
+      <footer className="shrink-0 border-t border-neutral-200 bg-neutral-50">
+        <div className="flex items-center gap-2 overflow-x-auto px-3 py-3">
+          <Control
+            label="View"
+            value={state.view}
+            options={[
+              { id: "marketing" as const, label: "Marketing" },
+              { id: "blocks" as const, label: "Blocks" },
+              { id: "components" as const, label: "Components" },
+              { id: "app" as const, label: "App" },
+            ]}
+            onChange={(v) => set("view", v)}
+          />
+          <Control
+            label="Type"
+            value={pairing.id}
+            options={PAIRINGS.map((p) => ({ id: p.id, label: p.label, note: p.note }))}
+            onChange={(v) => set("font", v)}
+          />
+          <Control
+            label="Accent"
+            value={accent.id}
+            options={ACCENTS.map((a) => ({ id: a.id, label: a.label, note: a.note }))}
+            onChange={(v) => set("accent", v)}
+          />
+          <Control
+            label="Surface"
+            value={state.surface}
+            options={SURFACES}
+            onChange={(v) => set("surface", v)}
+          />
+          <Control
+            label="Canvas"
+            value={state.canvas}
+            options={CANVASES}
+            onChange={(v) => set("canvas", v)}
+          />
+          <Control
+            label="Density"
+            value={state.density}
+            options={[
+              { id: "comfortable" as const, label: "Comfortable" },
+              { id: "compact" as const, label: "Compact" },
+            ]}
+            onChange={(v) => set("density", v)}
+          />
+          <Control
+            label="Theme"
+            value={state.theme}
+            options={[
+              { id: "light" as const, label: "Light" },
+              { id: "dark" as const, label: "Dark" },
+            ]}
+            onChange={(v) => set("theme", v)}
+          />
+          <Control
+            label="Icons"
+            value={state.icons}
+            options={[
+              { id: "lucide" as const, label: "Lucide" },
+              { id: "phosphor" as const, label: "Phosphor" },
+            ]}
+            onChange={(v) => set("icons", v)}
+          />
+          <Control
+            label="Stroke"
+            value={state.iconWeight}
+            options={[
+              { id: "thin" as const, label: "Thin" },
+              { id: "light" as const, label: "Light" },
+              { id: "regular" as const, label: "Regular" },
+            ]}
+            onChange={(v) => set("iconWeight", v)}
+          />
+          <Toggle
+            label="Squircle"
+            on={state.squircle}
+            onChange={(v) => set("squircle", v)}
+            title="Multiply every radius token by 1.4"
+          />
+          <Toggle
+            label="Grain"
+            on={state.grain}
+            onChange={(v) => set("grain", v)}
+            title="Fractal-noise grain over the canvas"
+          />
+
+          <div className="ml-auto flex shrink-0 items-center gap-2 pl-2">
+            <button
+              type="button"
+              onClick={shuffle}
+              className="flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-[12.5px] font-medium text-neutral-700 transition-colors hover:border-neutral-300"
+            >
+              <Shuffle className="size-3.5" /> Shuffle
+            </button>
+            <button
+              type="button"
+              onClick={copyLink}
+              className="flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-2.5 text-[12.5px] font-medium text-white transition-colors hover:bg-neutral-700"
+            >
+              {copied ? <ChromeCheck className="size-3.5" /> : <ChromeCopy className="size-3.5" />}
+              {copied ? "Copied" : "Share"}
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

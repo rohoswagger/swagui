@@ -222,3 +222,10 @@
   outline: 2px solid color-mix(in oklch, var(--brand) 60%, transparent);
   outline-offset: 2px;
 }
+
+/* Horizontal column flow for the component gallery: a definite height plus
+   column-fill:auto makes columns extend along the x axis instead of wrapping,
+   so the canvas scrolls sideways. */
+[data-layout="columns"] > div {
+  height: 100%;
+}

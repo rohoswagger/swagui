@@ -171,7 +171,10 @@ function Row({
   children: React.ReactNode
 }) {
   return (
-    <section className="py-7" style={{ borderTop: "1px solid var(--hairline)" }}>
+    <section
+      className="mb-8 break-inside-avoid rounded-xl border p-6"
+      style={{ borderColor: "var(--hairline)" }}
+    >
       <div className="mb-4">
         <h3
           className="mono text-[10px] uppercase"
@@ -197,15 +200,15 @@ export function ComponentsView({ displayStyle }: { displayStyle: React.CSSProper
   return (
     <TooltipProvider>
       <Toaster />
-      <div className="mx-auto max-w-[1000px] px-10 py-10">
-        <header className="pb-2">
+      <div className="h-full [column-fill:auto] columns-[24rem] gap-8 px-8 py-8">
+        <header className="mb-8 break-inside-avoid">
           <h1 className="display text-[34px]" style={displayStyle}>
             Components
           </h1>
           <p className="mt-2 max-w-[64ch] text-[14px]" style={{ color: "var(--muted-fg)" }}>
             These are the real vendored components from <code className="mono">registry/ui</code>,
             not mockups. Every one is reading swagui&rsquo;s tokens through the shadcn bridge — change
-            the canvas, theme or squircle in the sidebar and watch them all follow.
+            the canvas, theme or squircle below and watch them all follow.
           </p>
         </header>
 
