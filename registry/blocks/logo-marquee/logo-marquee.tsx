@@ -29,7 +29,10 @@ function LogoMarquee({
       ) : null}
 
       <div
-        className="relative flex w-full overflow-hidden"
+        // min-w-0 stops the duplicated rows' intrinsic width propagating to
+        // ancestors. Without it the marquee widens any flex parent and the
+        // whole page gains a horizontal scrollbar.
+        className="relative flex w-full min-w-0 overflow-hidden"
         style={{
           maskImage:
             "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",

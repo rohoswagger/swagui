@@ -161,9 +161,11 @@ export function PreviewClient() {
     }`
 
   return (
-    <div className="flex min-h-screen bg-white">
-      {/* ---------------- Sidebar ---------------- */}
-      <aside className="sticky top-0 flex h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-neutral-200 bg-white px-4 py-5">
+    <div className="flex min-h-screen flex-col bg-white lg:flex-row">
+      {/* ---------------- Sidebar ----------------
+          Stacks above the canvas below lg; a fixed 248px column would leave a
+          phone viewport almost nothing to render into. */}
+      <aside className="flex w-full shrink-0 flex-col border-b border-neutral-200 bg-white px-4 py-5 lg:sticky lg:top-0 lg:h-screen lg:w-[248px] lg:overflow-y-auto lg:border-r lg:border-b-0">
         <div className="mb-5">
           <span className="text-sm font-semibold tracking-tight">swagui</span>
           <p className="text-[10px] text-neutral-500">token preview</p>
@@ -295,7 +297,9 @@ export function PreviewClient() {
         <div
           // `dark` drives shadcn's @custom-variant dark (&:is(.dark *)) so the
           // vendored components' dark: utilities fire inside this subtree.
-          className={`preview-root relative flex-1 ${isDark ? "dark" : ""} ${
+          // min-w-0: a flex item defaults to min-width:auto, so any wide
+          // descendant would stretch the canvas past the viewport.
+          className={`preview-root relative min-w-0 flex-1 ${isDark ? "dark" : ""} ${
             state.grain ? "grain" : ""
           }`}
           data-theme={state.theme}
