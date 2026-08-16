@@ -1135,7 +1135,7 @@
       "name": "section",
       "type": "registry:block",
       "title": "Section",
-      "description": "Layout shell: container, vertical rhythm, eyebrow, title and description parts.",
+      "description": "Layout shell: container widths, vertical rhythm, eyebrow/title/description parts.",
       "files": [
         {
           "path": "registry/blocks/section/section.tsx",
@@ -1165,10 +1165,30 @@
       ]
     },
     {
+      "name": "site-nav",
+      "type": "registry:block",
+      "title": "Site Nav",
+      "description": "Sticky translucent header with responsive sheet menu.",
+      "files": [
+        {
+          "path": "registry/blocks/site-nav/site-nav.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/sheet.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
       "name": "hero-centered",
       "type": "registry:block",
       "title": "Hero (Centered)",
-      "description": "Centred hero with eyebrow, tight-measure display heading, actions and a status line.",
+      "description": "Centred hero with eyebrow, tight-measure display heading, actions and status line.",
       "files": [
         {
           "path": "registry/blocks/hero-centered/hero-centered.tsx",
@@ -1182,6 +1202,37 @@
       ],
       "dependencies": [
         "lucide-react"
+      ]
+    },
+    {
+      "name": "logo-marquee",
+      "type": "registry:block",
+      "title": "Logo Marquee",
+      "description": "Ambient CSS trust bar with masked edges. No JS, no motion dependency.",
+      "files": [
+        {
+          "path": "registry/blocks/logo-marquee/logo-marquee.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "stat-band",
+      "type": "registry:block",
+      "title": "Stat Band",
+      "description": "Hairline-separated metric tiles with staggered reveal.",
+      "files": [
+        {
+          "path": "registry/blocks/stat-band/stat-band.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/reveal.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },
     {
@@ -1202,17 +1253,60 @@
       ]
     },
     {
-      "name": "logo-marquee",
+      "name": "testimonial-grid",
       "type": "registry:block",
-      "title": "Logo Marquee",
-      "description": "Ambient CSS trust bar with masked edges. No JS, no motion dependency.",
+      "title": "Testimonial Grid",
+      "description": "Quote cards with avatar attribution.",
       "files": [
         {
-          "path": "registry/blocks/logo-marquee/logo-marquee.tsx",
+          "path": "registry/blocks/testimonial-grid/testimonial-grid.tsx",
           "type": "registry:component"
         }
       ],
       "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/avatar.json",
+        "https://swagui.rohoswagger.com/r/reveal.json",
+        "https://swagui.rohoswagger.com/r/section.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "pricing-tiers",
+      "type": "registry:block",
+      "title": "Pricing Tiers",
+      "description": "Tier cards where the featured plan is marked by elevation, not colour.",
+      "files": [
+        {
+          "path": "registry/blocks/pricing-tiers/pricing-tiers.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/badge.json",
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/reveal.json",
+        "https://swagui.rohoswagger.com/r/section.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "faq-accordion",
+      "type": "registry:block",
+      "title": "FAQ",
+      "description": "Narrow-measure accordion FAQ section.",
+      "files": [
+        {
+          "path": "registry/blocks/faq-accordion/faq-accordion.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/accordion.json",
+        "https://swagui.rohoswagger.com/r/reveal.json",
+        "https://swagui.rohoswagger.com/r/section.json",
         "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },
@@ -1234,6 +1328,21 @@
       ],
       "dependencies": [
         "lucide-react"
+      ]
+    },
+    {
+      "name": "site-footer",
+      "type": "registry:block",
+      "title": "Site Footer",
+      "description": "Multi-column link footer with brand block and bottom bar.",
+      "files": [
+        {
+          "path": "registry/blocks/site-footer/site-footer.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
       ]
     }
   ]

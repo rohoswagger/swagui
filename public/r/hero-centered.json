@@ -3,7 +3,7 @@
   "name": "hero-centered",
   "type": "registry:block",
   "title": "Hero (Centered)",
-  "description": "Centred hero with eyebrow, tight-measure display heading, actions and a status line.",
+  "description": "Centred hero with eyebrow, tight-measure display heading, actions and status line.",
   "dependencies": [
     "lucide-react"
   ],

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "faq-accordion",
+  "type": "registry:block",
+  "title": "FAQ",
+  "description": "Narrow-measure accordion FAQ section.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/accordion.json",
+    "https://swagui.rohoswagger.com/r/reveal.json",
+    "https://swagui.rohoswagger.com/r/section.json",
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/faq-accordion/faq-accordion.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport {\n  Accordion,\n  AccordionContent,\n  AccordionItem,\n  AccordionTrigger,\n} from \"@/registry/ui/accordion\"\nimport {\n  Section,\n  SectionDescription,\n  SectionEyebrow,\n  SectionHeader,\n  SectionTitle,\n  SectionContent,\n} from \"@/registry/blocks/section/section\"\nimport { Reveal } from \"@/registry/blocks/reveal/reveal\"\n\ntype Faq = { question: React.ReactNode; answer: React.ReactNode }\n\nfunction FaqAccordion({\n  eyebrow,\n  title,\n  description,\n  items,\n  className,\n  ...props\n}: Omit<React.ComponentProps<\"section\">, \"title\"> & {\n  eyebrow?: React.ReactNode\n  title?: React.ReactNode\n  description?: React.ReactNode\n  items: Faq[]\n}) {\n  return (\n    <Section data-slot=\"faq-accordion\" width=\"narrow\" className={cn(className)} {...props}>\n      {title ? (\n        <SectionHeader>\n          {eyebrow ? <SectionEyebrow>{eyebrow}</SectionEyebrow> : null}\n          <SectionTitle className=\"max-w-[20ch]\">{title}</SectionTitle>\n          {description ? <SectionDescription>{description}</SectionDescription> : null}\n        </SectionHeader>\n      ) : null}\n\n      <SectionContent>\n        <Reveal>\n          <Accordion type=\"single\" collapsible className=\"w-full\">\n            {items.map((f, i) => (\n              <AccordionItem key={i} value={`item-${i}`}>\n                <AccordionTrigger className=\"text-left text-[1rem]\">\n                  {f.question}\n                </AccordionTrigger>\n                <AccordionContent className=\"text-[0.9375rem] leading-[1.65]\">\n                  {f.answer}\n                </AccordionContent>\n              </AccordionItem>\n            ))}\n          </Accordion>\n        </Reveal>\n      </SectionContent>\n    </Section>\n  )\n}\n\nexport { FaqAccordion }\n",
+      "type": "registry:component"
+    }
+  ]
+}

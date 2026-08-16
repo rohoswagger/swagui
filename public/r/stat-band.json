@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stat-band",
+  "type": "registry:block",
+  "title": "Stat Band",
+  "description": "Hairline-separated metric tiles with staggered reveal.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/reveal.json",
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/stat-band/stat-band.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { RevealGroup, RevealItem } from \"@/registry/blocks/reveal/reveal\"\n\ntype Stat = { value: React.ReactNode; label: React.ReactNode }\n\nfunction StatBand({\n  stats,\n  className,\n  ...props\n}: React.ComponentProps<\"section\"> & { stats: Stat[] }) {\n  return (\n    <section\n      data-slot=\"stat-band\"\n      className={cn(\"w-full px-6 py-20 sm:px-8\", className)}\n      {...props}\n    >\n      <RevealGroup className=\"border-border/60 mx-auto grid w-full max-w-[75rem] gap-px overflow-hidden rounded-xl border bg-border/60 sm:grid-cols-2 lg:grid-cols-4\">\n        {stats.map((s, i) => (\n          <RevealItem key={i} className=\"bg-card px-7 py-9 text-center\">\n            <p className=\"font-[family-name:var(--font-display)] text-[clamp(1.875rem,3vw,2.5rem)] leading-none\">\n              {s.value}\n            </p>\n            <p className=\"text-muted-foreground mt-2.5 font-mono text-[0.6875rem] tracking-[0.2em] uppercase\">\n              {s.label}\n            </p>\n          </RevealItem>\n        ))}\n      </RevealGroup>\n    </section>\n  )\n}\n\nexport { StatBand }\n",
+      "type": "registry:component"
+    }
+  ]
+}

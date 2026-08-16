@@ -3,7 +3,7 @@
   "name": "section",
   "type": "registry:block",
   "title": "Section",
-  "description": "Layout shell: container, vertical rhythm, eyebrow, title and description parts.",
+  "description": "Layout shell: container widths, vertical rhythm, eyebrow/title/description parts.",
   "registryDependencies": [
     "https://swagui.rohoswagger.com/r/theme.json"
   ],
