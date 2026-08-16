@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hero-centered",
+  "type": "registry:block",
+  "title": "Hero (Centered)",
+  "description": "Centred hero with eyebrow, tight-measure display heading, actions and a status line.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/button.json",
+    "https://swagui.rohoswagger.com/r/reveal.json",
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/hero-centered/hero-centered.tsx",
+      "content": "import * as React from \"react\"\nimport { ArrowRightIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Button } from \"@/registry/ui/button\"\nimport { Reveal } from \"@/registry/blocks/reveal/reveal\"\n\n/**\n * Centred hero. Display type runs to a deliberately tight measure — roughly\n * two or three words a line — which is what makes large headings read as\n * composed rather than merely big.\n */\nfunction HeroCentered({\n  eyebrow,\n  title,\n  description,\n  primaryAction,\n  secondaryAction,\n  status,\n  className,\n  ...props\n}: Omit<React.ComponentProps<\"section\">, \"title\"> & {\n  eyebrow?: React.ReactNode\n  title: React.ReactNode\n  description?: React.ReactNode\n  primaryAction?: { label: string; href: string }\n  secondaryAction?: { label: string; href: string }\n  status?: React.ReactNode\n}) {\n  return (\n    <section\n      data-slot=\"hero-centered\"\n      className={cn(\n        \"relative flex w-full flex-col items-center px-6 pt-28 pb-24 text-center sm:px-8 sm:pt-36 sm:pb-32\",\n        className\n      )}\n      {...props}\n    >\n      <div className=\"mx-auto flex w-full max-w-[75rem] flex-col items-center\">\n        {eyebrow ? (\n          <Reveal>\n            <p className=\"text-muted-foreground mb-7 font-mono text-[0.6875rem] tracking-[0.24em] uppercase\">\n              {eyebrow}\n            </p>\n          </Reveal>\n        ) : null}\n\n        <Reveal delay={0.05}>\n          <h1 className=\"mx-auto max-w-[14ch] font-[family-name:var(--font-display)] text-[clamp(2.75rem,7vw,5rem)] leading-[1.04] text-balance\">\n            {title}\n          </h1>\n        </Reveal>\n\n        {description ? (\n          <Reveal delay={0.1}>\n            <p className=\"text-muted-foreground mx-auto mt-7 max-w-[52ch] text-[1.0625rem] leading-[1.6] text-pretty\">\n              {description}\n            </p>\n          </Reveal>\n        ) : null}\n\n        {primaryAction || secondaryAction ? (\n          <Reveal delay={0.15}>\n            <div className=\"mt-10 flex flex-wrap items-center justify-center gap-3\">\n              {primaryAction ? (\n                <Button asChild size=\"lg\">\n                  <a href={primaryAction.href}>\n                    {primaryAction.label}\n                    <ArrowRightIcon />\n                  </a>\n                </Button>\n              ) : null}\n              {secondaryAction ? (\n                <Button asChild size=\"lg\" variant=\"outline\">\n                  <a href={secondaryAction.href}>{secondaryAction.label}</a>\n                </Button>\n              ) : null}\n            </div>\n          </Reveal>\n        ) : null}\n\n        {status ? (\n          <Reveal delay={0.2}>\n            <div className=\"text-muted-foreground mt-8 flex items-center justify-center gap-2 text-[0.8125rem]\">\n              <span className=\"brand-dot inline-block size-1.5 rounded-full\" />\n              {status}\n            </div>\n          </Reveal>\n        ) : null}\n      </div>\n    </section>\n  )\n}\n\nexport { HeroCentered }\n",
+      "type": "registry:component"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import * as React from "react"
 import { useSearchParams } from "next/navigation"
 import { Check as ChromeCheck, Copy as ChromeCopy } from "lucide-react"
 
+import { BlocksView } from "./blocks-view"
 import { ComponentsView } from "./components-view"
 import { ACCENTS, CANVASES, PAIRINGS, SURFACES } from "./config"
 import { ArrowRight, IconLib, IconProvider, IconWeight, Search } from "./icons"
@@ -14,7 +15,7 @@ type State = {
   surface: string
   canvas: string
   theme: "light" | "dark"
-  view: "marketing" | "app" | "components"
+  view: "marketing" | "blocks" | "app" | "components"
   density: "comfortable" | "compact"
   icons: IconLib
   iconWeight: IconWeight
@@ -174,6 +175,7 @@ export function PreviewClient() {
             value={state.view}
             options={[
               { id: "marketing" as const, label: "Marketing" },
+              { id: "blocks" as const, label: "Blocks" },
               { id: "components" as const, label: "Components" },
               { id: "app" as const, label: "App" },
             ]}
@@ -304,6 +306,8 @@ export function PreviewClient() {
         >
           {state.view === "marketing" ? (
             <MarketingView displayStyle={displayStyle} grain={state.grain} />
+          ) : state.view === "blocks" ? (
+            <BlocksView />
           ) : state.view === "components" ? (
             <ComponentsView displayStyle={displayStyle} />
           ) : (

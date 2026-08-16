@@ -151,10 +151,12 @@
         },
         "@layer base": {
           "*": {
-            "@apply border-border outline-ring/50": ""
+            "border-color": "var(--border)",
+            "outline-color": "color-mix(in oklch, var(--ring) 50%, transparent)"
           },
           "body": {
-            "@apply bg-background text-foreground": "",
+            "background-color": "var(--background)",
+            "color": "var(--foreground)",
             "font-family": "var(--font-body)",
             "-webkit-font-smoothing": "antialiased"
           },
@@ -1127,6 +1129,111 @@
       ],
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "section",
+      "type": "registry:block",
+      "title": "Section",
+      "description": "Layout shell: container, vertical rhythm, eyebrow, title and description parts.",
+      "files": [
+        {
+          "path": "registry/blocks/section/section.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "reveal",
+      "type": "registry:block",
+      "title": "Reveal",
+      "description": "Scroll-reveal wrappers on the house curve, with stagger and reduced-motion support.",
+      "files": [
+        {
+          "path": "registry/blocks/reveal/reveal.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "motion"
+      ]
+    },
+    {
+      "name": "hero-centered",
+      "type": "registry:block",
+      "title": "Hero (Centered)",
+      "description": "Centred hero with eyebrow, tight-measure display heading, actions and a status line.",
+      "files": [
+        {
+          "path": "registry/blocks/hero-centered/hero-centered.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/reveal.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "feature-grid",
+      "type": "registry:block",
+      "title": "Feature Grid",
+      "description": "Two, three or four column feature cards with staggered scroll reveal.",
+      "files": [
+        {
+          "path": "registry/blocks/feature-grid/feature-grid.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/reveal.json",
+        "https://swagui.rohoswagger.com/r/section.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "logo-marquee",
+      "type": "registry:block",
+      "title": "Logo Marquee",
+      "description": "Ambient CSS trust bar with masked edges. No JS, no motion dependency.",
+      "files": [
+        {
+          "path": "registry/blocks/logo-marquee/logo-marquee.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "cta-band",
+      "type": "registry:block",
+      "title": "CTA Band",
+      "description": "Closing call to action on a glowing panel.",
+      "files": [
+        {
+          "path": "registry/blocks/cta-band/cta-band.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/reveal.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react"
       ]
     }
   ]

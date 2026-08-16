@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logo-marquee",
+  "type": "registry:block",
+  "title": "Logo Marquee",
+  "description": "Ambient CSS trust bar with masked edges. No JS, no motion dependency.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/logo-marquee/logo-marquee.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/**\n * Trust bar. Pure CSS — no motion dependency, no JS. The 40s duration is\n * deliberate: an ambient drift rather than something asking for attention.\n * Edges are masked so items enter and leave rather than popping.\n */\nfunction LogoMarquee({\n  label,\n  children,\n  speed = 40,\n  className,\n  ...props\n}: React.ComponentProps<\"section\"> & { label?: React.ReactNode; speed?: number }) {\n  const items = React.Children.toArray(children)\n\n  return (\n    <section\n      data-slot=\"logo-marquee\"\n      className={cn(\"w-full overflow-hidden px-6 py-16 sm:px-8\", className)}\n      {...props}\n    >\n      {label ? (\n        <p className=\"text-muted-foreground mb-9 text-center font-mono text-[0.6875rem] tracking-[0.24em] uppercase\">\n          {label}\n        </p>\n      ) : null}\n\n      <div\n        className=\"relative flex w-full overflow-hidden\"\n        style={{\n          maskImage:\n            \"linear-gradient(90deg, transparent, black 12%, black 88%, transparent)\",\n          WebkitMaskImage:\n            \"linear-gradient(90deg, transparent, black 12%, black 88%, transparent)\",\n        }}\n      >\n        {/* Duplicated once so the -50% translate loops seamlessly. */}\n        {[0, 1].map((copy) => (\n          <div\n            key={copy}\n            aria-hidden={copy === 1}\n            className=\"flex shrink-0 items-center gap-16 pr-16 [animation:swagui-marquee_var(--marquee-duration)_linear_infinite] motion-reduce:[animation:none]\"\n            style={{ \"--marquee-duration\": `${speed}s` } as React.CSSProperties}\n          >\n            {items.map((item, i) => (\n              <div\n                key={i}\n                className=\"text-muted-foreground flex shrink-0 items-center opacity-70 transition-opacity duration-(--duration-base) ease-(--ease-swagui) hover:opacity-100\"\n              >\n                {item}\n              </div>\n            ))}\n          </div>\n        ))}\n      </div>\n\n      <style>{`@keyframes swagui-marquee { to { transform: translateX(-100%) } }`}</style>\n    </section>\n  )\n}\n\nexport { LogoMarquee }\n",
+      "type": "registry:component"
+    }
+  ]
+}

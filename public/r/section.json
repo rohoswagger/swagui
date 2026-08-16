@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section",
+  "type": "registry:block",
+  "title": "Section",
+  "description": "Layout shell: container, vertical rhythm, eyebrow, title and description parts.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/section/section.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst widths = {\n  narrow: \"max-w-[46rem]\",\n  default: \"max-w-[75rem]\",\n  wide: \"max-w-[90rem]\",\n  full: \"max-w-none\",\n}\n\nfunction Section({\n  className,\n  width = \"default\",\n  children,\n  ...props\n}: React.ComponentProps<\"section\"> & { width?: keyof typeof widths }) {\n  return (\n    <section\n      data-slot=\"section\"\n      className={cn(\"w-full px-6 py-24 sm:px-8 sm:py-32\", className)}\n      {...props}\n    >\n      <div className={cn(\"mx-auto w-full\", widths[width])}>{children}</div>\n    </section>\n  )\n}\n\nfunction SectionHeader({\n  className,\n  align = \"center\",\n  ...props\n}: React.ComponentProps<\"div\"> & { align?: \"start\" | \"center\" }) {\n  return (\n    <div\n      data-slot=\"section-header\"\n      className={cn(\n        \"flex flex-col gap-5\",\n        align === \"center\" ? \"items-center text-center\" : \"items-start text-left\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\n/** Mono, uppercase, widely tracked — the counterweight to tight display type. */\nfunction SectionEyebrow({ className, ...props }: React.ComponentProps<\"p\">) {\n  return (\n    <p\n      data-slot=\"section-eyebrow\"\n      className={cn(\n        \"text-muted-foreground font-mono text-[0.6875rem] tracking-[0.24em] uppercase\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction SectionTitle({ className, ...props }: React.ComponentProps<\"h2\">) {\n  return (\n    <h2\n      data-slot=\"section-title\"\n      className={cn(\n        \"font-[family-name:var(--font-display)] text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.08] text-balance\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction SectionDescription({ className, ...props }: React.ComponentProps<\"p\">) {\n  return (\n    <p\n      data-slot=\"section-description\"\n      className={cn(\n        \"text-muted-foreground max-w-[52ch] text-[1.0625rem] leading-[1.6] text-pretty\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction SectionContent({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"section-content\" className={cn(\"mt-16\", className)} {...props} />\n}\n\nexport {\n  Section,\n  SectionHeader,\n  SectionEyebrow,\n  SectionTitle,\n  SectionDescription,\n  SectionContent,\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "reveal",
+  "type": "registry:block",
+  "title": "Reveal",
+  "description": "Scroll-reveal wrappers on the house curve, with stagger and reduced-motion support.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/reveal/reveal.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { motion, useReducedMotion, type Variants } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/**\n * Scroll-reveal wrapper. Enters once, on the house curve, slower than a UI\n * transition — the pacing is most of the effect.\n *\n * `motion` is a block-level dependency by design; swagui primitives stay on\n * pure CSS so app bundles never pay for it.\n */\n\nconst DISTANCE = 20\n\nfunction useVariants(delay: number): Variants {\n  const reduced = useReducedMotion()\n  return React.useMemo(\n    () => ({\n      hidden: reduced ? { opacity: 0 } : { opacity: 0, y: DISTANCE },\n      visible: {\n        opacity: 1,\n        y: 0,\n        transition: {\n          duration: reduced ? 0.2 : 0.65,\n          ease: [0.22, 1, 0.36, 1],\n          delay,\n        },\n      },\n    }),\n    [reduced, delay]\n  )\n}\n\nfunction Reveal({\n  className,\n  delay = 0,\n  amount = 0.3,\n  ...props\n}: React.ComponentProps<typeof motion.div> & { delay?: number; amount?: number }) {\n  const variants = useVariants(delay)\n  return (\n    <motion.div\n      data-slot=\"reveal\"\n      initial=\"hidden\"\n      whileInView=\"visible\"\n      viewport={{ once: true, amount }}\n      variants={variants}\n      className={cn(className)}\n      {...props}\n    />\n  )\n}\n\n/** Wrap RevealItem children to stagger them in sequence. */\nfunction RevealGroup({\n  className,\n  stagger = 0.08,\n  amount = 0.2,\n  ...props\n}: React.ComponentProps<typeof motion.div> & { stagger?: number; amount?: number }) {\n  return (\n    <motion.div\n      data-slot=\"reveal-group\"\n      initial=\"hidden\"\n      whileInView=\"visible\"\n      viewport={{ once: true, amount }}\n      variants={{\n        hidden: {},\n        visible: { transition: { staggerChildren: stagger } },\n      }}\n      className={cn(className)}\n      {...props}\n    />\n  )\n}\n\nfunction RevealItem({ className, ...props }: React.ComponentProps<typeof motion.div>) {\n  const variants = useVariants(0)\n  return (\n    <motion.div\n      data-slot=\"reveal-item\"\n      variants={variants}\n      className={cn(className)}\n      {...props}\n    />\n  )\n}\n\nexport { Reveal, RevealGroup, RevealItem }\n",
+      "type": "registry:component"
+    }
+  ]
+}

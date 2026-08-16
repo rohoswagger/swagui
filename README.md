@@ -82,7 +82,24 @@ pnpm build          # registry:build + static export to ./out
 The preview at `/` renders every component against live token controls, with
 Marketing, Components and App views.
 
+## Blocks
+
+Composed marketing sections, installed the same way:
+
+```bash
+npx shadcn@latest add https://swagui.rohoswagger.com/r/hero-centered.json
+```
+
+`section`, `reveal`, `hero-centered`, `feature-grid`, `logo-marquee`, `cta-band`.
+
+Blocks may depend on `motion`; components never do, so app bundles stay lean.
+
 ## Adding a component
+
+> **Do not run `npx shadcn add <name>` from shadcn's own registry in this repo.**
+> It writes into `registry/ui/` and will clobber swagui's edits. Pull upstream
+> files into a scratch directory first, then move them in deliberately.
+
 
 1. Add the file to `registry/ui/`.
 2. Add an entry to `registry.json`. Cross-references must use full URLs —

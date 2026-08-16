@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "feature-grid",
+  "type": "registry:block",
+  "title": "Feature Grid",
+  "description": "Two, three or four column feature cards with staggered scroll reveal.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/reveal.json",
+    "https://swagui.rohoswagger.com/r/section.json",
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/feature-grid/feature-grid.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport {\n  Section,\n  SectionDescription,\n  SectionEyebrow,\n  SectionHeader,\n  SectionTitle,\n  SectionContent,\n} from \"@/registry/blocks/section/section\"\nimport { RevealGroup, RevealItem } from \"@/registry/blocks/reveal/reveal\"\n\ntype Feature = {\n  icon?: React.ReactNode\n  title: React.ReactNode\n  description: React.ReactNode\n}\n\nfunction FeatureGrid({\n  eyebrow,\n  title,\n  description,\n  features,\n  columns = 3,\n  className,\n  ...props\n}: Omit<React.ComponentProps<\"section\">, \"title\"> & {\n  eyebrow?: React.ReactNode\n  title?: React.ReactNode\n  description?: React.ReactNode\n  features: Feature[]\n  columns?: 2 | 3 | 4\n}) {\n  return (\n    <Section data-slot=\"feature-grid\" className={cn(className)} {...props}>\n      {title ? (\n        <SectionHeader>\n          {eyebrow ? <SectionEyebrow>{eyebrow}</SectionEyebrow> : null}\n          <SectionTitle className=\"max-w-[18ch]\">{title}</SectionTitle>\n          {description ? <SectionDescription>{description}</SectionDescription> : null}\n        </SectionHeader>\n      ) : null}\n\n      <SectionContent>\n        <RevealGroup\n          className={cn(\n            \"grid gap-4\",\n            columns === 2 && \"sm:grid-cols-2\",\n            columns === 3 && \"sm:grid-cols-2 lg:grid-cols-3\",\n            columns === 4 && \"sm:grid-cols-2 lg:grid-cols-4\"\n          )}\n        >\n          {features.map((f, i) => (\n            <RevealItem\n              key={i}\n              className=\"bg-card rounded-xl border p-7 shadow-[var(--shadow-raised),var(--inset-highlight)] dark:shadow-(--shadow-raised)\"\n            >\n              {f.icon ? (\n                <div className=\"bg-accent text-foreground mb-5 flex size-9 items-center justify-center rounded-md [&_svg]:size-4\">\n                  {f.icon}\n                </div>\n              ) : null}\n              <h3 className=\"mb-2 font-[family-name:var(--font-display)] text-[1.1875rem] leading-snug\">\n                {f.title}\n              </h3>\n              <p className=\"text-muted-foreground text-[0.9375rem] leading-[1.6] text-pretty\">\n                {f.description}\n              </p>\n            </RevealItem>\n          ))}\n        </RevealGroup>\n      </SectionContent>\n    </Section>\n  )\n}\n\nexport { FeatureGrid }\n",
+      "type": "registry:component"
+    }
+  ]
+}
