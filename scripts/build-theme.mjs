@@ -9,7 +9,7 @@
  *
  * swagui.css stays the authoring source; this is a build step.
  */
-import { readFileSync, writeFileSync } from "node:fs"
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
 
 const CSS_PATH = "registry/theme/swagui.css"
 const REGISTRY_PATH = "registry.json"
@@ -107,6 +107,9 @@ writeFileSync(REGISTRY_PATH, JSON.stringify(registry, null, 2) + "\n")
 
 // `shadcn build` silently skips items that have no `files`, so this one is
 // emitted directly. Run this script after `shadcn build`.
+// This now runs before `shadcn build`, so the output dir may not exist yet.
+mkdirSync("public/r", { recursive: true })
+
 writeFileSync(
   "public/r/theme.json",
   JSON.stringify(

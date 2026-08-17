@@ -7,7 +7,7 @@
     "build": "pnpm registry:build && next build",
     "start": "next start",
     "lint": "next lint",
-    "registry:build": "shadcn build && node scripts/build-theme.mjs",
+    "registry:build": "node scripts/build-theme.mjs && shadcn build",
     "theme:build": "node scripts/build-theme.mjs",
     "logo:build": "node scripts/build-logo.mjs"
   },
