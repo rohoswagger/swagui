@@ -60,11 +60,13 @@
           "radius-2xl": "calc(1.5rem * var(--squircle-factor))",
           "ease-swagui": "cubic-bezier(0.22, 1, 0.36, 1)",
           "ease-out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "ease-spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
           "duration-press": "120ms",
           "duration-fast": "180ms",
           "duration-base": "260ms",
           "duration-slow": "420ms",
-          "animate-shimmer": "swagui-shimmer 1.8s linear infinite"
+          "animate-shimmer": "swagui-shimmer 1.8s linear infinite",
+          "animate-snake": "swagui-snake 3.6s linear infinite"
         },
         "light": {
           "font-display": "var(--font-body)",
@@ -114,6 +116,24 @@
           },
           "to": {
             "background-position": "-200% center"
+          }
+        },
+        "@property --snake-angle": {
+          "syntax": "\"<angle>\"",
+          "initial-value": "0deg",
+          "inherits": "false"
+        },
+        "@keyframes swagui-snake": {
+          "to": {
+            "--snake-angle": "360deg"
+          }
+        },
+        "@keyframes swagui-wave": {
+          "from": {
+            "transform": "translateX(-60%)"
+          },
+          "to": {
+            "transform": "translateX(60%)"
           }
         },
         ":root,\n.dark,\n[data-base]": {
@@ -372,6 +392,38 @@
           ".brand-glow": {
             "box-shadow": "0 0 36px 2px color-mix(in oklch, var(--brand) 8%, transparent),\n      0 8px 50px 6px color-mix(in oklch, var(--brand) 5%, transparent)"
           },
+          ".snake": {
+            "position": "relative"
+          },
+          ".snake::after": {
+            "content": "\"\"",
+            "position": "absolute",
+            "inset": "0",
+            "border-radius": "inherit",
+            "padding": "1px",
+            "background": "conic-gradient(\n      from var(--snake-angle),\n      transparent 0deg,\n      transparent 214deg,\n      color-mix(in oklch, var(--brand) 18%, transparent) 300deg,\n      var(--brand) 350deg,\n      transparent 360deg\n    )",
+            "-webkit-mask": "linear-gradient(#000 0 0) content-box,\n      linear-gradient(#000 0 0)",
+            "mask": "linear-gradient(#000 0 0) content-box,\n      linear-gradient(#000 0 0)",
+            "-webkit-mask-composite": "xor",
+            "mask-composite": "exclude",
+            "animation": "var(--animate-snake)",
+            "pointer-events": "none"
+          },
+          ".wave-once": {
+            "--wave-tone": "var(--success)"
+          },
+          ".wave-once::before": {
+            "content": "\"\"",
+            "position": "absolute",
+            "top": "0",
+            "bottom": "0",
+            "left": "-50%",
+            "width": "200%",
+            "pointer-events": "none",
+            "z-index": "1",
+            "background": "linear-gradient(\n      100deg,\n      transparent 38%,\n      color-mix(in oklch, var(--wave-tone) 26%, transparent) 50%,\n      transparent 62%\n    )",
+            "animation": "swagui-wave 780ms var(--ease-out-expo) both"
+          },
           ".shimmer": {
             "background-image": "linear-gradient(\n      100deg,\n      var(--muted-foreground) 34%,\n      color-mix(in oklch, var(--foreground) 78%, var(--brand)) 50%,\n      var(--muted-foreground) 66%\n    )",
             "background-size": "200% auto",
@@ -386,6 +438,14 @@
             "animation": "none",
             "background-image": "none",
             "color": "var(--muted-foreground)"
+          },
+          ".snake::after": {
+            "animation": "none",
+            "background": "color-mix(in oklch, var(--brand) 45%, transparent)"
+          },
+          ".wave-once::before": {
+            "animation": "none",
+            "background": "color-mix(in oklch, var(--wave-tone) 12%, transparent)"
           }
         }
       }
@@ -1436,6 +1496,24 @@
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/theme.json",
         "https://swagui.rohoswagger.com/r/source.json"
+      ]
+    },
+    {
+      "name": "approval",
+      "type": "registry:ui",
+      "title": "Approval",
+      "description": "A question the agent must ask before acting, with a record of the decision.",
+      "files": [
+        {
+          "path": "registry/ui/approval.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority"
       ]
     },
     {

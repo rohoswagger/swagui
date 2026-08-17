@@ -21,6 +21,16 @@ import {
   ResponseSources,
   useTypewriter,
 } from "@/registry/ui/response"
+import {
+  Approval,
+  ApprovalConfirm,
+  ApprovalDescription,
+  ApprovalDismiss,
+  ApprovalFooter,
+  ApprovalOption,
+  ApprovalOptions,
+  ApprovalQuestion,
+} from "@/registry/ui/approval"
 import { Source } from "@/registry/ui/source"
 
 /* ------------------------------ demo chrome ------------------------------ */
@@ -464,6 +474,131 @@ function ResponseDemo() {
   )
 }
 
+/* ------------------------------ 03 approval ------------------------------ */
+
+type ApprovalKind = "choice" | "multi" | "confirm" | "danger"
+
+function ApprovalDemo() {
+  const [kind, setKind] = React.useState<ApprovalKind>("choice")
+  const [answer, setAnswer] = React.useState<string | string[] | undefined>(
+    undefined
+  )
+
+  // A fresh question each time the kind changes, so switching does not carry a
+  // decision over to a different ask.
+  React.useEffect(() => setAnswer(undefined), [kind])
+
+  return (
+    <Demo
+      action={
+        <IconButton label="Reset" onClick={() => setAnswer(undefined)}>
+          <RetryIcon />
+        </IconButton>
+      }
+      controls={
+        <Segmented
+          label="Ask"
+          value={kind}
+          onChange={setKind}
+          options={[
+            { value: "choice", label: "Choice" },
+            { value: "multi", label: "Multi-select" },
+            { value: "confirm", label: "Confirm" },
+            { value: "danger", label: "Destructive" },
+          ]}
+        />
+      }
+    >
+      <Approval
+        value={answer}
+        multiple={kind === "multi"}
+        onValueChange={setAnswer}
+      >
+        {kind === "choice" ? (
+          <>
+            <ApprovalQuestion>
+              How many flavours should we launch this summer?
+            </ApprovalQuestion>
+            <ApprovalDescription>
+              This sets the printed menu and the reorder volumes for June.
+            </ApprovalDescription>
+            <ApprovalOptions>
+              <ApprovalOption value="three" hint="core line">
+                Three
+              </ApprovalOption>
+              <ApprovalOption value="five" hint="full case">
+                Five
+              </ApprovalOption>
+              <ApprovalOption value="one" hint="pistachio only">
+                Just one hero
+              </ApprovalOption>
+            </ApprovalOptions>
+            <ApprovalFooter>
+              <ApprovalDismiss>Ask me later</ApprovalDismiss>
+            </ApprovalFooter>
+          </>
+        ) : kind === "multi" ? (
+          <>
+            <ApprovalQuestion>
+              Which flavours go on the summer menu?
+            </ApprovalQuestion>
+            <ApprovalDescription>
+              Pick as many as you want. Nothing is ordered until you confirm.
+            </ApprovalDescription>
+            <ApprovalOptions>
+              <ApprovalOption value="pistachio" hint="+23%">
+                Pistachio
+              </ApprovalOption>
+              <ApprovalOption value="mint" hint="+12%">
+                Mint chip
+              </ApprovalOption>
+              <ApprovalOption value="peach" hint="seasonal">
+                Peach
+              </ApprovalOption>
+              <ApprovalOption value="rocky" hint="−6%">
+                Rocky Road
+              </ApprovalOption>
+            </ApprovalOptions>
+            <ApprovalFooter>
+              <ApprovalConfirm>Submit</ApprovalConfirm>
+              <ApprovalDismiss>Skip</ApprovalDismiss>
+            </ApprovalFooter>
+          </>
+        ) : kind === "confirm" ? (
+          <>
+            <ApprovalQuestion>Place this restock order?</ApprovalQuestion>
+            <ApprovalDescription>
+              240 waffle cones from cone_king, arriving in seven days.
+            </ApprovalDescription>
+            <ApprovalOptions>
+              <ApprovalOption value="approve">Place the order</ApprovalOption>
+              <ApprovalOption value="decline" hint="I will do it myself">
+                Not now
+              </ApprovalOption>
+            </ApprovalOptions>
+          </>
+        ) : (
+          <>
+            <ApprovalQuestion>
+              Retire Rocky Road from every store?
+            </ApprovalQuestion>
+            <ApprovalDescription>
+              Removes it from 12 menus and cancels the standing dairy order.
+              This cannot be undone from here.
+            </ApprovalDescription>
+            <ApprovalOptions>
+              <ApprovalOption value="retire" intent="danger">
+                Retire the flavour
+              </ApprovalOption>
+              <ApprovalOption value="keep">Keep it for now</ApprovalOption>
+            </ApprovalOptions>
+          </>
+        )}
+      </Approval>
+    </Demo>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -555,6 +690,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
             </Response>
           </div>
         </Demo>
+      </Section>
+
+      <Section index="03" title="Approval">
+        <ApprovalDemo />
       </Section>
     </div>
   )
