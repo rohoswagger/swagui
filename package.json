@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "registry:build": "shadcn build && node scripts/build-theme.mjs",
-    "theme:build": "node scripts/build-theme.mjs"
+    "theme:build": "node scripts/build-theme.mjs",
+    "logo:build": "node scripts/build-logo.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -48,6 +49,7 @@
     "@types/react-dom": "19.1.2",
     "eslint": "^9.32.0",
     "eslint-config-next": "15.3.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2"
   },

@@ -11,6 +11,7 @@ import {
 
 import { BlocksView } from "./blocks-view"
 import { ComponentsView } from "./components-view"
+import { LogoView } from "./logo-view"
 import { ACCENTS, BASES, PAIRINGS, SURFACES } from "./config"
 import { ArrowRight, IconLib, IconProvider, IconWeight, Search } from "./icons"
 
@@ -20,7 +21,7 @@ type State = {
   surface: string
   base: string
   theme: "light" | "dark"
-  view: "marketing" | "blocks" | "app" | "components"
+  view: "marketing" | "blocks" | "app" | "components" | "logo"
   density: "comfortable" | "compact"
   icons: IconLib
   iconWeight: IconWeight
@@ -232,6 +233,8 @@ export function PreviewClient() {
             <MarketingView displayStyle={displayStyle} grain={state.grain} />
           ) : state.view === "blocks" ? (
             <BlocksView />
+          ) : state.view === "logo" ? (
+            <LogoView displayStyle={displayStyle} />
           ) : state.view === "components" ? (
             <ComponentsView displayStyle={displayStyle} />
           ) : (
@@ -251,6 +254,7 @@ export function PreviewClient() {
               { id: "blocks" as const, label: "Blocks" },
               { id: "components" as const, label: "Components" },
               { id: "app" as const, label: "App" },
+              { id: "logo" as const, label: "Logo" },
             ]}
             onChange={(v) => set("view", v)}
           />

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="swagui">
+  <style>
+    .tile { fill: #171717; }
+    @media (prefers-color-scheme: dark) { .tile { fill: #fafafa; } }
+  </style>
+  <defs>
+    <linearGradient id="l-outer" gradientUnits="userSpaceOnUse" x1="5" y1="2" x2="19" y2="22">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.16"/>
+    </linearGradient>
+    <linearGradient id="l-mid" gradientUnits="userSpaceOnUse" x1="5" y1="2" x2="19" y2="22">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.88"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="l-inner" gradientUnits="userSpaceOnUse" x1="5" y1="2" x2="19" y2="22">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.46"/>
+    </linearGradient>
+    <linearGradient id="l-core" gradientUnits="userSpaceOnUse" x1="7" y1="4" x2="17" y2="18">
+      <stop offset="0" stop-color="#2f6fd0" stop-opacity="1"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+  <path class="tile" d="M12 0C21.1 0 24 2.9 24 12s-2.9 12-12 12S0 21.1 0 12 2.9 0 12 0Z"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(7.50 12 12) translate(12 12) scale(1.150) translate(-12 -12)" fill="url(#l-core)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(230.00 12 12) translate(12 12) scale(1.129) translate(-12 -12)" fill="url(#l-outer)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(92.50 12 12) translate(12 12) scale(1.107) translate(-12 -12)" fill="url(#l-outer)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(315.00 12 12) translate(12 12) scale(1.085) translate(-12 -12)" fill="url(#l-outer)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(177.50 12 12) translate(12 12) scale(1.062) translate(-12 -12)" fill="url(#l-outer)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(40.00 12 12) translate(12 12) scale(1.039) translate(-12 -12)" fill="url(#l-outer)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(262.50 12 12) translate(12 12) scale(1.015) translate(-12 -12)" fill="url(#l-outer)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(125.00 12 12) translate(12 12) scale(0.990) translate(-12 -12)" fill="url(#l-outer)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(347.50 12 12) translate(12 12) scale(0.964) translate(-12 -12)" fill="url(#l-mid)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(210.00 12 12) translate(12 12) scale(0.937) translate(-12 -12)" fill="url(#l-core)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(72.50 12 12) translate(12 12) scale(0.909) translate(-12 -12)" fill="url(#l-core)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(295.00 12 12) translate(12 12) scale(0.879) translate(-12 -12)" fill="url(#l-core)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(157.50 12 12) translate(12 12) scale(0.848) translate(-12 -12)" fill="url(#l-core)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(20.00 12 12) translate(12 12) scale(0.815) translate(-12 -12)" fill="url(#l-mid)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(242.50 12 12) translate(12 12) scale(0.781) translate(-12 -12)" fill="url(#l-mid)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(105.00 12 12) translate(12 12) scale(0.743) translate(-12 -12)" fill="url(#l-inner)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(327.50 12 12) translate(12 12) scale(0.702) translate(-12 -12)" fill="url(#l-inner)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(190.00 12 12) translate(12 12) scale(0.657) translate(-12 -12)" fill="url(#l-inner)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(52.50 12 12) translate(12 12) scale(0.606) translate(-12 -12)" fill="url(#l-inner)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(275.00 12 12) translate(12 12) scale(0.546) translate(-12 -12)" fill="url(#l-inner)"/>
+  <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(137.50 12 12) translate(12 12) scale(0.467) translate(-12 -12)" fill="url(#l-inner)"/>
+</svg>
