@@ -27,6 +27,23 @@ const SMALL_COUNT = 13
 const SMALL_MAX = 32
 
 const SQUIRCLE = "M12 0C21.1 0 24 2.9 24 12s-2.9 12-12 12S0 21.1 0 12 2.9 0 12 0Z"
+
+/**
+ * The mark has ONE appearance and does not invert with its surface.
+ *
+ * The tile used to be currentColor and the facets var(--background), which
+ * meant an inverted surface gave the tile the page background while the facets
+ * stayed light — white on white, with only the accents visible. A brand mark
+ * should not restyle itself based on what it happens to sit on, so the tile and
+ * facets are fixed and only the accent follows the theme via --brand.
+ */
+const INK = "#141414"
+const FACET = "#ffffff"
+/** Lifts the tile off a dark surface, which it would otherwise sink into. */
+const RIM = "#ffffff"
+const RIM_OPACITY = 0.14
+/** Only used when --brand is absent, e.g. the mark rendered outside the app. */
+const BRAND_FALLBACK = "#3f81e4"
 const KITE = "M12 12 9.1 7.1 12 3 14.9 7.1Z"
 
 const BANDS = {
@@ -126,8 +143,8 @@ export function SwaguiMark({
             x2="19"
             y2="22"
           >
-            <stop offset="0" stopColor="var(--background)" stopOpacity={from} />
-            <stop offset="1" stopColor="var(--background)" stopOpacity={to} />
+            <stop offset="0" stopColor={FACET} stopOpacity={from} />
+            <stop offset="1" stopColor={FACET} stopOpacity={to} />
           </linearGradient>
         ))}
         <linearGradient
@@ -138,12 +155,19 @@ export function SwaguiMark({
           x2="17"
           y2="18"
         >
-          <stop offset="0" stopColor="var(--brand)" stopOpacity="1" />
-          <stop offset="1" stopColor="var(--background)" stopOpacity="0.55" />
+          <stop offset="0" stopColor={`var(--brand, ${BRAND_FALLBACK})`} stopOpacity="1" />
+          <stop offset="1" stopColor={FACET} stopOpacity="0.55" />
         </linearGradient>
       </defs>
 
-      <path d={SQUIRCLE} fill="currentColor" />
+      <path d={SQUIRCLE} fill={INK} />
+      <path
+        d={SQUIRCLE}
+        fill="none"
+        stroke={RIM}
+        strokeOpacity={RIM_OPACITY}
+        strokeWidth="0.75"
+      />
       {facets.map((f) => (
         <path
           key={f.n}

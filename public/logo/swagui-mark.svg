@@ -1,23 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="swagui">
   <defs>
     <linearGradient id="sw-outer" gradientUnits="userSpaceOnUse" x1="5" y1="2" x2="19" y2="22">
-      <stop offset="0" stop-color="var(--background, #fff)" stop-opacity="0.62"/>
-      <stop offset="1" stop-color="var(--background, #fff)" stop-opacity="0.16"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.16"/>
     </linearGradient>
     <linearGradient id="sw-mid" gradientUnits="userSpaceOnUse" x1="5" y1="2" x2="19" y2="22">
-      <stop offset="0" stop-color="var(--background, #fff)" stop-opacity="0.88"/>
-      <stop offset="1" stop-color="var(--background, #fff)" stop-opacity="0.3"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.88"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.3"/>
     </linearGradient>
     <linearGradient id="sw-inner" gradientUnits="userSpaceOnUse" x1="5" y1="2" x2="19" y2="22">
-      <stop offset="0" stop-color="var(--background, #fff)" stop-opacity="1"/>
-      <stop offset="1" stop-color="var(--background, #fff)" stop-opacity="0.46"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.46"/>
     </linearGradient>
     <linearGradient id="sw-core" gradientUnits="userSpaceOnUse" x1="7" y1="4" x2="17" y2="18">
-      <stop offset="0" stop-color="var(--brand, #2f6fd0)" stop-opacity="1"/>
-      <stop offset="1" stop-color="var(--background, #fff)" stop-opacity="0.55"/>
+      <stop offset="0" stop-color="var(--brand, #3f81e4)" stop-opacity="1"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.55"/>
     </linearGradient>
   </defs>
-  <path d="M12 0C21.1 0 24 2.9 24 12s-2.9 12-12 12S0 21.1 0 12 2.9 0 12 0Z" fill="currentColor"/>
+  <path d="M12 0C21.1 0 24 2.9 24 12s-2.9 12-12 12S0 21.1 0 12 2.9 0 12 0Z" fill="#141414"/>
+  <path d="M12 0C21.1 0 24 2.9 24 12s-2.9 12-12 12S0 21.1 0 12 2.9 0 12 0Z" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="0.75"/>
   <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(7.50 12 12) translate(12 12) scale(1.150) translate(-12 -12)" fill="url(#sw-core)"/>
   <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(230.00 12 12) translate(12 12) scale(1.129) translate(-12 -12)" fill="url(#sw-outer)"/>
   <path d="M12 12 9.1 7.1 12 3 14.9 7.1Z" transform="rotate(92.50 12 12) translate(12 12) scale(1.107) translate(-12 -12)" fill="url(#sw-outer)"/>

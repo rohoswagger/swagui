@@ -24,11 +24,21 @@ const SMALL_MAX = 32
 const KITE = "M12 12 9.1 7.1 12 3 14.9 7.1Z"
 const SQUIRCLE = "M12 0C21.1 0 24 2.9 24 12s-2.9 12-12 12S0 21.1 0 12 2.9 0 12 0Z"
 
-/** Baked values for contexts that cannot read CSS variables — a favicon is
-    rendered outside the document, so var(--brand) resolves to nothing. */
-const INK = { light: "#171717", dark: "#fafafa" }
-const GROUND = { light: "#ffffff", dark: "#0d0d0d" }
-const BRAND = { light: "#2f6fd0", dark: "#6fa4e8" }
+/**
+ * Baked values for contexts that cannot read CSS variables — a favicon is
+ * rendered outside the document, so var(--brand) resolves to nothing.
+ *
+ * Deliberately ONE appearance, with no prefers-color-scheme swap. Flipping the
+ * tile to a light fill left it white-on-white against the facets, and a brand
+ * mark should not invert with the surface it happens to land on anyway. The
+ * dark tile carries the light facets on any chrome, light or dark.
+ */
+const INK = "#141414"
+const GROUND = "#ffffff"
+const BRAND = "#3f81e4"
+/** Lifts the tile off dark browser chrome, which sits near #202124. */
+const RIM = "#ffffff"
+const RIM_OPACITY = 0.14
 
 function facets(count = COUNT) {
   const all = Array.from({ length: count }, (_, i) => {
@@ -74,19 +84,19 @@ const BANDS = { outer: [0.62, 0.16], mid: [0.88, 0.3], inner: [1, 0.46] }
  * does not, so every facet is lit from the same direction — the same reason
  * the surface recipes put a specular on the top edge and only the top edge.
  */
-function gradients(ground, brand, prefix) {
+function gradients(prefix, brand = BRAND) {
   const bands = Object.entries(BANDS)
     .map(
       ([name, [from, to]]) => `    <linearGradient id="${prefix}${name}" gradientUnits="userSpaceOnUse" x1="5" y1="2" x2="19" y2="22">
-      <stop offset="0" stop-color="${ground}" stop-opacity="${from}"/>
-      <stop offset="1" stop-color="${ground}" stop-opacity="${to}"/>
+      <stop offset="0" stop-color="${GROUND}" stop-opacity="${from}"/>
+      <stop offset="1" stop-color="${GROUND}" stop-opacity="${to}"/>
     </linearGradient>`
     )
     .join("\n")
   return `${bands}
     <linearGradient id="${prefix}core" gradientUnits="userSpaceOnUse" x1="7" y1="4" x2="17" y2="18">
       <stop offset="0" stop-color="${brand}" stop-opacity="1"/>
-      <stop offset="1" stop-color="${ground}" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="${GROUND}" stop-opacity="0.55"/>
     </linearGradient>`
 }
 
@@ -99,55 +109,56 @@ function paths(prefix, count) {
     .join("\n")
 }
 
-/** Token-driven: inherits currentColor and --brand like every component. */
+/**
+ * The tile is fixed ink rather than currentColor. Inheriting it meant that on
+ * an inverted surface the tile took the page background while the facets were
+ * still painted light, leaving white on white. Only the accent follows the
+ * theme, via --brand.
+ */
 function tokenSvg() {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="swagui">
   <defs>
-${gradients("var(--background, #fff)", "var(--brand, #2f6fd0)", "sw-")}
+${gradients("sw-", `var(--brand, ${BRAND})`)}
   </defs>
-  <path d="${SQUIRCLE}" fill="currentColor"/>
+  <path d="${SQUIRCLE}" fill="${INK}"/>
+  <path d="${SQUIRCLE}" fill="none" stroke="${RIM}" stroke-opacity="${RIM_OPACITY}" stroke-width="0.75"/>
 ${paths("sw-", COUNT)}
 </svg>
 `
 }
 
-/** Baked, with a dark-mode swap so the favicon works on either browser chrome. */
+/** Baked for the favicon, which renders outside the document. */
 function staticSvg() {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="swagui">
-  <style>
-    .tile { fill: ${INK.light}; }
-    @media (prefers-color-scheme: dark) { .tile { fill: ${INK.dark}; } }
-  </style>
   <defs>
-${gradients(GROUND.light, BRAND.light, "l-")}
+${gradients("l-")}
   </defs>
-  <path class="tile" d="${SQUIRCLE}"/>
+  <path d="${SQUIRCLE}" fill="${INK}"/>
+  <path d="${SQUIRCLE}" fill="none" stroke="${RIM}" stroke-opacity="${RIM_OPACITY}" stroke-width="0.75"/>
 ${paths("l-", COUNT)}
 </svg>
 `
 }
 
-/** Raster needs one fixed scheme; browser chrome is usually light-on-dark. */
-function rasterSvg(scheme, count = COUNT) {
-  const ink = INK[scheme]
-  const ground = GROUND[scheme]
-  const brand = BRAND[scheme]
+/** Source for every PNG and ICO entry. */
+function rasterSvg(count = COUNT) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
   <defs>
-${gradients(ground, brand, "r-")}
+${gradients("r-")}
   </defs>
-  <path d="${SQUIRCLE}" fill="${ink}"/>
+  <path d="${SQUIRCLE}" fill="${INK}"/>
+  <path d="${SQUIRCLE}" fill="none" stroke="${RIM}" stroke-opacity="${RIM_OPACITY}" stroke-width="0.75"/>
 ${paths("r-", count)}
 </svg>
 `
 }
 
 function ogSvg() {
-  const inner = rasterSvg("light")
+  const inner = rasterSvg()
     .replace(/^<svg[^>]*>\n/, "")
     .replace(/<\/svg>\n?$/, "")
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="${GROUND.light}"/>
+  <rect width="1200" height="630" fill="${INK}"/>
   <g transform="translate(468 143) scale(11)">
 ${inner}
   </g>
@@ -165,8 +176,7 @@ const png = (svg, size) =>
   sharp(Buffer.from(svg)).resize(size, size, { fit: "contain" }).png().toBuffer()
 
 /** Below the threshold the full spiral turns to mush, so thin it out. */
-const lightAt = (size) =>
-  rasterSvg("light", size <= SMALL_MAX ? SMALL_COUNT : COUNT)
+const markAt = (size) => rasterSvg(size <= SMALL_MAX ? SMALL_COUNT : COUNT)
 
 const targets = [
   ["public/logo/icon-16.png", 16],
@@ -177,7 +187,7 @@ const targets = [
 ]
 
 for (const [path, size] of targets) {
-  writeFileSync(path, await png(lightAt(size), size))
+  writeFileSync(path, await png(markAt(size), size))
 }
 
 /**
@@ -186,7 +196,7 @@ for (const [path, size] of targets) {
  * wrapped in a 6-byte directory header plus one 16-byte entry each.
  */
 async function ico(sizes) {
-  const images = await Promise.all(sizes.map((s) => png(lightAt(s), s)))
+  const images = await Promise.all(sizes.map((s) => png(markAt(s), s)))
   const header = Buffer.alloc(6)
   header.writeUInt16LE(0, 0) // reserved
   header.writeUInt16LE(1, 2) // type 1 = icon

@@ -39,16 +39,26 @@ export function LogoView({ displayStyle }: { displayStyle: React.CSSProperties }
           className="mono mb-5 text-[10px] uppercase"
           style={{ letterSpacing: "0.18em", color: "var(--muted-fg)" }}
         >
-          Inverted
+          On surfaces
         </h3>
-        {/* A favicon lands on browser chrome you do not control, so the tile has
-            to hold up knocked out as well as it does filled. */}
-        <div
-          className="inline-flex items-center gap-7 rounded-2xl px-8 py-6"
-          style={{ background: "var(--foreground)", color: "var(--background)" }}
-        >
-          {[64, 40, 24, 16].map((s) => (
-            <SwaguiMark key={s} size={s} />
+        {/* The mark is fixed rather than inverting, so the thing worth checking
+            is that the tile holds its edge on chrome you do not control —
+            especially dark chrome, which it would otherwise sink into. */}
+        <div className="flex flex-wrap gap-4">
+          {[
+            { label: "light", bg: "#ffffff" },
+            { label: "dark", bg: "#202124" },
+            { label: "black", bg: "#000000" },
+          ].map(({ label, bg }) => (
+            <div
+              key={label}
+              className="flex items-center gap-7 rounded-2xl px-8 py-6"
+              style={{ background: bg }}
+            >
+              {[64, 40, 24, 16].map((s) => (
+                <SwaguiMark key={s} size={s} />
+              ))}
+            </div>
           ))}
         </div>
       </section>
