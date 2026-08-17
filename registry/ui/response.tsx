@@ -139,6 +139,11 @@ function ResponseCitation({
 /**
  * The sources behind the answer. Collapsed to a count by default — a wall of
  * links under every reply competes with the reply.
+ *
+ * Withheld while streaming, like the actions and follow-ups. The count is not
+ * final until the answer is, and the inline citations these map to have not
+ * all arrived yet, so showing them early offers receipts for claims the reader
+ * cannot see.
  */
 function ResponseSources({
   className,
@@ -152,12 +157,23 @@ function ResponseSources({
   label?: string
   children?: React.ReactNode
 }) {
+  const { streaming } = React.useContext(ResponseContext)
   const [open, setOpen] = React.useState(false)
   const items = React.Children.toArray(children)
   const total = count ?? items.length
 
+  if (streaming) return null
+
   return (
-    <div data-slot="response-sources" className={cn("min-w-0", className)} {...props}>
+    <div
+      data-slot="response-sources"
+      className={cn(
+        "min-w-0",
+        "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-swagui)",
+        className
+      )}
+      {...props}
+    >
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
