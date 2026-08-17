@@ -341,946 +341,6 @@
       }
     },
     {
-      "name": "accordion",
-      "type": "registry:ui",
-      "title": "Accordion",
-      "description": "swagui accordion component.",
-      "files": [
-        {
-          "path": "registry/ui/accordion.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "alert-dialog",
-      "type": "registry:ui",
-      "title": "Alert Dialog",
-      "description": "swagui alert dialog component.",
-      "files": [
-        {
-          "path": "registry/ui/alert-dialog.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/button.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "alert",
-      "type": "registry:ui",
-      "title": "Alert",
-      "description": "swagui alert component.",
-      "files": [
-        {
-          "path": "registry/ui/alert.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "aspect-ratio",
-      "type": "registry:ui",
-      "title": "Aspect Ratio",
-      "description": "swagui aspect ratio component.",
-      "files": [
-        {
-          "path": "registry/ui/aspect-ratio.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "avatar",
-      "type": "registry:ui",
-      "title": "Avatar",
-      "description": "swagui avatar component.",
-      "files": [
-        {
-          "path": "registry/ui/avatar.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "badge",
-      "type": "registry:ui",
-      "title": "Badge",
-      "description": "swagui badge component.",
-      "files": [
-        {
-          "path": "registry/ui/badge.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "breadcrumb",
-      "type": "registry:ui",
-      "title": "Breadcrumb",
-      "description": "swagui breadcrumb component.",
-      "files": [
-        {
-          "path": "registry/ui/breadcrumb.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "button-group",
-      "type": "registry:ui",
-      "title": "Button Group",
-      "description": "swagui button group component.",
-      "files": [
-        {
-          "path": "registry/ui/button-group.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/separator.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "button",
-      "type": "registry:ui",
-      "title": "Button",
-      "description": "swagui button component.",
-      "files": [
-        {
-          "path": "registry/ui/button.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "calendar",
-      "type": "registry:ui",
-      "title": "Calendar",
-      "description": "swagui calendar component.",
-      "files": [
-        {
-          "path": "registry/ui/calendar.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "react-day-picker"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/button.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "card",
-      "type": "registry:ui",
-      "title": "Card",
-      "description": "swagui card component.",
-      "files": [
-        {
-          "path": "registry/ui/card.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "checkbox",
-      "type": "registry:ui",
-      "title": "Checkbox",
-      "description": "swagui checkbox component.",
-      "files": [
-        {
-          "path": "registry/ui/checkbox.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "collapsible",
-      "type": "registry:ui",
-      "title": "Collapsible",
-      "description": "swagui collapsible component.",
-      "files": [
-        {
-          "path": "registry/ui/collapsible.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "command",
-      "type": "registry:ui",
-      "title": "Command",
-      "description": "swagui command component.",
-      "files": [
-        {
-          "path": "registry/ui/command.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "cmdk",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/dialog.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "context-menu",
-      "type": "registry:ui",
-      "title": "Context Menu",
-      "description": "swagui context menu component.",
-      "files": [
-        {
-          "path": "registry/ui/context-menu.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "dialog",
-      "type": "registry:ui",
-      "title": "Dialog",
-      "description": "swagui dialog component.",
-      "files": [
-        {
-          "path": "registry/ui/dialog.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/button.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "drawer",
-      "type": "registry:ui",
-      "title": "Drawer",
-      "description": "swagui drawer component.",
-      "files": [
-        {
-          "path": "registry/ui/drawer.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "vaul"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "dropdown-menu",
-      "type": "registry:ui",
-      "title": "Dropdown Menu",
-      "description": "swagui dropdown menu component.",
-      "files": [
-        {
-          "path": "registry/ui/dropdown-menu.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "empty",
-      "type": "registry:ui",
-      "title": "Empty",
-      "description": "swagui empty component.",
-      "files": [
-        {
-          "path": "registry/ui/empty.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "field",
-      "type": "registry:ui",
-      "title": "Field",
-      "description": "swagui field component.",
-      "files": [
-        {
-          "path": "registry/ui/field.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/label.json",
-        "https://swagui.rohoswagger.com/r/separator.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "form",
-      "type": "registry:ui",
-      "title": "Form",
-      "description": "swagui form component.",
-      "files": [
-        {
-          "path": "registry/ui/form.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui",
-        "react-hook-form"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/label.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "hover-card",
-      "type": "registry:ui",
-      "title": "Hover Card",
-      "description": "swagui hover card component.",
-      "files": [
-        {
-          "path": "registry/ui/hover-card.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "input-group",
-      "type": "registry:ui",
-      "title": "Input Group",
-      "description": "swagui input group component.",
-      "files": [
-        {
-          "path": "registry/ui/input-group.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/button.json",
-        "https://swagui.rohoswagger.com/r/input.json",
-        "https://swagui.rohoswagger.com/r/textarea.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "input-otp",
-      "type": "registry:ui",
-      "title": "Input Otp",
-      "description": "swagui input otp component.",
-      "files": [
-        {
-          "path": "registry/ui/input-otp.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "input-otp",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "input",
-      "type": "registry:ui",
-      "title": "Input",
-      "description": "swagui input component.",
-      "files": [
-        {
-          "path": "registry/ui/input.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "item",
-      "type": "registry:ui",
-      "title": "Item",
-      "description": "swagui item component.",
-      "files": [
-        {
-          "path": "registry/ui/item.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/separator.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "kbd",
-      "type": "registry:ui",
-      "title": "Kbd",
-      "description": "swagui kbd component.",
-      "files": [
-        {
-          "path": "registry/ui/kbd.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "label",
-      "type": "registry:ui",
-      "title": "Label",
-      "description": "swagui label component.",
-      "files": [
-        {
-          "path": "registry/ui/label.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "menubar",
-      "type": "registry:ui",
-      "title": "Menubar",
-      "description": "swagui menubar component.",
-      "files": [
-        {
-          "path": "registry/ui/menubar.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "native-select",
-      "type": "registry:ui",
-      "title": "Native Select",
-      "description": "swagui native select component.",
-      "files": [
-        {
-          "path": "registry/ui/native-select.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "navigation-menu",
-      "type": "registry:ui",
-      "title": "Navigation Menu",
-      "description": "swagui navigation menu component.",
-      "files": [
-        {
-          "path": "registry/ui/navigation-menu.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "pagination",
-      "type": "registry:ui",
-      "title": "Pagination",
-      "description": "swagui pagination component.",
-      "files": [
-        {
-          "path": "registry/ui/pagination.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/button.json",
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "popover",
-      "type": "registry:ui",
-      "title": "Popover",
-      "description": "swagui popover component.",
-      "files": [
-        {
-          "path": "registry/ui/popover.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "progress",
-      "type": "registry:ui",
-      "title": "Progress",
-      "description": "swagui progress component.",
-      "files": [
-        {
-          "path": "registry/ui/progress.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "radio-group",
-      "type": "registry:ui",
-      "title": "Radio Group",
-      "description": "swagui radio group component.",
-      "files": [
-        {
-          "path": "registry/ui/radio-group.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "resizable",
-      "type": "registry:ui",
-      "title": "Resizable",
-      "description": "swagui resizable component.",
-      "files": [
-        {
-          "path": "registry/ui/resizable.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "react-resizable-panels"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "scroll-area",
-      "type": "registry:ui",
-      "title": "Scroll Area",
-      "description": "swagui scroll area component.",
-      "files": [
-        {
-          "path": "registry/ui/scroll-area.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "select",
-      "type": "registry:ui",
-      "title": "Select",
-      "description": "swagui select component.",
-      "files": [
-        {
-          "path": "registry/ui/select.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "separator",
-      "type": "registry:ui",
-      "title": "Separator",
-      "description": "swagui separator component.",
-      "files": [
-        {
-          "path": "registry/ui/separator.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "sheet",
-      "type": "registry:ui",
-      "title": "Sheet",
-      "description": "swagui sheet component.",
-      "files": [
-        {
-          "path": "registry/ui/sheet.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "skeleton",
-      "type": "registry:ui",
-      "title": "Skeleton",
-      "description": "swagui skeleton component.",
-      "files": [
-        {
-          "path": "registry/ui/skeleton.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "slider",
-      "type": "registry:ui",
-      "title": "Slider",
-      "description": "swagui slider component.",
-      "files": [
-        {
-          "path": "registry/ui/slider.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "sonner",
-      "type": "registry:ui",
-      "title": "Sonner",
-      "description": "swagui sonner component.",
-      "files": [
-        {
-          "path": "registry/ui/sonner.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react",
-        "next-themes",
-        "sonner"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "spinner",
-      "type": "registry:ui",
-      "title": "Spinner",
-      "description": "swagui spinner component.",
-      "files": [
-        {
-          "path": "registry/ui/spinner.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "switch",
-      "type": "registry:ui",
-      "title": "Switch",
-      "description": "swagui switch component.",
-      "files": [
-        {
-          "path": "registry/ui/switch.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "table",
-      "type": "registry:ui",
-      "title": "Table",
-      "description": "swagui table component.",
-      "files": [
-        {
-          "path": "registry/ui/table.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "tabs",
-      "type": "registry:ui",
-      "title": "Tabs",
-      "description": "swagui tabs component.",
-      "files": [
-        {
-          "path": "registry/ui/tabs.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "textarea",
-      "type": "registry:ui",
-      "title": "Textarea",
-      "description": "swagui textarea component.",
-      "files": [
-        {
-          "path": "registry/ui/textarea.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "toggle-group",
-      "type": "registry:ui",
-      "title": "Toggle Group",
-      "description": "swagui toggle group component.",
-      "files": [
-        {
-          "path": "registry/ui/toggle-group.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json",
-        "https://swagui.rohoswagger.com/r/toggle.json"
-      ]
-    },
-    {
-      "name": "toggle",
-      "type": "registry:ui",
-      "title": "Toggle",
-      "description": "swagui toggle component.",
-      "files": [
-        {
-          "path": "registry/ui/toggle.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
-      "name": "tooltip",
-      "type": "registry:ui",
-      "title": "Tooltip",
-      "description": "swagui tooltip component.",
-      "files": [
-        {
-          "path": "registry/ui/tooltip.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
-      ]
-    },
-    {
       "name": "section",
       "type": "registry:block",
       "title": "Section",
@@ -1492,6 +552,1142 @@
       ],
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "swagui accordion component.",
+      "files": [
+        {
+          "path": "registry/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "swagui alert dialog component.",
+      "files": [
+        {
+          "path": "registry/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "swagui alert component.",
+      "files": [
+        {
+          "path": "registry/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority"
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "Aspect Ratio",
+      "description": "swagui aspect ratio component.",
+      "files": [
+        {
+          "path": "registry/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "swagui attachment component.",
+      "files": [
+        {
+          "path": "registry/ui/attachment.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "swagui avatar component.",
+      "files": [
+        {
+          "path": "registry/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "swagui badge component.",
+      "files": [
+        {
+          "path": "registry/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "swagui breadcrumb component.",
+      "files": [
+        {
+          "path": "registry/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "Bubble",
+      "description": "swagui bubble component.",
+      "files": [
+        {
+          "path": "registry/ui/bubble.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "swagui button group component.",
+      "files": [
+        {
+          "path": "registry/ui/button-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/separator.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "swagui button component.",
+      "files": [
+        {
+          "path": "registry/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "swagui calendar component.",
+      "files": [
+        {
+          "path": "registry/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "react-day-picker"
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "swagui card component.",
+      "files": [
+        {
+          "path": "registry/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "swagui carousel component.",
+      "files": [
+        {
+          "path": "registry/ui/carousel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "embla-carousel-react",
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "swagui chart component.",
+      "files": [
+        {
+          "path": "registry/ui/chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "recharts"
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "swagui checkbox component.",
+      "files": [
+        {
+          "path": "registry/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "swagui collapsible component.",
+      "files": [
+        {
+          "path": "registry/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "swagui combobox component.",
+      "files": [
+        {
+          "path": "registry/ui/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/input-group.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "swagui command component.",
+      "files": [
+        {
+          "path": "registry/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/dialog.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "swagui context menu component.",
+      "files": [
+        {
+          "path": "registry/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "swagui dialog component.",
+      "files": [
+        {
+          "path": "registry/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "direction",
+      "type": "registry:ui",
+      "title": "Direction",
+      "description": "swagui direction component.",
+      "files": [
+        {
+          "path": "registry/ui/direction.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "swagui drawer component.",
+      "files": [
+        {
+          "path": "registry/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "vaul"
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "swagui dropdown menu component.",
+      "files": [
+        {
+          "path": "registry/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "swagui empty component.",
+      "files": [
+        {
+          "path": "registry/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority"
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "swagui field component.",
+      "files": [
+        {
+          "path": "registry/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/label.json",
+        "https://swagui.rohoswagger.com/r/separator.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority"
+      ]
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "swagui form component.",
+      "files": [
+        {
+          "path": "registry/ui/form.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/label.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui",
+        "react-hook-form"
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "swagui hover card component.",
+      "files": [
+        {
+          "path": "registry/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "swagui input group component.",
+      "files": [
+        {
+          "path": "registry/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/input.json",
+        "https://swagui.rohoswagger.com/r/textarea.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority"
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input Otp",
+      "description": "swagui input otp component.",
+      "files": [
+        {
+          "path": "registry/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "input-otp",
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "swagui input component.",
+      "files": [
+        {
+          "path": "registry/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "swagui item component.",
+      "files": [
+        {
+          "path": "registry/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/separator.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "swagui kbd component.",
+      "files": [
+        {
+          "path": "registry/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "swagui label component.",
+      "files": [
+        {
+          "path": "registry/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "swagui marker component.",
+      "files": [
+        {
+          "path": "registry/ui/marker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "swagui menubar component.",
+      "files": [
+        {
+          "path": "registry/ui/menubar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message Scroller",
+      "description": "swagui message scroller component.",
+      "files": [
+        {
+          "path": "registry/ui/message-scroller.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "@shadcn/react",
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "swagui message component.",
+      "files": [
+        {
+          "path": "registry/ui/message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "Native Select",
+      "description": "swagui native select component.",
+      "files": [
+        {
+          "path": "registry/ui/native-select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "swagui navigation menu component.",
+      "files": [
+        {
+          "path": "registry/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "swagui pagination component.",
+      "files": [
+        {
+          "path": "registry/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "swagui popover component.",
+      "files": [
+        {
+          "path": "registry/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "swagui progress component.",
+      "files": [
+        {
+          "path": "registry/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "swagui radio group component.",
+      "files": [
+        {
+          "path": "registry/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "swagui resizable component.",
+      "files": [
+        {
+          "path": "registry/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "react-resizable-panels"
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "swagui scroll area component.",
+      "files": [
+        {
+          "path": "registry/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "swagui select component.",
+      "files": [
+        {
+          "path": "registry/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "swagui separator component.",
+      "files": [
+        {
+          "path": "registry/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "swagui sheet component.",
+      "files": [
+        {
+          "path": "registry/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "swagui sidebar component.",
+      "files": [
+        {
+          "path": "registry/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/input.json",
+        "https://swagui.rohoswagger.com/r/separator.json",
+        "https://swagui.rohoswagger.com/r/sheet.json",
+        "https://swagui.rohoswagger.com/r/skeleton.json",
+        "https://swagui.rohoswagger.com/r/theme.json",
+        "https://swagui.rohoswagger.com/r/tooltip.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "swagui skeleton component.",
+      "files": [
+        {
+          "path": "registry/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "swagui slider component.",
+      "files": [
+        {
+          "path": "registry/ui/slider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Sonner",
+      "description": "swagui sonner component.",
+      "files": [
+        {
+          "path": "registry/ui/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "next-themes",
+        "sonner"
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "swagui spinner component.",
+      "files": [
+        {
+          "path": "registry/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "swagui switch component.",
+      "files": [
+        {
+          "path": "registry/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "swagui table component.",
+      "files": [
+        {
+          "path": "registry/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "swagui tabs component.",
+      "files": [
+        {
+          "path": "registry/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "swagui textarea component.",
+      "files": [
+        {
+          "path": "registry/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "swagui toggle group component.",
+      "files": [
+        {
+          "path": "registry/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json",
+        "https://swagui.rohoswagger.com/r/toggle.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "swagui toggle component.",
+      "files": [
+        {
+          "path": "registry/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "swagui tooltip component.",
+      "files": [
+        {
+          "path": "registry/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
       ]
     }
   ]

@@ -42,6 +42,14 @@
   --color-ring: var(--ring);
   --color-brand: var(--brand);
   --color-brand-content: var(--brand-content);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -155,6 +163,19 @@
   --border: color-mix(in oklch, var(--foreground) 8%, transparent);
   --input: color-mix(in oklch, var(--foreground) 10%, transparent);
   --ring: color-mix(in oklch, var(--brand) 55%, transparent);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* sidebar.tsx expects its own scale. Derived so a base or theme change
+     reaches it, rather than the hardcoded HSL the CLI injects — which
+     includes a blue ring that ignores --brand entirely. */
+  --sidebar: color-mix(in oklch, var(--foreground) 3%, var(--background));
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--foreground);
+  --sidebar-primary-foreground: var(--background);
+  --sidebar-accent: color-mix(in oklch, var(--foreground) 6%, transparent);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: color-mix(in oklch, var(--foreground) 8%, transparent);
+  --sidebar-ring: color-mix(in oklch, var(--brand) 55%, transparent);
 }
 
 /* ---------------- Base colour ----------------
