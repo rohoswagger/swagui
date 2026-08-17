@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useForm } from "react-hook-form"
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import { toast } from "sonner"
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/ui/accordion"
@@ -103,6 +104,48 @@ import { Toggle } from "@/registry/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/registry/ui/toggle-group"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/registry/ui/tooltip"
 
+import {
+  Attachment,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentGroup,
+  AttachmentMedia,
+  AttachmentTitle,
+} from "@/registry/ui/attachment"
+import { Bubble, BubbleContent, BubbleGroup } from "@/registry/ui/bubble"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/registry/ui/carousel"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/registry/ui/chart"
+import { Marker, MarkerContent, MarkerIcon } from "@/registry/ui/marker"
+import {
+  Message,
+  MessageAvatar,
+  MessageContent,
+  MessageGroup,
+  MessageHeader,
+} from "@/registry/ui/message"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from "@/registry/ui/sidebar"
+
 import { AspectRatio } from "@/registry/ui/aspect-ratio"
 import {
   ContextMenu,
@@ -160,6 +203,7 @@ import {
 } from "@/registry/ui/form"
 
 import { ArrowRight, Copy, Plus, Search, Settings, Trash, User, Warning } from "./icons"
+import { CheckIcon, FileTextIcon } from "lucide-react"
 
 function Row({
   title,
@@ -192,6 +236,15 @@ function Row({
     </section>
   )
 }
+
+const CHART_DATA = [
+  { month: "Mar", installs: 186, blocks: 42 },
+  { month: "Apr", installs: 305, blocks: 78 },
+  { month: "May", installs: 237, blocks: 66 },
+  { month: "Jun", installs: 473, blocks: 124 },
+  { month: "Jul", installs: 521, blocks: 141 },
+  { month: "Aug", installs: 640, blocks: 190 },
+]
 
 export function ComponentsView({ displayStyle }: { displayStyle: React.CSSProperties }) {
   const [progress, setProgress] = React.useState(68)
@@ -811,6 +864,152 @@ export function ComponentsView({ displayStyle }: { displayStyle: React.CSSProper
                 16 / 9
               </span>
             </AspectRatio>
+          </div>
+        </Row>
+
+        <Row title="Chart" note="recharts, themed through the token bridge.">
+          <ChartContainer
+            config={{
+              installs: { label: "Installs", color: "var(--foreground)" },
+              blocks: { label: "Blocks", color: "var(--brand)" },
+            }}
+            className="h-44 w-full max-w-md"
+          >
+            <AreaChart data={CHART_DATA} margin={{ left: 4, right: 4, top: 8 }}>
+              <CartesianGrid vertical={false} stroke="var(--border)" />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                fontSize={11}
+              />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Area
+                dataKey="installs"
+                type="natural"
+                fill="var(--color-installs)"
+                fillOpacity={0.12}
+                stroke="var(--color-installs)"
+                strokeWidth={1.5}
+              />
+              <Area
+                dataKey="blocks"
+                type="natural"
+                fill="var(--color-blocks)"
+                fillOpacity={0.12}
+                stroke="var(--color-blocks)"
+                strokeWidth={1.5}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </Row>
+
+        <Row title="Carousel" note="embla — drag or use the arrows.">
+          <Carousel className="w-64" opts={{ align: "start" }}>
+            <CarouselContent>
+              {["Ash", "Slate", "Clay", "Sage", "Mauve", "Olive"].map((b) => (
+                <CarouselItem key={b} className="basis-1/2">
+                  <div
+                    className="bg-card flex h-24 items-center justify-center rounded-xl border text-[13px] shadow-[var(--shadow-raised),var(--inset-highlight)]"
+                  >
+                    {b}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </Row>
+
+        <Row title="Sidebar" note="Bounded here; normally it fills the viewport.">
+          <div className="relative h-64 w-full overflow-hidden rounded-xl border">
+            <SidebarProvider className="min-h-0">
+              <Sidebar collapsible="none" className="h-64 border-r">
+                <SidebarHeader className="px-3 pt-3">
+                  <span className="display text-[15px]" style={displayStyle}>
+                    swagui
+                  </span>
+                </SidebarHeader>
+                <SidebarContent>
+                  <SidebarGroup>
+                    <SidebarGroupLabel>Registry</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {["Components", "Blocks", "Theme"].map((n, i) => (
+                          <SidebarMenuItem key={n}>
+                            <SidebarMenuButton isActive={i === 0}>{n}</SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ))}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                </SidebarContent>
+              </Sidebar>
+            </SidebarProvider>
+          </div>
+        </Row>
+
+        <Row title="Message & bubble" note="The conversational primitives.">
+          <MessageGroup className="w-full max-w-md">
+            <Message>
+              <MessageAvatar>
+                <Avatar className="size-7">
+                  <AvatarFallback className="text-[0.625rem]">RS</AvatarFallback>
+                </Avatar>
+              </MessageAvatar>
+              <MessageContent>
+                <MessageHeader>Roshan</MessageHeader>
+                Does the base colour reach the sidebar?
+              </MessageContent>
+            </Message>
+            <Message>
+              <MessageAvatar>
+                <Avatar className="size-7">
+                  <AvatarFallback className="text-[0.625rem]">SW</AvatarFallback>
+                </Avatar>
+              </MessageAvatar>
+              <MessageContent>
+                <MessageHeader>swagui</MessageHeader>
+                It does — all eight sidebar tokens derive from --foreground.
+              </MessageContent>
+            </Message>
+          </MessageGroup>
+
+          <BubbleGroup className="w-full max-w-md">
+            <Bubble variant="secondary">
+              <BubbleContent>Every value is a knob.</BubbleContent>
+            </Bubble>
+            <Bubble data-align="end">
+              <BubbleContent>And the permutation is the theme.</BubbleContent>
+            </Bubble>
+          </BubbleGroup>
+        </Row>
+
+        <Row title="Attachment & marker">
+          <AttachmentGroup className="w-full max-w-sm">
+            <Attachment>
+              <AttachmentMedia>
+                <FileTextIcon className="size-4" />
+              </AttachmentMedia>
+              <AttachmentContent>
+                <AttachmentTitle>swagui.css</AttachmentTitle>
+                <AttachmentDescription>9.8 KB · design tokens</AttachmentDescription>
+              </AttachmentContent>
+            </Attachment>
+          </AttachmentGroup>
+
+          <div className="w-full max-w-sm space-y-2">
+            <Marker>
+              <MarkerIcon>
+                <CheckIcon className="size-3.5" />
+              </MarkerIcon>
+              <MarkerContent>Contrast verified at 5.83:1</MarkerContent>
+            </Marker>
+            <Marker variant="separator">
+              <MarkerContent>separator</MarkerContent>
+            </Marker>
           </div>
         </Row>
 
