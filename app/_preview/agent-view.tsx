@@ -28,36 +28,24 @@ import { Source } from "@/registry/ui/source"
 function Section({
   index,
   title,
-  note,
   children,
 }: {
   index: string
   title: string
-  note?: string
   children: React.ReactNode
 }) {
   return (
     <section className="mb-12">
-      <div className="mb-4 flex items-baseline gap-3">
+      <div className="mb-3 flex items-baseline gap-3">
         <span className="mono text-[10px]" style={{ color: "var(--muted-fg)" }}>
           {index}
         </span>
-        <div>
-          <h3
-            className="mono text-[10px] uppercase"
-            style={{ letterSpacing: "0.18em", color: "var(--muted-fg)" }}
-          >
-            {title}
-          </h3>
-          {note ? (
-            <p
-              className="mt-1 max-w-[68ch] text-[12px]"
-              style={{ color: "var(--muted-fg)" }}
-            >
-              {note}
-            </p>
-          ) : null}
-        </div>
+        <h3
+          className="mono text-[10px] uppercase"
+          style={{ letterSpacing: "0.18em", color: "var(--muted-fg)" }}
+        >
+          {title}
+        </h3>
       </div>
       <div className="flex flex-col gap-4">{children}</div>
     </section>
@@ -73,34 +61,19 @@ function Section({
  * border does the work of separating demo from page — no dashed strip needed.
  */
 function Demo({
-  caption,
   controls,
   action,
-  align = "start",
-  minHeight,
   children,
 }: {
-  caption?: string
   controls?: React.ReactNode
   action?: React.ReactNode
-  align?: "start" | "center"
-  /** Holds the stage steady when a control swaps content of a different size. */
-  minHeight?: string
   children: React.ReactNode
 }) {
   return (
     <div className="relative rounded-xl border border-border bg-card">
       {action ? <div className="absolute top-3 right-3 z-10">{action}</div> : null}
 
-      <div
-        className={cn(
-          "flex px-6 pt-8 pb-6",
-          align === "center" ? "items-center justify-center" : "items-start"
-        )}
-        style={minHeight ? { minHeight } : undefined}
-      >
-        <div className="w-full">{children}</div>
-      </div>
+      <div className="px-6 pt-6 pb-5">{children}</div>
 
       {/* No rule above these. The whitespace already separates them, and a
           divider would read as a second region rather than as knobs sitting on
@@ -109,15 +82,6 @@ function Demo({
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 px-6 pb-3.5">
           {controls}
         </div>
-      ) : null}
-
-      {caption ? (
-        <p
-          className="border-t border-border/70 px-6 py-2.5 text-[12px]"
-          style={{ color: "var(--muted-fg)" }}
-        >
-          {caption}
-        </p>
       ) : null}
     </div>
   )
@@ -351,8 +315,6 @@ function ReasoningDemo() {
 
   return (
     <Demo
-      align="center"
-      minHeight="13rem"
       controls={
         <>
           <Segmented
@@ -556,7 +518,6 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
       <Section
         index="01"
         title="Reasoning"
-        note="One disclosure shell for everything the agent did on the way to an answer. Thinking, searching and tool calls are the same object — a one-line summary you can open into the evidence — so they share a shell and differ only in content."
       >
         <ReasoningDemo />
       </Section>
@@ -564,11 +525,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
       <Section
         index="02"
         title="Response"
-        note="The answer, and the exact counterweight to the trace above. This is the only thing on the surface at full contrast, on a wider measure and looser leading. Sources, actions and follow-ups are withheld until it has finished arriving."
       >
         <ResponseDemo />
 
-        <Demo caption="Trace above answer — the weight gap is what makes a transcript scannable.">
+        <Demo>
           <div className="flex flex-col gap-3">
             <Reasoning duration={4}>
               <ReasoningTrigger />
