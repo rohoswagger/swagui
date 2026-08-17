@@ -65,19 +65,6 @@
           "foreground": "oklch(0.18 0 0)",
           "card": "oklch(0.999 0 0)",
           "muted-foreground": "oklch(0.498 0 0)",
-          "card-foreground": "var(--foreground)",
-          "popover": "var(--card)",
-          "popover-foreground": "var(--foreground)",
-          "primary": "var(--foreground)",
-          "primary-foreground": "var(--background)",
-          "secondary": "color-mix(in oklch, var(--foreground) 6%, transparent)",
-          "secondary-foreground": "var(--foreground)",
-          "muted": "color-mix(in oklch, var(--foreground) 5%, transparent)",
-          "accent": "color-mix(in oklch, var(--foreground) 6%, transparent)",
-          "accent-foreground": "var(--foreground)",
-          "border": "color-mix(in oklch, var(--foreground) 8%, transparent)",
-          "input": "color-mix(in oklch, var(--foreground) 10%, transparent)",
-          "ring": "color-mix(in oklch, var(--brand) 55%, transparent)",
           "destructive": "oklch(0.55 0.2 27)",
           "success": "oklch(0.55 0.13 155)",
           "warning": "oklch(0.68 0.14 75)",
@@ -103,6 +90,21 @@
       "css": {
         "@import \"tw-animate-css\"": "",
         "@custom-variant dark (&:is(.dark *))": "",
+        ":root,\n.dark,\n[data-base]": {
+          "--card-foreground": "var(--foreground)",
+          "--popover": "var(--card)",
+          "--popover-foreground": "var(--foreground)",
+          "--primary": "var(--foreground)",
+          "--primary-foreground": "var(--background)",
+          "--secondary": "color-mix(in oklch, var(--foreground) 6%, transparent)",
+          "--secondary-foreground": "var(--foreground)",
+          "--muted": "color-mix(in oklch, var(--foreground) 5%, transparent)",
+          "--accent": "color-mix(in oklch, var(--foreground) 6%, transparent)",
+          "--accent-foreground": "var(--foreground)",
+          "--border": "color-mix(in oklch, var(--foreground) 8%, transparent)",
+          "--input": "color-mix(in oklch, var(--foreground) 10%, transparent)",
+          "--ring": "color-mix(in oklch, var(--brand) 55%, transparent)"
+        },
         "[data-base=\"ash\"]": {
           "--background": "oklch(0.991 0 0)",
           "--card": "oklch(0.999 0 0)",
@@ -191,8 +193,10 @@
           "--card": "color-mix(in oklch, var(--background) 62%, transparent)",
           "--popover": "color-mix(in oklch, var(--background) 74%, transparent)",
           "--glass-blur": "20px",
+          "--glass-blur-control": "12px",
           "--glass-saturate": "180%",
           "--glass-rim": "rgb(255 255 255 / 0.55)",
+          "--glass-rim-control": "rgb(255 255 255 / 0.3)",
           "--glass-rim-soft": "rgb(255 255 255 / 0.14)",
           "--glass-shade": "rgb(0 0 0 / 0.07)",
           "--shadow-hairline": "0 0 0 1px var(--glass-rim-soft)",
@@ -204,6 +208,7 @@
           "--card": "color-mix(in oklch, var(--background) 58%, transparent)",
           "--popover": "color-mix(in oklch, var(--background) 70%, transparent)",
           "--glass-rim": "rgb(255 255 255 / 0.16)",
+          "--glass-rim-control": "rgb(255 255 255 / 0.18)",
           "--glass-rim-soft": "rgb(255 255 255 / 0.08)",
           "--glass-shade": "rgb(0 0 0 / 0.3)"
         },
@@ -216,6 +221,9 @@
         "@supports (backdrop-filter: blur(1px))": {
           "[data-surface=\"glass\"] .surface,\n  [data-surface=\"glass\"] [data-slot=\"card\"],\n  [data-surface=\"glass\"] [data-slot=\"alert\"],\n  [data-surface=\"glass\"] [data-slot=\"popover-content\"],\n  [data-surface=\"glass\"] [data-slot=\"dropdown-menu-content\"],\n  [data-surface=\"glass\"] [data-slot=\"dialog-content\"],\n  [data-surface=\"glass\"] [data-slot=\"alert-dialog-content\"],\n  [data-surface=\"glass\"] [data-slot=\"sheet-content\"],\n  [data-surface=\"glass\"] [data-slot=\"drawer-content\"],\n  [data-surface=\"glass\"] [data-slot=\"select-content\"],\n  [data-surface=\"glass\"] [data-slot=\"command\"],\n  [data-surface=\"glass\"] [data-slot=\"menubar-content\"],\n  [data-surface=\"glass\"] [data-slot=\"context-menu-content\"],\n  [data-surface=\"glass\"] [data-slot=\"hover-card-content\"],\n  [data-surface=\"glass\"] [data-slot=\"navigation-menu-content\"]": {
             "backdrop-filter": "blur(var(--glass-blur)) saturate(var(--glass-saturate))"
+          },
+          "[data-surface=\"glass\"] [data-slot=\"button\"],\n  [data-surface=\"glass\"] [data-slot=\"toggle\"],\n  [data-surface=\"glass\"] [data-slot=\"toggle-group-item\"]": {
+            "backdrop-filter": "blur(var(--glass-blur-control)) saturate(var(--glass-saturate))"
           }
         },
         "[data-surface=\"glass\"] .surface::before,\n[data-surface=\"glass\"] [data-slot=\"card\"]::before,\n[data-surface=\"glass\"] [data-slot=\"popover-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"dropdown-menu-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"dialog-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"sheet-content\"]::before,\n[data-surface=\"glass\"] [data-slot=\"select-content\"]::before": {
@@ -240,6 +248,35 @@
           "position": "relative",
           "background-image": "radial-gradient(\n      42rem 32rem at 12% 8%,\n      color-mix(in oklch, var(--brand) 18%, transparent),\n      transparent 60%\n    ),\n    radial-gradient(\n      34rem 28rem at 88% 22%,\n      color-mix(in oklch, var(--foreground) 12%, transparent),\n      transparent 62%\n    ),\n    radial-gradient(\n      38rem 30rem at 62% 88%,\n      color-mix(in oklch, var(--brand) 12%, transparent),\n      transparent 58%\n    )",
           "background-attachment": "local"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"],\n[data-surface=\"glass\"] [data-slot=\"toggle\"],\n[data-surface=\"glass\"] [data-slot=\"toggle-group-item\"]": {
+          "-webkit-backdrop-filter": "blur(var(--glass-blur-control)) saturate(var(--glass-saturate))",
+          "box-shadow": "inset 0 1px 0 0 var(--glass-rim-control),\n    inset 0 0 0 1px var(--glass-rim-soft),\n    inset 0 -1px 0 0 var(--glass-shade),\n    0 2px 10px -2px rgb(0 0 0 / 0.14)"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"][data-variant=\"default\"]": {
+          "background": "color-mix(in oklch, var(--primary) 78%, transparent)"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"][data-variant=\"destructive\"]": {
+          "background": "color-mix(in oklch, var(--destructive) 80%, transparent)"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"][data-variant=\"secondary\"]": {
+          "background": "color-mix(in oklch, var(--foreground) 9%, transparent)"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"][data-variant=\"outline\"]": {
+          "background": "color-mix(in oklch, var(--background) 35%, transparent)",
+          "border-color": "color-mix(in oklch, var(--foreground) 12%, transparent)"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"][data-variant=\"ghost\"]": {
+          "box-shadow": "none"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"][data-variant=\"ghost\"]:hover": {
+          "background": "color-mix(in oklch, var(--foreground) 7%, transparent)",
+          "box-shadow": "inset 0 1px 0 0 var(--glass-rim-control),\n    inset 0 0 0 1px var(--glass-rim-soft)"
+        },
+        "[data-surface=\"glass\"] [data-slot=\"button\"][data-variant=\"link\"]": {
+          "-webkit-backdrop-filter": "none",
+          "backdrop-filter": "none",
+          "box-shadow": "none"
         },
         "[data-density=\"compact\"]": {
           "--spacing": "0.2rem",
