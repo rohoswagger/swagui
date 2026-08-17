@@ -220,90 +220,6 @@ function ReasoningRow({
   )
 }
 
-/**
- * The hues of swagui's base palette — clay, olive, sage, slate, mauve. Source
- * chips borrow them at low chroma so a list of sites reads as tinted neutrals
- * in the family of the theme, rather than as a row of vendor brand colours.
- */
-const SOURCE_HUES = [45, 110, 150, 255, 315]
-
-function hueFor(key: string) {
-  let h = 0
-  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) | 0
-  return SOURCE_HUES[Math.abs(h) % SOURCE_HUES.length]
-}
-
-/**
- * Where the favicon comes from. Hitting the site's own /favicon.ico fails too
- * often — plenty of hosts don't serve one, and it 404s as HTML — so this goes
- * through a resolver by default. Note this leaks the host to a third party;
- * pass `iconSrc` to serve icons yourself if that matters.
- */
-function faviconSrc(host: string) {
-  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64`
-}
-
-/** A retrieved page: favicon, title, and the host it came from. */
-function ReasoningSource({
-  className,
-  name,
-  host,
-  icon,
-  iconSrc,
-  ...props
-}: Omit<React.ComponentProps<"div">, "children" | "icon"> & {
-  name: string
-  host: string
-  /** Full control over the leading glyph; skips favicon loading entirely. */
-  icon?: React.ReactNode
-  /** Serve the icon yourself instead of going through the default resolver. */
-  iconSrc?: string
-}) {
-  const [failed, setFailed] = React.useState(false)
-
-  return (
-    <div
-      data-slot="reasoning-source"
-      className={cn(
-        "flex min-w-0 items-center gap-2 text-sm",
-        "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-swagui)",
-        className
-      )}
-      {...props}
-    >
-      {icon ?? (
-        failed ? (
-          // Not every host serves an icon, and an empty square reads as broken.
-          // The monogram falls back on the base palette's hues, so a missing
-          // favicon still looks deliberate.
-          <span
-            aria-hidden
-            className="flex size-4 shrink-0 items-center justify-center rounded-full text-[9px] font-semibold text-background"
-            style={{ background: `oklch(0.62 0.075 ${hueFor(host)})` }}
-          >
-            {name.slice(0, 1).toUpperCase()}
-          </span>
-        ) : (
-          // A plain img, not next/image: these components have to work in any
-          // React app, not only a Next one.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={iconSrc ?? faviconSrc(host)}
-            alt=""
-            width={16}
-            height={16}
-            loading="lazy"
-            onError={() => setFailed(true)}
-            className="size-4 shrink-0 rounded-full bg-muted object-cover ring-1 ring-border/60"
-          />
-        )
-      )}
-      <span className="shrink-0 font-medium text-foreground">{name}</span>
-      <span className="min-w-0 truncate text-muted-foreground">{host}</span>
-    </div>
-  )
-}
-
 /** Sub-second traces read as "0.4s"; longer ones lose the decimal noise. */
 function formatDuration(seconds: number) {
   if (seconds < 10) return `${seconds.toFixed(1)}s`
@@ -348,11 +264,4 @@ function Chevron({ className }: { className?: string }) {
   )
 }
 
-export {
-  Reasoning,
-  ReasoningTrigger,
-  ReasoningContent,
-  ReasoningText,
-  ReasoningRow,
-  ReasoningSource,
-}
+export { Reasoning, ReasoningTrigger, ReasoningContent, ReasoningText, ReasoningRow }

@@ -1390,6 +1390,21 @@
       ]
     },
     {
+      "name": "source",
+      "type": "registry:ui",
+      "title": "Source",
+      "description": "A cited page: favicon with monogram fallback, title and host.",
+      "files": [
+        {
+          "path": "registry/ui/source.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
       "name": "reasoning",
       "type": "registry:ui",
       "title": "Reasoning",
@@ -1404,8 +1419,23 @@
         "https://swagui.rohoswagger.com/r/theme.json"
       ],
       "dependencies": [
-        "class-variance-authority",
         "radix-ui"
+      ]
+    },
+    {
+      "name": "response",
+      "type": "registry:ui",
+      "title": "Response",
+      "description": "The agent's answer: streaming text, inline citations, sources, actions and follow-ups.",
+      "files": [
+        {
+          "path": "registry/ui/response.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json",
+        "https://swagui.rohoswagger.com/r/source.json"
       ]
     },
     {
