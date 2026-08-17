@@ -2,6 +2,7 @@
 
 import * as React from "react"
 
+import { cn } from "@/lib/utils"
 import {
   Reasoning,
   ReasoningContent,
@@ -22,7 +23,9 @@ import {
 } from "@/registry/ui/response"
 import { Source } from "@/registry/ui/source"
 
-function Row({
+/* ------------------------------ demo chrome ------------------------------ */
+
+function Section({
   index,
   title,
   note,
@@ -34,11 +37,8 @@ function Row({
   children: React.ReactNode
 }) {
   return (
-    <section
-      className="mb-8 rounded-xl border p-6"
-      style={{ borderColor: "var(--hairline)" }}
-    >
-      <div className="mb-5 flex items-baseline gap-3">
+    <section className="mb-12">
+      <div className="mb-4 flex items-baseline gap-3">
         <span className="mono text-[10px]" style={{ color: "var(--muted-fg)" }}>
           {index}
         </span>
@@ -50,42 +50,184 @@ function Row({
             {title}
           </h3>
           {note ? (
-            <p className="mt-1 text-[12px]" style={{ color: "var(--muted-fg)" }}>
+            <p
+              className="mt-1 max-w-[68ch] text-[12px]"
+              style={{ color: "var(--muted-fg)" }}
+            >
               {note}
             </p>
           ) : null}
         </div>
       </div>
-      {children}
+      <div className="flex flex-col gap-4">{children}</div>
     </section>
   )
 }
 
-function Case({ label, children }: { label: string; children: React.ReactNode }) {
+/**
+ * A stage for one component.
+ *
+ * The card is the frame, the component sits in it with room to breathe, and
+ * the knobs live along the bottom edge inside the same frame. Putting them
+ * there rather than above ties them to the thing they change, and the card
+ * border does the work of separating demo from page — no dashed strip needed.
+ */
+function Demo({
+  caption,
+  controls,
+  action,
+  align = "start",
+  minHeight,
+  children,
+}: {
+  caption?: string
+  controls?: React.ReactNode
+  action?: React.ReactNode
+  align?: "start" | "center"
+  /** Holds the stage steady when a control swaps content of a different size. */
+  minHeight?: string
+  children: React.ReactNode
+}) {
   return (
-    <div>
-      <p
-        className="mono mb-3 text-[10px] uppercase"
-        style={{ letterSpacing: "0.14em", color: "var(--muted-fg)" }}
+    <div className="relative rounded-xl border border-border bg-card">
+      {action ? <div className="absolute top-3 right-3 z-10">{action}</div> : null}
+
+      <div
+        className={cn(
+          "flex px-6 pt-8 pb-6",
+          align === "center" ? "items-center justify-center" : "items-start"
+        )}
+        style={minHeight ? { minHeight } : undefined}
       >
-        {label}
-      </p>
-      {children}
+        <div className="w-full">{children}</div>
+      </div>
+
+      {/* No rule above these. The whitespace already separates them, and a
+          divider would read as a second region rather than as knobs sitting on
+          the floor of the card. */}
+      {controls ? (
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 px-6 pb-3.5">
+          {controls}
+        </div>
+      ) : null}
+
+      {caption ? (
+        <p
+          className="border-t border-border/70 px-6 py-2.5 text-[12px]"
+          style={{ color: "var(--muted-fg)" }}
+        >
+          {caption}
+        </p>
+      ) : null}
     </div>
   )
 }
+
+function Segmented<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string
+  value: T
+  options: { value: T; label: string }[]
+  onChange: (v: T) => void
+}) {
+  return (
+    <div className="inline-flex items-center gap-1.5">
+      <span
+        className="mono shrink-0 text-[8px] uppercase"
+        style={{ letterSpacing: "0.14em", color: "var(--muted-fg)" }}
+      >
+        {label}
+      </span>
+      <div className="inline-flex items-center rounded-full bg-muted p-px">
+        {options.map((o) => {
+          const active = o.value === value
+          return (
+            <button
+              key={o.value}
+              type="button"
+              aria-pressed={active}
+              onClick={() => onChange(o.value)}
+              className={cn(
+                "rounded-full px-2 py-[3px] text-[10.5px] leading-none outline-none",
+                "transition-[color,background-color,box-shadow] duration-(--duration-fast) ease-(--ease-swagui)",
+                "focus-visible:ring-2 focus-visible:ring-ring/60",
+                active
+                  ? "bg-card font-medium text-foreground shadow-(--shadow-hairline)"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {o.label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function IconButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      onClick={onClick}
+      className={cn(
+        "inline-flex size-7 items-center justify-center rounded-lg border border-border bg-card outline-none",
+        "text-muted-foreground/80",
+        "transition-[color,border-color,transform] duration-(--duration-fast) ease-(--ease-swagui)",
+        "hover:border-muted-foreground/40 hover:text-foreground active:scale-90",
+        "focus-visible:ring-2 focus-visible:ring-ring/60",
+        "[&_svg]:size-3.5"
+      )}
+    >
+      {children}
+    </button>
+  )
+}
+
+/* -------------------------------- fixtures -------------------------------- */
+
+const THOUGHTS = [
+  "Summer demand spikes for stone-fruit flavors — peach and apricot lead.",
+  "I should check cone inventory before promoting a waffle-bowl special.",
+  "Pistachio is the outlier: up 23% while the rest of the case is flat.",
+]
+
+const ANSWER_SOURCES = [
+  { name: "Scoop Data", host: "scoopdata.io" },
+  { name: "Trends Index", host: "trends.google.com" },
+  { name: "Market Basket", host: "marketbasket.io" },
+]
+
+const WEB_RESULTS = [
+  { name: "Joy Cone", host: "joycone.com" },
+  { name: "WebstaurantStore", host: "webstaurantstore.com" },
+  { name: "The Konery", host: "thekonery.com" },
+]
+
+const ANSWER =
+  "Pistachio is your fastest-growing flavour — sales are up 23% this quarter, and it is the only line in the case that grew every week. Rocky Road is the drag, down 6%, and it has now missed the 40-scoop threshold three weeks running."
 
 /**
  * Holds the height of a demo that animates.
  *
  * A finished copy is rendered invisibly in the same grid cell, so the box is
- * always sized for the settled state and the live copy grows inside it. Real
- * streaming legitimately reflows the page; a preview that replays would
- * otherwise shove everything below it up and down.
- *
- * The spacer wraps the whole block rather than the prose. Wrapping the prose
- * made it a grid item, which is block-level, and that pushed the caret onto a
- * line of its own instead of leaving it after the last word.
+ * always sized for the settled state and the live copy grows inside it. The
+ * spacer wraps the whole block rather than the prose: wrapping the prose made
+ * it a grid item, which is block-level, and pushed the caret onto its own line.
  */
 function Reserve({
   spacer,
@@ -104,157 +246,149 @@ function Reserve({
   )
 }
 
-/**
- * Knobs for a demo, deliberately not styled like the components they drive.
- *
- * A bare select sitting next to a component reads as part of it. This borrows
- * the shape of the app's own config bar — stacked label over value with a
- * chevron — and sits inside a dashed, recessed strip, which is the
- * conventional signal for scaffolding rather than product.
- */
-function DemoBar({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-dashed border-border bg-muted/50 p-2">
-      <span
-        className="mono flex shrink-0 items-center gap-1.5 pl-1 text-[9px] uppercase"
-        style={{ letterSpacing: "0.16em", color: "var(--muted-fg)" }}
-      >
-        <SlidersIcon />
-        Demo
-      </span>
-      <span className="mr-0.5 h-6 w-px shrink-0 bg-border" />
-      {children}
-    </div>
-  )
-}
+/* ------------------------------ 01 reasoning ------------------------------ */
 
-function Picker<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string
-  value: T
-  options: { value: T; label: string }[]
-  onChange: (v: T) => void
-}) {
-  const active = options.find((o) => o.value === value)
+type TraceKind = "thinking" | "tools" | "search"
 
-  return (
-    <label className="group relative flex shrink-0 cursor-pointer flex-col gap-0.5 rounded-md border border-border bg-card px-2.5 py-1.5 transition-colors duration-(--duration-fast) ease-(--ease-swagui) hover:border-muted-foreground/40">
-      <span className="text-[9px] leading-none text-muted-foreground">
-        {label}
-      </span>
-      <span className="pr-4 text-[12.5px] leading-tight font-medium text-foreground">
-        {active?.label ?? value}
-      </span>
-      <ChevronDown />
-      {/* The real control, laid over the card so the card is the hit target. */}
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value as T)}
-        aria-label={label}
-        className="absolute inset-0 cursor-pointer opacity-0"
-      >
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </label>
-  )
-}
-
-function SlidersIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      aria-hidden
-      className="size-3"
-    >
-      <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h10M18 18h2" />
-      <circle cx="16" cy="6" r="2" />
-      <circle cx="10" cy="12" r="2" />
-      <circle cx="16" cy="18" r="2" />
-    </svg>
-  )
-}
-
-function ChevronDown() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-      className="pointer-events-none absolute right-2 bottom-2 size-3 text-muted-foreground/60"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  )
-}
-
-const THOUGHTS = [
-  "Summer demand spikes for stone-fruit flavors — peach and apricot lead.",
-  "I should check cone inventory before promoting a waffle-bowl special.",
-  "Pistachio is the outlier: up 23% while the rest of the case is flat.",
-]
-
-const ANSWER_SOURCES = [
-  { name: "Scoop Data", host: "scoopdata.io" },
-  { name: "Trends Index", host: "trends.google.com" },
-  { name: "Market Basket", host: "marketbasket.io" },
-]
-
-const ANSWER =
-  "Pistachio is your fastest-growing flavour — sales are up 23% this quarter, and it is the only line in the case that grew every week. Rocky Road is the drag, down 6%, and it has now missed the 40-scoop threshold three weeks running."
-
-function TraceBlock({ streaming, shown }: { streaming: boolean; shown: number }) {
-  return (
-    <Reasoning
-      streaming={streaming}
-      duration={streaming ? undefined : 6.4}
-      defaultOpen
-    >
-      <ReasoningTrigger />
-      <ReasoningContent>
+function TraceBody({ kind, shown }: { kind: TraceKind; shown: number }) {
+  if (kind === "thinking") {
+    return (
+      <>
         {THOUGHTS.slice(0, shown).map((t) => (
           <ReasoningText key={t}>{t}</ReasoningText>
         ))}
+      </>
+    )
+  }
+
+  if (kind === "tools") {
+    const rows = [
+      { label: "Read", body: <>flavors.ts</> },
+      {
+        label: "Edit",
+        body: (
+          <>
+            ChurnSchedule.tsx <span className="text-success">+74</span>{" "}
+            <span className="text-destructive">−41</span>
+          </>
+        ),
+      },
+      { label: "Run", body: <>npm run freeze</> },
+    ]
+    return (
+      <>
+        {rows.slice(0, shown).map((r) => (
+          <ReasoningRow key={r.label} label={r.label}>
+            {r.body}
+          </ReasoningRow>
+        ))}
+      </>
+    )
+  }
+
+  return (
+    <>
+      <ReasoningRow>best waffle cone supplier</ReasoningRow>
+      {WEB_RESULTS.slice(0, Math.max(0, shown - 1)).map((s) => (
+        <Source key={s.host} name={s.name} host={s.host} />
+      ))}
+      {shown > WEB_RESULTS.length ? (
+        <span className="text-sm text-muted-foreground/70">+7 more</span>
+      ) : null}
+    </>
+  )
+}
+
+const TRACE_LABEL: Record<TraceKind, string> = {
+  thinking: "Thought for 6.4s",
+  tools: "Ran 3 tools",
+  search: "Searched the web",
+}
+
+const TRACE_STEPS: Record<TraceKind, number> = {
+  thinking: 3,
+  tools: 3,
+  search: 4,
+}
+
+function TraceBlock({
+  kind,
+  streaming,
+  shown,
+}: {
+  kind: TraceKind
+  streaming: boolean
+  shown: number
+}) {
+  return (
+    <Reasoning streaming={streaming} duration={streaming ? undefined : 6.4} defaultOpen>
+      <ReasoningTrigger>{streaming ? undefined : TRACE_LABEL[kind]}</ReasoningTrigger>
+      <ReasoningContent>
+        <TraceBody kind={kind} shown={shown} />
       </ReasoningContent>
     </Reasoning>
   )
 }
 
-function LiveReasoning() {
+function ReasoningDemo() {
+  const [kind, setKind] = React.useState<TraceKind>("thinking")
+  const [live, setLive] = React.useState<"streaming" | "settled">("streaming")
   const [shown, setShown] = React.useState(1)
 
+  const total = TRACE_STEPS[kind]
+
   React.useEffect(() => {
+    if (live === "settled") return
+    setShown(1)
     const id = window.setInterval(
-      () => setShown((n) => (n >= THOUGHTS.length + 2 ? 1 : n + 1)),
-      1800
+      () => setShown((n) => (n >= total + 1 ? 1 : n + 1)),
+      1500
     )
     return () => window.clearInterval(id)
-  }, [])
+  }, [live, total, kind])
+
+  const streaming = live === "streaming" && shown <= total
 
   return (
-    <Reserve spacer={<TraceBlock streaming={false} shown={THOUGHTS.length} />}>
-      <TraceBlock
-        streaming={shown <= THOUGHTS.length}
-        shown={Math.min(shown, THOUGHTS.length)}
-      />
-    </Reserve>
+    <Demo
+      align="center"
+      minHeight="13rem"
+      controls={
+        <>
+          <Segmented
+            label="Content"
+            value={kind}
+            onChange={setKind}
+            options={[
+              { value: "thinking", label: "Thinking" },
+              { value: "tools", label: "Tools" },
+              { value: "search", label: "Search" },
+            ]}
+          />
+          <Segmented
+            label="State"
+            value={live}
+            onChange={setLive}
+            options={[
+              { value: "streaming", label: "Streaming" },
+              { value: "settled", label: "Settled" },
+            ]}
+          />
+        </>
+      }
+    >
+      <Reserve spacer={<TraceBlock kind={kind} streaming={false} shown={total + 1} />}>
+        <TraceBlock
+          kind={kind}
+          streaming={streaming}
+          shown={live === "settled" ? total + 1 : Math.min(shown, total + 1)}
+        />
+      </Reserve>
+    </Demo>
   )
 }
+
+/* ------------------------------- 02 response ------------------------------ */
 
 function AnswerBlock({
   streaming,
@@ -309,66 +443,66 @@ const CARETS: Record<string, React.ReactNode | false | undefined> = {
   none: false,
 }
 
-/** One card, with the speed and caret exposed as controls. */
-function ResponsePlayground() {
+function ResponseDemo() {
   const [speed, setSpeed] = React.useState("default")
   const [caret, setCaret] = React.useState("block")
 
-  // Plays once and stops. A demo that replays forever is a distraction on a
-  // page you are trying to read; Replay puts it under the reader's control.
+  // Plays once and stops; a demo that replays forever is a distraction on a
+  // page you are trying to read.
   const { text, streaming, restart } = useTypewriter(ANSWER, {
     ...SPEEDS[speed],
     loop: false,
   })
 
   return (
-    <div className="flex flex-col gap-4">
-      <DemoBar>
-        <Picker
-          label="Speed"
-          value={speed}
-          // Changing a knob replays, so the effect of the change is visible
-          // straight away rather than on the next manual run.
-          onChange={(v) => {
-            setSpeed(v)
-            restart()
-          }}
-          options={[
-            { value: "slow", label: "Slow" },
-            { value: "default", label: "Default" },
-            { value: "fast", label: "Fast" },
-          ]}
-        />
-        <Picker
-          label="Caret"
-          value={caret}
-          onChange={(v) => {
-            setCaret(v)
-            restart()
-          }}
-          options={[
-            { value: "block", label: "Block" },
-            { value: "bar", label: "Bar |" },
-            { value: "underscore", label: "Underscore _" },
-            { value: "dot", label: "Dot ●" },
-            { value: "none", label: "None" },
-          ]}
-        />
-        <button
-          type="button"
-          onClick={restart}
-          className="shrink-0 rounded-md border border-border bg-card px-2.5 py-2 text-[12.5px] font-medium text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui) hover:border-muted-foreground/40 hover:text-foreground"
-        >
-          Replay
-        </button>
-      </DemoBar>
-
+    <Demo
+      action={
+        <IconButton label="Replay" onClick={restart}>
+          <RetryIcon />
+        </IconButton>
+      }
+      controls={
+        <>
+          <Segmented
+            label="Speed"
+            value={speed}
+            // Changing a knob replays, so the effect is visible straight away.
+            onChange={(v) => {
+              setSpeed(v)
+              restart()
+            }}
+            options={[
+              { value: "slow", label: "Slow" },
+              { value: "default", label: "Default" },
+              { value: "fast", label: "Fast" },
+            ]}
+          />
+          <Segmented
+            label="Caret"
+            value={caret}
+            onChange={(v) => {
+              setCaret(v)
+              restart()
+            }}
+            options={[
+              { value: "block", label: "Block" },
+              { value: "bar", label: "|" },
+              { value: "underscore", label: "_" },
+              { value: "dot", label: "●" },
+              { value: "none", label: "None" },
+            ]}
+          />
+        </>
+      }
+    >
       <Reserve spacer={<AnswerBlock streaming={false} text={ANSWER} />}>
         <AnswerBlock streaming={streaming} text={text} caret={CARETS[caret]} />
       </Reserve>
-    </div>
+    </Demo>
   )
 }
+
+/* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
   return (
@@ -397,10 +531,12 @@ function ThumbIcon({ className }: { className?: string }) {
   )
 }
 
+/* ---------------------------------- view ---------------------------------- */
+
 export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties }) {
   return (
     <div className="mx-auto max-w-[860px] px-10 py-10">
-      <header className="pb-8">
+      <header className="pb-10">
         <h1 className="display text-[34px]" style={displayStyle}>
           Agent
         </h1>
@@ -417,17 +553,23 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
         </p>
       </header>
 
-      <Row
+      <Section
         index="01"
         title="Reasoning"
         note="One disclosure shell for everything the agent did on the way to an answer. Thinking, searching and tool calls are the same object — a one-line summary you can open into the evidence — so they share a shell and differ only in content."
       >
-        <div className="flex flex-col gap-9">
-          <Case label="Thinking — streaming">
-            <LiveReasoning />
-          </Case>
+        <ReasoningDemo />
+      </Section>
 
-          <Case label="Thinking — settled, collapsed by default">
+      <Section
+        index="02"
+        title="Response"
+        note="The answer, and the exact counterweight to the trace above. This is the only thing on the surface at full contrast, on a wider measure and looser leading. Sources, actions and follow-ups are withheld until it has finished arriving."
+      >
+        <ResponseDemo />
+
+        <Demo caption="Trace above answer — the weight gap is what makes a transcript scannable.">
+          <div className="flex flex-col gap-3">
             <Reasoning duration={4}>
               <ReasoningTrigger />
               <ReasoningContent>
@@ -436,66 +578,12 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
                 ))}
               </ReasoningContent>
             </Reasoning>
-          </Case>
-
-          <Case label="Tool calls">
-            <Reasoning defaultOpen>
-              <ReasoningTrigger>Ran 3 tools</ReasoningTrigger>
-              <ReasoningContent>
-                <ReasoningRow label="Read">flavors.ts</ReasoningRow>
-                <ReasoningRow label="Edit">
-                  ChurnSchedule.tsx <span className="text-success">+74</span>{" "}
-                  <span className="text-destructive">−41</span>
-                </ReasoningRow>
-                <ReasoningRow label="Run">npm run freeze</ReasoningRow>
-              </ReasoningContent>
-            </Reasoning>
-          </Case>
-
-          <Case label="Search">
-            <Reasoning defaultOpen>
-              <ReasoningTrigger>Searched the web</ReasoningTrigger>
-              <ReasoningContent>
-                <ReasoningRow>best waffle cone supplier</ReasoningRow>
-                {[
-                  { name: "Joy Cone", host: "joycone.com" },
-                  { name: "WebstaurantStore", host: "webstaurantstore.com" },
-                  { name: "The Konery", host: "thekonery.com" },
-                ].map((s) => (
-                  <Source key={s.host} name={s.name} host={s.host} />
-                ))}
-                <span className="text-sm text-muted-foreground/70">+7 more</span>
-              </ReasoningContent>
-            </Reasoning>
-          </Case>
-        </div>
-      </Row>
-
-      <Row
-        index="02"
-        title="Response"
-        note="The answer, and the exact counterweight to the trace above. This is the only thing on the surface at full contrast, on a wider measure and looser leading. Actions and follow-ups are withheld until it has finished arriving."
-      >
-        <div className="flex flex-col gap-9">
-          <Case label="Streaming — speed and caret are props">
-            <ResponsePlayground />
-          </Case>
-
-          <Case label="Settled, with inline citations">
             <Response>
               <ResponseContent>
                 Pistachio is your fastest-growing flavour, up 23% this quarter
-                <ResponseCitation index={1} /> and the only line that grew every
-                week. Rocky Road is the drag at −6%
-                <ResponseCitation index={2} />, and it has missed the 40-scoop
-                threshold three weeks running
-                <ResponseCitation index={3} />.
+                <ResponseCitation index={1} />. I would churn it first on
+                Saturday so the batch firms before the afternoon rush.
               </ResponseContent>
-              <ResponseSources count={10}>
-                {ANSWER_SOURCES.map((x) => (
-                  <Source key={x.host} name={x.name} host={x.host} />
-                ))}
-              </ResponseSources>
               <ResponseActions>
                 <ResponseAction label="Copy">
                   <CopyIcon />
@@ -503,53 +591,11 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
                 <ResponseAction label="Retry">
                   <RetryIcon />
                 </ResponseAction>
-                <ResponseAction label="Good response">
-                  <ThumbIcon />
-                </ResponseAction>
-                <ResponseAction label="Bad response">
-                  <ThumbIcon className="rotate-180" />
-                </ResponseAction>
               </ResponseActions>
-              <ResponseFollowUps>
-                <ResponseFollowUp>
-                  Which flavours sell best in winter
-                </ResponseFollowUp>
-                <ResponseFollowUp>
-                  Compare gelato and soft serve margins
-                </ResponseFollowUp>
-              </ResponseFollowUps>
             </Response>
-          </Case>
-
-          <Case label="Trace above answer — how they read together">
-            <div className="flex flex-col gap-3">
-              <Reasoning duration={4}>
-                <ReasoningTrigger />
-                <ReasoningContent>
-                  {THOUGHTS.map((t) => (
-                    <ReasoningText key={t}>{t}</ReasoningText>
-                  ))}
-                </ReasoningContent>
-              </Reasoning>
-              <Response>
-                <ResponseContent>
-                  Pistachio is your fastest-growing flavour, up 23% this quarter
-                  <ResponseCitation index={1} />. I would churn it first on
-                  Saturday so the batch firms before the afternoon rush.
-                </ResponseContent>
-                <ResponseActions>
-                  <ResponseAction label="Copy">
-                    <CopyIcon />
-                  </ResponseAction>
-                  <ResponseAction label="Retry">
-                    <RetryIcon />
-                  </ResponseAction>
-                </ResponseActions>
-              </Response>
-            </div>
-          </Case>
-        </div>
-      </Row>
+          </div>
+        </Demo>
+      </Section>
     </div>
   )
 }
