@@ -31,7 +31,19 @@ import {
   ApprovalOptions,
   ApprovalQuestion,
 } from "@/registry/ui/approval"
-import { Source } from "@/registry/ui/source"
+import {
+  PromptInput,
+  PromptInputAttachment,
+  PromptInputAttachments,
+  PromptInputButton,
+  PromptInputMenu,
+  PromptInputModelSelect,
+  PromptInputSubmit,
+  PromptInputEditor,
+  PromptInputToolbar,
+  PromptInputTools,
+} from "@/registry/ui/prompt-input"
+import { faviconSrc, Source, SourceIcon } from "@/registry/ui/source"
 
 /* ------------------------------ demo chrome ------------------------------ */
 
@@ -599,6 +611,249 @@ function ApprovalDemo() {
   )
 }
 
+/* ----------------------------- 04 prompt input ---------------------------- */
+
+const MODELS = [
+  { value: "sprinkles-5", label: "Sprinkles 5", hint: "Flagship" },
+  { value: "vanilla-1", label: "Vanilla 1", hint: "Basic" },
+  { value: "freezer-burn", label: "Freezer Burn 0.4", hint: "Stale" },
+]
+
+const COMMANDS = [
+  { value: "compare", label: "compare", hint: "Flavour vs. last summer" },
+  { value: "churn-plan", label: "churn-plan", hint: "Draft a churn schedule" },
+  { value: "restock", label: "restock", hint: "Build a reorder list" },
+  { value: "draft-email", label: "draft-email", hint: "Write a supplier email" },
+  { value: "summarize", label: "summarize", hint: "Digest the thread so far" },
+]
+
+/*
+  Real logos, pulled through the same favicon resolver the Source component
+  uses. Hand-drawing brand marks gets them subtly wrong and re-drawing them per
+  project does not scale; a host is the one identifier every connected app
+  already has.
+*/
+const APPS = [
+  { host: "gmail.com", label: "Gmail", hint: "Read and manage mail", badge: "Connected" },
+  { host: "drive.google.com", label: "Google Drive", hint: "Docs, sheets and files" },
+  { host: "slack.com", label: "Slack", hint: "Channels and DMs" },
+  { host: "figma.com", label: "Figma", hint: "Design files and comments" },
+  { host: "notion.so", label: "Notion", hint: "Pages and databases" },
+  { host: "github.com", label: "GitHub", hint: "Repos, issues and PRs" },
+  { host: "linear.app", label: "Linear", hint: "Issues and cycles" },
+]
+
+/* Files in the workspace, the way a code editor lets you reference one. */
+const FILES = [
+  { path: "ChurnSchedule.tsx", hint: "components", glyph: "tsx" },
+  { path: "flavors.ts", hint: "lib", glyph: "ts" },
+  { path: "forecast.py", hint: "scripts", glyph: "py" },
+  { path: "menu.css", hint: "styles", glyph: "css" },
+  { path: "sales-q3.csv", hint: "data", glyph: "csv" },
+]
+
+function buildSources(onUpload: () => void) {
+  return [
+  {
+    value: "files",
+    label: "Photos & files",
+    hint: "Upload from this computer",
+    icon: <PaperclipIcon />,
+    group: "Add",
+    // Uploading is not a reference, so it opens a picker instead of becoming
+    // a chip in the sentence.
+    action: onUpload,
+  },
+  {
+    value: "web",
+    label: "Web search",
+    hint: "Real-time news and info",
+    icon: <GlobeIcon />,
+    group: "Add",
+  },
+  ...APPS.map((a) => ({
+    value: a.label.toLowerCase().replace(/\s+/g, "-"),
+    label: a.label,
+    hint: a.hint,
+    badge: a.badge,
+    group: "Apps",
+    // The same favicon the menu row shows is carried into the chip.
+    iconSrc: faviconSrc(a.host),
+    icon: <SourceIcon name={a.label} host={a.host} className="ring-0" />,
+  })),
+  ...FILES.map((f) => ({
+    value: f.path,
+    label: f.path,
+    hint: f.hint,
+    glyph: f.glyph,
+    group: "Files",
+    icon: <FileIcon />,
+  })),
+  ]
+}
+
+function PromptInputDemo() {
+  const [shape, setShape] = React.useState("rounded")
+  const [model, setModel] = React.useState("vanilla-1")
+  const [status, setStatus] = React.useState("ready")
+  const [files, setFiles] = React.useState(["sales-q3.csv"])
+  const uploadRef = React.useRef<HTMLInputElement | null>(null)
+
+  const sources = React.useMemo(
+    () => buildSources(() => uploadRef.current?.click()),
+    []
+  )
+  const [sent, setSent] = React.useState<string | null>(null)
+
+  // A real send loop, so the send-becomes-stop swap can actually be exercised.
+  React.useEffect(() => {
+    if (status !== "streaming") return
+    const id = window.setTimeout(() => setStatus("ready"), 4000)
+    return () => window.clearTimeout(id)
+  }, [status])
+
+  return (
+    <Demo
+      controls={
+        <>
+          <Segmented
+            label="Shape"
+            value={shape}
+            onChange={setShape}
+            options={[
+              { value: "rounded", label: "Rounded" },
+              { value: "pill", label: "Pill" },
+            ]}
+          />
+          <Segmented
+            label="State"
+            value={status}
+            onChange={setStatus}
+            options={[
+              { value: "ready", label: "Ready" },
+              { value: "streaming", label: "Streaming" },
+            ]}
+          />
+        </>
+      }
+    >
+      <div className="mx-auto flex w-full max-w-[46ch] flex-col gap-2">
+        <input
+          ref={uploadRef}
+          type="file"
+          multiple
+          className="hidden"
+          onChange={(e) => {
+            const picked = Array.from(e.target.files ?? []).map((f) => f.name)
+            if (picked.length) setFiles((xs) => [...new Set([...xs, ...picked])])
+            e.target.value = ""
+          }}
+        />
+        {sent ? (
+          <p className="text-[13px] text-muted-foreground">
+            Sent: <span className="text-foreground">{sent}</span>
+          </p>
+        ) : null}
+
+        <PromptInput
+          shape={shape === "pill" ? "pill" : "rounded"}
+          status={status === "streaming" ? "streaming" : "ready"}
+          onSubmit={(v) => {
+            setSent(v)
+            setStatus("streaming")
+          }}
+          onStop={() => setStatus("ready")}
+        >
+          {/* Same primitive, two triggers. */}
+          <PromptInputMenu
+            trigger="/"
+            items={COMMANDS}
+            onSelect={(c) => setSent(`/${c}`)}
+            empty="No matching command"
+          />
+          <PromptInputMenu trigger="@" items={sources} empty="No matching source" />
+
+          {files.length ? (
+            <PromptInputAttachments>
+              {files.map((f) => (
+                <PromptInputAttachment
+                  key={f}
+                  onRemove={() => setFiles((xs) => xs.filter((x) => x !== f))}
+                >
+                  {f}
+                </PromptInputAttachment>
+              ))}
+            </PromptInputAttachments>
+          ) : null}
+
+          <PromptInputEditor placeholder="Ask anything — / for commands, @ for files and apps" />
+
+          <PromptInputToolbar>
+            <PromptInputTools>
+              {/* Same menu the @ trigger opens, reached with the mouse. */}
+              <PromptInputButton label="Add context" opensMenu="@">
+                <PlusIcon />
+              </PromptInputButton>
+              <PromptInputButton label="Dictate">
+                <MicIcon />
+              </PromptInputButton>
+            </PromptInputTools>
+            <PromptInputModelSelect
+              models={MODELS}
+              value={model}
+              onValueChange={setModel}
+            />
+            <PromptInputSubmit />
+          </PromptInputToolbar>
+        </PromptInput>
+      </div>
+    </Demo>
+  )
+}
+
+function FileIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+    </svg>
+  )
+}
+
+function PaperclipIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.5 12.5 21a5 5 0 0 1-7-7l8-8a3.5 3.5 0 1 1 5 5l-8 8a2 2 0 1 1-3-3l7-7" />
+    </svg>
+  )
+}
+
+function GlobeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18" />
+    </svg>
+  )
+}
+
+function PlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  )
+}
+
+function MicIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9" y="2" width="6" height="11" rx="3" />
+      <path d="M5 10a7 7 0 0 0 14 0M12 17v5" />
+    </svg>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -694,6 +949,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
 
       <Section index="03" title="Approval">
         <ApprovalDemo />
+      </Section>
+
+      <Section index="04" title="Prompt input">
+        <PromptInputDemo />
       </Section>
     </div>
   )
