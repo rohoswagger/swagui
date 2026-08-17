@@ -260,6 +260,10 @@
   --muted-foreground: oklch(0.716 0.024 110);
 }
 
+.dark {
+  --inset-highlight: inset 0 1px 0 0 rgb(255 255 255 / 0.07);
+}
+
 /* ---------------- Surface recipes ----------------
 
    The surface knob swaps the shadow tokens themselves, so all components
@@ -276,14 +280,18 @@
 }
 
 [data-surface="bevel"] {
-  --shadow-hairline: 0 0 0 0.5px color-mix(in oklch, var(--foreground) 18%, transparent);
+  --shadow-hairline: 0 0 0 0.5px color-mix(in oklch, var(--foreground) 20%, transparent);
   --shadow-raised:
-    0 0 0 0.5px color-mix(in oklch, var(--foreground) 18%, transparent),
+    0 0 0 0.5px color-mix(in oklch, var(--foreground) 20%, transparent),
     0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
   --shadow-overlay:
-    0 0 0 0.5px color-mix(in oklch, var(--foreground) 18%, transparent),
+    0 0 0 0.5px color-mix(in oklch, var(--foreground) 20%, transparent),
     0 12px 32px -8px rgb(0 0 0 / 0.12);
-  --inset-highlight: inset 0 0 0 1px color-mix(in oklch, white 70%, transparent);
+  /* A full white inner ring is invisible on a near-white card. What reads as
+     a bevel is directional: light along the top edge, shade along the
+     bottom, so the surface looks lit from above rather than outlined. */
+  --inset-highlight:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 0 rgb(0 0 0 / 0.07);
 }
 
 [data-surface="glass"] {
@@ -439,8 +447,23 @@
   background-attachment: local;
 }
 
-.dark {
-  --inset-highlight: inset 0 1px 1px rgb(255 255 255 / 0.06);
+/* Each surface needs its own dark highlight, and these must outrank a bare
+   .dark rule — equal specificity would otherwise let source order silently
+   erase the surface recipe. */
+.dark[data-surface="elevation"],
+.dark [data-surface="elevation"] {
+  --inset-highlight: inset 0 1px 0 0 rgb(255 255 255 / 0.07);
+}
+
+.dark[data-surface="bevel"],
+.dark [data-surface="bevel"] {
+  --inset-highlight:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.11), inset 0 -1px 0 0 rgb(0 0 0 / 0.4);
+}
+
+.dark[data-surface="glass"],
+.dark [data-surface="glass"] {
+  --inset-highlight: inset 0 1px 0 0 var(--glass-rim);
 }
 
 /* ---------------- Buttons under glass ----------------

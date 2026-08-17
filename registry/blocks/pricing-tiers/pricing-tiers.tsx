@@ -65,8 +65,8 @@ function PricingTiers({
               className={cn(
                 "bg-card relative flex flex-col rounded-2xl border p-8",
                 t.featured
-                  ? "brand-glow shadow-[var(--shadow-overlay),var(--inset-highlight)] dark:shadow-(--shadow-overlay)"
-                  : "shadow-[var(--shadow-raised),var(--inset-highlight)] dark:shadow-(--shadow-raised)"
+                  ? "brand-glow shadow-[var(--shadow-overlay),var(--inset-highlight)]"
+                  : "shadow-[var(--shadow-raised),var(--inset-highlight)]"
               )}
             >
               <div className="mb-5 flex items-center justify-between gap-3">

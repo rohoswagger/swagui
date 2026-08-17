@@ -43,7 +43,7 @@ function TestimonialGrid({
           {items.map((t, i) => (
             <RevealItem
               key={i}
-              className="bg-card flex flex-col rounded-xl border p-7 shadow-[var(--shadow-raised),var(--inset-highlight)] dark:shadow-(--shadow-raised)"
+              className="bg-card flex flex-col rounded-xl border p-7 shadow-[var(--shadow-raised),var(--inset-highlight)]"
             >
               <blockquote className="text-[0.9375rem] leading-[1.7] text-pretty">
                 {t.quote}

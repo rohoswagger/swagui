@@ -80,7 +80,7 @@
       "destructive": "oklch(0.68 0.18 25)",
       "success": "oklch(0.72 0.12 155)",
       "warning": "oklch(0.78 0.13 78)",
-      "inset-highlight": "inset 0 1px 1px rgb(255 255 255 / 0.06)"
+      "inset-highlight": "inset 0 1px 0 0 rgb(255 255 255 / 0.07)"
     }
   },
   "css": {
@@ -180,10 +180,10 @@
       "--inset-highlight": "inset 0 1px 1px rgb(255 255 255 / 0.8)"
     },
     "[data-surface=\"bevel\"]": {
-      "--shadow-hairline": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 18%, transparent)",
-      "--shadow-raised": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 18%, transparent),\n    0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)",
-      "--shadow-overlay": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 18%, transparent),\n    0 12px 32px -8px rgb(0 0 0 / 0.12)",
-      "--inset-highlight": "inset 0 0 0 1px color-mix(in oklch, white 70%, transparent)"
+      "--shadow-hairline": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 20%, transparent)",
+      "--shadow-raised": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 20%, transparent),\n    0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)",
+      "--shadow-overlay": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 20%, transparent),\n    0 12px 32px -8px rgb(0 0 0 / 0.12)",
+      "--inset-highlight": "inset 0 1px 0 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 0 rgb(0 0 0 / 0.07)"
     },
     "[data-surface=\"glass\"]": {
       "--card": "color-mix(in oklch, var(--background) 62%, transparent)",
@@ -206,7 +206,8 @@
       "--glass-rim": "rgb(255 255 255 / 0.16)",
       "--glass-rim-control": "rgb(255 255 255 / 0.18)",
       "--glass-rim-soft": "rgb(255 255 255 / 0.08)",
-      "--glass-shade": "rgb(0 0 0 / 0.3)"
+      "--glass-shade": "rgb(0 0 0 / 0.3)",
+      "--inset-highlight": "inset 0 1px 0 0 var(--glass-rim)"
     },
     "[data-surface=\"glass\"] .surface,\n[data-surface=\"glass\"] [data-slot=\"card\"],\n[data-surface=\"glass\"] [data-slot=\"alert\"],\n[data-surface=\"glass\"] [data-slot=\"popover-content\"],\n[data-surface=\"glass\"] [data-slot=\"dropdown-menu-content\"],\n[data-surface=\"glass\"] [data-slot=\"dialog-content\"],\n[data-surface=\"glass\"] [data-slot=\"alert-dialog-content\"],\n[data-surface=\"glass\"] [data-slot=\"sheet-content\"],\n[data-surface=\"glass\"] [data-slot=\"drawer-content\"],\n[data-surface=\"glass\"] [data-slot=\"select-content\"],\n[data-surface=\"glass\"] [data-slot=\"command\"],\n[data-surface=\"glass\"] [data-slot=\"menubar-content\"],\n[data-surface=\"glass\"] [data-slot=\"context-menu-content\"],\n[data-surface=\"glass\"] [data-slot=\"hover-card-content\"],\n[data-surface=\"glass\"] [data-slot=\"navigation-menu-content\"]": {
       "position": "relative",
@@ -244,6 +245,12 @@
       "position": "relative",
       "background-image": "radial-gradient(\n      42rem 32rem at 12% 8%,\n      color-mix(in oklch, var(--brand) 18%, transparent),\n      transparent 60%\n    ),\n    radial-gradient(\n      34rem 28rem at 88% 22%,\n      color-mix(in oklch, var(--foreground) 12%, transparent),\n      transparent 62%\n    ),\n    radial-gradient(\n      38rem 30rem at 62% 88%,\n      color-mix(in oklch, var(--brand) 12%, transparent),\n      transparent 58%\n    )",
       "background-attachment": "local"
+    },
+    ".dark[data-surface=\"elevation\"],\n.dark [data-surface=\"elevation\"]": {
+      "--inset-highlight": "inset 0 1px 0 0 rgb(255 255 255 / 0.07)"
+    },
+    ".dark[data-surface=\"bevel\"],\n.dark [data-surface=\"bevel\"]": {
+      "--inset-highlight": "inset 0 1px 0 0 rgb(255 255 255 / 0.11), inset 0 -1px 0 0 rgb(0 0 0 / 0.4)"
     },
     "[data-surface=\"glass\"] [data-slot=\"button\"],\n[data-surface=\"glass\"] [data-slot=\"toggle\"],\n[data-surface=\"glass\"] [data-slot=\"toggle-group-item\"]": {
       "-webkit-backdrop-filter": "blur(var(--glass-blur-control)) saturate(var(--glass-saturate))",

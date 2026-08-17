@@ -29,7 +29,7 @@ function CtaBand({
       {...props}
     >
       <Reveal className="mx-auto w-full max-w-[62rem]">
-        <div className="brand-glow bg-card relative overflow-hidden rounded-2xl border px-8 py-16 text-center shadow-[var(--shadow-raised),var(--inset-highlight)] sm:px-16 dark:shadow-(--shadow-raised)">
+        <div className="brand-glow bg-card relative overflow-hidden rounded-2xl border px-8 py-16 text-center shadow-[var(--shadow-raised),var(--inset-highlight)] sm:px-16">
           <h2 className="mx-auto max-w-[18ch] font-[family-name:var(--font-display)] text-[clamp(1.875rem,3.5vw,2.75rem)] leading-[1.1] text-balance">
             {title}
           </h2>

@@ -54,7 +54,7 @@ function FeatureGrid({
           {features.map((f, i) => (
             <RevealItem
               key={i}
-              className="bg-card rounded-xl border p-7 shadow-[var(--shadow-raised),var(--inset-highlight)] dark:shadow-(--shadow-raised)"
+              className="bg-card rounded-xl border p-7 shadow-[var(--shadow-raised),var(--inset-highlight)]"
             >
               {f.icon ? (
                 <div className="bg-accent text-foreground mb-5 flex size-9 items-center justify-center rounded-md [&_svg]:size-4">
