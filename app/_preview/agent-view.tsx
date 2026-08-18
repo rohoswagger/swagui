@@ -43,6 +43,14 @@ import {
   PromptInputToolbar,
   PromptInputTools,
 } from "@/registry/ui/prompt-input"
+import {
+  SelectionActions,
+  SelectionActionsAction,
+  SelectionActionsContent,
+  SelectionActionsInput,
+  SelectionActionsMore,
+  SelectionActionsToolbar,
+} from "@/registry/ui/selection-actions"
 import { faviconSrc, Source, SourceIcon } from "@/registry/ui/source"
 
 /* ------------------------------ demo chrome ------------------------------ */
@@ -854,6 +862,119 @@ function MicIcon() {
   )
 }
 
+/* -------------------------- 05 selection actions -------------------------- */
+
+const PASSAGE =
+  "Pistachio holds the top slot all weekend. Churn it first thing Saturday so the batch has time to firm up before the afternoon rush. Rocky Road can wait until Monday — it has missed the 40-scoop threshold three weeks running, and the freezer window is better spent on the line that is actually growing."
+
+function SelectionActionsDemo() {
+  const [last, setLast] = React.useState<{ action: string; text: string } | null>(
+    null
+  )
+
+  return (
+    <Demo
+      action={
+        last ? (
+          <IconButton label="Clear" onClick={() => setLast(null)}>
+            <RetryIcon />
+          </IconButton>
+        ) : undefined
+      }
+    >
+      <div className="flex flex-col gap-4">
+        <SelectionActions onAction={(action, text) => setLast({ action, text })}>
+          <SelectionActionsContent className="max-w-[62ch] text-[15px] leading-relaxed text-foreground">
+            {PASSAGE}
+          </SelectionActionsContent>
+
+          <SelectionActionsToolbar>
+            <SelectionActionsInput />
+            <SelectionActionsAction value="explain" icon={<HelpIcon />}>
+              Explain
+            </SelectionActionsAction>
+            <SelectionActionsAction value="improve" icon={<WandIcon />}>
+              Improve
+            </SelectionActionsAction>
+            <SelectionActionsMore>
+              <SelectionActionsAction value="shorten" icon={<ShortenIcon />}>
+                Shorten
+              </SelectionActionsAction>
+              <SelectionActionsAction value="tone" icon={<ToneIcon />}>
+                Tone
+              </SelectionActionsAction>
+              <SelectionActionsAction value="grammar" icon={<GrammarIcon />}>
+                Grammar
+              </SelectionActionsAction>
+            </SelectionActionsMore>
+          </SelectionActionsToolbar>
+        </SelectionActions>
+
+        {last ? (
+          <div className="rounded-lg border border-border bg-background p-3 text-[13px]">
+            <p className="mono text-[10px] uppercase" style={{ letterSpacing: "0.14em", color: "var(--muted-fg)" }}>
+              {last.action}
+            </p>
+            <p className="mt-1 text-muted-foreground">
+              &ldquo;{last.text}&rdquo;
+            </p>
+          </div>
+        ) : (
+          <p className="text-[12px]" style={{ color: "var(--muted-fg)" }}>
+            Highlight any part of the passage.
+          </p>
+        )}
+      </div>
+    </Demo>
+  )
+}
+
+function HelpIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.2 9.5a3 3 0 0 1 5.6 1.2c0 2-3 2.3-3 4" />
+      <path d="M12 17.5h.01" />
+    </svg>
+  )
+}
+
+function WandIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.6 3.2a.4.4 0 0 1 .8 0l1 3.9a2 2 0 0 0 1.5 1.4l3.9 1a.4.4 0 0 1 0 .8l-3.9 1a2 2 0 0 0-1.5 1.5l-1 3.9a.4.4 0 0 1-.8 0l-1-3.9a2 2 0 0 0-1.4-1.5l-4-1a.4.4 0 0 1 0-.8l4-1a2 2 0 0 0 1.4-1.4Z" />
+      <path d="M18.4 15.3a.25.25 0 0 1 .5 0l.5 1.8a1 1 0 0 0 .7.7l1.8.5a.25.25 0 0 1 0 .5l-1.8.5a1 1 0 0 0-.7.7l-.5 1.8a.25.25 0 0 1-.5 0l-.5-1.8a1 1 0 0 0-.7-.7l-1.8-.5a.25.25 0 0 1 0-.5l1.8-.5a1 1 0 0 0 .7-.7Z" />
+    </svg>
+  )
+}
+
+function ToneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9 14.5a4 4 0 0 0 6 0" />
+      <path d="M9.5 9.5h.01M14.5 9.5h.01" />
+    </svg>
+  )
+}
+
+function GrammarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M7 15V9h3.2M8.6 12.4h1.6M13.4 9h3.6M15.2 9v6" />
+    </svg>
+  )
+}
+
+function ShortenIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 7h16M4 12h10M4 17h6" />
+    </svg>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -953,6 +1074,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
 
       <Section index="04" title="Prompt input">
         <PromptInputDemo />
+      </Section>
+
+      <Section index="05" title="Selection actions">
+        <SelectionActionsDemo />
       </Section>
     </div>
   )

@@ -57,12 +57,14 @@
       "ease-swagui": "cubic-bezier(0.22, 1, 0.36, 1)",
       "ease-out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
       "ease-spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "ease-soft": "cubic-bezier(0.4, 0, 0.2, 1)",
       "duration-press": "120ms",
       "duration-fast": "180ms",
       "duration-base": "260ms",
       "duration-slow": "420ms",
       "animate-shimmer": "swagui-shimmer 1.8s linear infinite",
-      "animate-snake": "swagui-snake 3.6s linear infinite"
+      "animate-snake": "swagui-snake 3.6s linear infinite",
+      "animate-emerge": "swagui-emerge var(--duration-base) var(--ease-soft) both"
     },
     "light": {
       "font-display": "var(--font-body)",
@@ -122,6 +124,16 @@
     "@keyframes swagui-snake": {
       "to": {
         "--snake-angle": "360deg"
+      }
+    },
+    "@keyframes swagui-emerge": {
+      "from": {
+        "opacity": "0",
+        "filter": "blur(5px)"
+      },
+      "to": {
+        "opacity": "1",
+        "filter": "blur(0)"
       }
     },
     "@keyframes swagui-wave": {
@@ -405,6 +417,16 @@
         "animation": "var(--animate-snake)",
         "pointer-events": "none"
       },
+      ".emerge": {
+        "animation": "var(--animate-emerge)"
+      },
+      ".no-scrollbar": {
+        "scrollbar-width": "none",
+        "-ms-overflow-style": "none"
+      },
+      ".no-scrollbar::-webkit-scrollbar": {
+        "display": "none"
+      },
       ".wave-once": {
         "--wave-tone": "var(--success)"
       },
@@ -442,6 +464,10 @@
       ".wave-once::before": {
         "animation": "none",
         "background": "color-mix(in oklch, var(--wave-tone) 12%, transparent)"
+      },
+      ".emerge": {
+        "animation": "none",
+        "opacity": "1"
       }
     }
   }

@@ -82,6 +82,11 @@
      action lands — never for anything collapsing, where the overshoot would
      read as a glitch rather than as weight. */
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Eases in as well as out, so the middle of the change is where most of it
+     happens. The house curve is 76% finished a quarter of the way through,
+     which is right for something snapping into place and far too abrupt for
+     something dissolving into view. */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --duration-press: 120ms;
   --duration-fast: 180ms;
   --duration-base: 260ms;
@@ -95,6 +100,11 @@
   /* A light travelling the perimeter, for a surface that is waiting on someone.
      Slow enough to read as patient rather than as a loading spinner. */
   --animate-snake: swagui-snake 3.6s linear infinite;
+
+  /* A small surface coming into focus where it already belongs, rather than
+     travelling in from a direction it never was. For anything summoned by the
+     thing it sits on: selection toolbars, popovers, menus. */
+  --animate-emerge: swagui-emerge var(--duration-base) var(--ease-soft) both;
 }
 
 @keyframes swagui-shimmer {
@@ -118,6 +128,27 @@
 @keyframes swagui-snake {
   to {
     --snake-angle: 360deg;
+  }
+}
+
+/*
+   Depth rather than displacement, and depth only. Sliding implies the surface
+   came from somewhere off-screen; this one was conjured in place, so it simply
+   resolves out of blur.
+
+   Deliberately no scale. Growing a bar into place moves every control inside
+   it away from every other one, which reads as the contents drifting apart
+   rather than as the surface arriving — and on anything holding a row of
+   labels that drift is the first thing the eye catches.
+*/
+@keyframes swagui-emerge {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -743,6 +774,24 @@
     pointer-events: none;
   }
 
+  /* Applied to the element that moves, never to the one that is positioned:
+     a keyframe writing transform overrides the inline transform a positioned
+     parent uses to centre itself, which shows up as a jump on arrival. */
+  .emerge {
+    animation: var(--animate-emerge);
+  }
+
+  /* Scrolls without advertising it. For short strips of controls where a
+     scrollbar would be most of the height of the thing it is scrolling. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* One pass of colour across a surface that just resolved. --wave-tone lets
      the caller decide what landed: a success is worth celebrating, a deletion
      is not. Requires a positioned, clipped parent. */
@@ -810,5 +859,11 @@
   .wave-once::before {
     animation: none;
     background: color-mix(in oklch, var(--wave-tone) 12%, transparent);
+  }
+
+  /* Appearing still needs to be noticed; only the movement and the blur go. */
+  .emerge {
+    animation: none;
+    opacity: 1;
   }
 }
