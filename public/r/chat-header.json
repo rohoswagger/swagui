@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-header",
+  "type": "registry:ui",
+  "title": "Chat Header",
+  "description": "A composable conversation header with identity, title, host-owned actions and optional keyboard shortcuts.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/button.json",
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/chat-header.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Button } from \"@/registry/ui/button\"\n\nfunction ChatHeader({ className, ...props }: React.ComponentProps<\"header\">) {\n  return (\n    <header\n      data-slot=\"chat-header\"\n      className={cn(\n        \"flex h-12 shrink-0 items-center gap-3 border-b border-border bg-background px-3\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ChatHeaderIdentity({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"chat-header-identity\"\n      className={cn(\n        \"flex min-w-0 shrink-0 items-center gap-2 text-sm font-medium text-muted-foreground\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ChatHeaderDivider({ className, children = \"/\", ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"chat-header-divider\"\n      aria-hidden\n      className={cn(\"shrink-0 text-muted-foreground/45\", className)}\n      {...props}\n    >\n      {children}\n    </span>\n  )\n}\n\nfunction ChatHeaderTitle({ className, ...props }: React.ComponentProps<\"h1\">) {\n  return (\n    <h1\n      data-slot=\"chat-header-title\"\n      className={cn(\"min-w-0 flex-1 truncate text-sm font-medium\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction ChatHeaderActions({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"chat-header-actions\"\n      className={cn(\"ml-auto flex shrink-0 items-center gap-1.5\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction ChatHeaderAction({\n  className,\n  label,\n  size = \"icon-sm\",\n  variant = \"outline\",\n  children,\n  ...props\n}: React.ComponentProps<typeof Button> & { label: string }) {\n  return (\n    <Button\n      type=\"button\"\n      data-slot=\"chat-header-action\"\n      aria-label={label}\n      title={label}\n      size={size}\n      variant={variant}\n      className={cn(\"rounded-lg\", className)}\n      {...props}\n    >\n      {children}\n    </Button>\n  )\n}\n\nfunction ChatHeaderShortcut({ className, ...props }: React.ComponentProps<\"kbd\">) {\n  return (\n    <kbd\n      data-slot=\"chat-header-shortcut\"\n      className={cn(\n        \"hidden h-4 min-w-4 items-center justify-center rounded-sm border border-border bg-muted px-1 font-mono text-[9px] font-normal text-muted-foreground sm:inline-flex\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport {\n  ChatHeader,\n  ChatHeaderIdentity,\n  ChatHeaderDivider,\n  ChatHeaderTitle,\n  ChatHeaderActions,\n  ChatHeaderAction,\n  ChatHeaderShortcut,\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

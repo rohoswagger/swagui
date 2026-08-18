@@ -1648,6 +1648,22 @@
       ]
     },
     {
+      "name": "chat-header",
+      "type": "registry:ui",
+      "title": "Chat Header",
+      "description": "A composable conversation header with identity, title, host-owned actions and optional keyboard shortcuts.",
+      "files": [
+        {
+          "path": "registry/ui/chat-header.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",

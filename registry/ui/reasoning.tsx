@@ -204,16 +204,21 @@ function ReasoningRow({
     <div
       data-slot="reasoning-row"
       className={cn(
-        "flex min-w-0 items-baseline gap-2 text-sm",
+        "grid min-w-0 grid-cols-[4rem_minmax(0,1fr)] items-baseline gap-2 text-sm",
         "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-swagui)",
         className
       )}
       {...props}
     >
       {label ? (
-        <span className="shrink-0 font-medium text-foreground">{label}</span>
+        <span className="truncate font-medium text-foreground">{label}</span>
       ) : null}
-      <span className="mono min-w-0 truncate text-[13px] text-muted-foreground">
+      <span
+        className={cn(
+          "mono min-w-0 truncate text-[13px] text-muted-foreground",
+          !label && "col-span-2"
+        )}
+      >
         {children}
       </span>
     </div>

@@ -12,6 +12,7 @@ import {
 import { BlocksView } from "./blocks-view"
 import { ComponentsView } from "./components-view"
 import { AgentView } from "./agent-view"
+import { ChatView } from "./chat-view"
 import { LogoView } from "./logo-view"
 import { ACCENTS, BASES, PAIRINGS, SURFACES } from "./config"
 import { ArrowRight, IconLib, IconProvider, IconWeight, Search } from "./icons"
@@ -22,7 +23,7 @@ type State = {
   surface: string
   base: string
   theme: "light" | "dark"
-  view: "marketing" | "blocks" | "app" | "components" | "agent" | "logo"
+  view: "marketing" | "blocks" | "app" | "components" | "agent" | "chat" | "logo"
   density: "comfortable" | "compact"
   icons: IconLib
   iconWeight: IconWeight
@@ -212,6 +213,7 @@ export function PreviewClient() {
   // Only the component gallery flows into horizontal columns; the other views
   // are page-shaped and would be destroyed by it.
   const horizontal = state.view === "components"
+  const fixed = state.view === "chat"
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-white">
@@ -220,7 +222,7 @@ export function PreviewClient() {
         <main
           className={`preview-root relative min-h-0 flex-1 ${isDark ? "dark" : ""} ${
             state.grain ? "grain" : ""
-          } ${horizontal ? "overflow-x-auto overflow-y-hidden" : "overflow-y-auto"} ${
+          } ${horizontal ? "overflow-x-auto overflow-y-hidden" : fixed ? "overflow-hidden" : "overflow-y-auto"} ${
             state.surface === "glass" ? "glass-ground" : ""
           }`}
           data-theme={state.theme}
@@ -236,6 +238,8 @@ export function PreviewClient() {
             <BlocksView />
           ) : state.view === "agent" ? (
             <AgentView displayStyle={displayStyle} />
+          ) : state.view === "chat" ? (
+            <ChatView />
           ) : state.view === "logo" ? (
             <LogoView displayStyle={displayStyle} />
           ) : state.view === "components" ? (
@@ -258,6 +262,7 @@ export function PreviewClient() {
               { id: "components" as const, label: "Components" },
               { id: "app" as const, label: "App" },
               { id: "agent" as const, label: "Agent" },
+              { id: "chat" as const, label: "Chat" },
               { id: "logo" as const, label: "Logo" },
             ]}
             onChange={(v) => set("view", v)}

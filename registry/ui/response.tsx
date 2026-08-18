@@ -52,7 +52,7 @@ function Response({
       <div
         data-slot="response"
         data-streaming={streaming || undefined}
-        className={cn("flex w-full flex-col gap-3", className)}
+        className={cn("group/response flex w-full flex-col gap-3", className)}
         {...props}
       >
         {children}
@@ -244,7 +244,11 @@ function ResponseActions({ className, ...props }: React.ComponentProps<"div">) {
         // Pulled left by the button's own padding so the first glyph sits on
         // the same optical edge as the text above, not indented from it.
         "-ml-1.5 flex items-center gap-0.5",
-        "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-swagui)",
+        "pointer-events-none translate-y-0.5 opacity-0",
+        "transition-[opacity,transform] duration-(--duration-fast) ease-(--ease-swagui)",
+        "group-hover/response:pointer-events-auto group-hover/response:translate-y-0 group-hover/response:opacity-100",
+        "group-focus-within/response:pointer-events-auto group-focus-within/response:translate-y-0 group-focus-within/response:opacity-100",
+        "[@media(hover:none)]:pointer-events-auto [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100",
         className
       )}
       {...props}
