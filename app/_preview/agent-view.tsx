@@ -63,6 +63,17 @@ import {
   ToolCalls,
 } from "@/registry/ui/tool-call"
 import { Task, Tasks } from "@/registry/ui/tasks"
+import {
+  Artifact,
+  ArtifactAction,
+  ArtifactActions,
+  ArtifactContent,
+  ArtifactDescription,
+  ArtifactMeta,
+  ArtifactOpenMark,
+  ArtifactPreview,
+  ArtifactTitle,
+} from "@/registry/ui/artifact"
 import { faviconSrc, Source, SourceIcon } from "@/registry/ui/source"
 
 /* ------------------------------ demo chrome ------------------------------ */
@@ -1248,6 +1259,225 @@ function TasksFailure() {
   )
 }
 
+/* ------------------------------- 08 artifact ------------------------------ */
+
+type ArtifactScene = "app" | "slides" | "document" | "unavailable"
+
+function ArtifactDemo() {
+  const [scene, setScene] = React.useState<ArtifactScene>("app")
+  const [opened, setOpened] = React.useState("")
+
+  React.useEffect(() => setOpened(""), [scene])
+
+  return (
+    <Demo
+      controls={
+        <Segmented
+          label="Artifact"
+          value={scene}
+          onChange={setScene}
+          options={[
+            { value: "app", label: "Live app" },
+            { value: "slides", label: "Slides" },
+            { value: "document", label: "Document" },
+            { value: "unavailable", label: "Unavailable" },
+          ]}
+        />
+      }
+    >
+      <div className="mx-auto flex max-w-[68ch] flex-col gap-3">
+        <Response>
+          <ResponseContent>
+            {scene === "app"
+              ? "The inventory dashboard is ready to explore."
+              : scene === "slides"
+                ? "I turned the summer analysis into a presentation."
+                : scene === "document"
+                  ? "The supplier brief is ready."
+                  : "The original artifact is still part of this conversation, but its file is no longer available."}
+          </ResponseContent>
+        </Response>
+
+        {scene === "app" ? (
+          <Artifact
+            kind="app"
+            onOpen={() => setOpened("Opened in app preview")}
+            openLabel="Open inventory dashboard"
+          >
+            <ArtifactPreview>
+              <AppArtifactPreview />
+            </ArtifactPreview>
+            <ArtifactContent>
+              <ArtifactTitle>Inventory dashboard</ArtifactTitle>
+              <ArtifactDescription>Running on localhost:4317</ArtifactDescription>
+            </ArtifactContent>
+            <ArtifactActions>
+              <ArtifactAction aria-label="More artifact actions">
+                <MoreIcon />
+              </ArtifactAction>
+            </ArtifactActions>
+            <ArtifactOpenMark />
+          </Artifact>
+        ) : null}
+
+        {scene === "slides" ? (
+          <Artifact
+            kind="presentation"
+            onOpen={() => setOpened("Opened in presentation viewer")}
+            openLabel="Open summer flavor review presentation"
+          >
+            <ArtifactPreview>
+              <SlideArtifactPreview />
+            </ArtifactPreview>
+            <ArtifactContent>
+              <ArtifactTitle>Summer flavor review.pptx</ArtifactTitle>
+              <ArtifactDescription>12 slides · ready to present</ArtifactDescription>
+              <ArtifactMeta>PPTX · 4.8 MB</ArtifactMeta>
+            </ArtifactContent>
+            <ArtifactActions>
+              <ArtifactAction aria-label="Download presentation">
+                <DownloadIcon />
+              </ArtifactAction>
+            </ArtifactActions>
+            <ArtifactOpenMark />
+          </Artifact>
+        ) : null}
+
+        {scene === "document" ? (
+          <Artifact
+            kind="document"
+            onOpen={() => setOpened("Opened in document viewer")}
+            openLabel="Open supplier brief document"
+          >
+            <ArtifactPreview>
+              <DocumentArtifactPreview />
+            </ArtifactPreview>
+            <ArtifactContent>
+              <ArtifactTitle>Supplier brief.docx</ArtifactTitle>
+              <ArtifactDescription>
+                Vendor shortlist, lead times and next steps
+              </ArtifactDescription>
+              <ArtifactMeta>DOCX · 184 KB</ArtifactMeta>
+            </ArtifactContent>
+            <ArtifactOpenMark />
+          </Artifact>
+        ) : null}
+
+        {scene === "unavailable" ? (
+          <Artifact
+            kind="spreadsheet"
+            status="error"
+            onOpen={() => {}}
+            openLabel="Sales forecast is unavailable"
+          >
+            <ArtifactPreview>
+              <SheetArtifactPreview />
+            </ArtifactPreview>
+            <ArtifactContent>
+              <ArtifactTitle>Sales forecast.xlsx</ArtifactTitle>
+              <ArtifactDescription>File unavailable · it may have been moved</ArtifactDescription>
+              <ArtifactMeta>XLSX · created 2 days ago</ArtifactMeta>
+            </ArtifactContent>
+            <ArtifactActions>
+              <ArtifactAction aria-label="Regenerate spreadsheet">
+                <RetryIcon />
+              </ArtifactAction>
+            </ArtifactActions>
+            <ArtifactOpenMark />
+          </Artifact>
+        ) : null}
+
+        <div aria-live="polite" className="h-4 text-[11px] text-muted-foreground">
+          {opened}
+        </div>
+      </div>
+    </Demo>
+  )
+}
+
+function AppArtifactPreview() {
+  return (
+    <div className="size-full bg-background p-1.5">
+      <div className="flex h-full flex-col overflow-hidden rounded-md border border-border bg-card shadow-(--shadow-hairline)">
+        <div className="flex h-3 items-center gap-1 border-b border-border px-1.5">
+          <span className="size-1 rounded-full bg-muted-foreground/35" />
+          <span className="size-1 rounded-full bg-muted-foreground/25" />
+          <span className="size-1 rounded-full bg-muted-foreground/20" />
+        </div>
+        <div className="grid flex-1 grid-cols-[1fr_1.4fr] gap-1 p-1">
+          <div className="rounded-sm bg-muted" />
+          <div className="flex items-end gap-0.5 rounded-sm bg-muted px-1 pb-1">
+            {[35, 58, 43, 76, 64].map((height, index) => (
+              <span
+                key={index}
+                className="flex-1 rounded-[1px] bg-brand/65"
+                style={{ height: `${height}%` }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SlideArtifactPreview() {
+  return (
+    <div className="size-full bg-muted p-1.5">
+      <div className="flex h-full flex-col justify-between rounded-sm bg-background p-1.5 shadow-(--shadow-hairline)">
+        <div>
+          <div className="h-1.5 w-3/4 rounded-full bg-foreground/80" />
+          <div className="mt-1 h-1 w-1/2 rounded-full bg-muted-foreground/25" />
+        </div>
+        <div className="flex h-8 items-end gap-1">
+          {[52, 76, 43, 65].map((height, index) => (
+            <span
+              key={index}
+              className="flex-1 rounded-t-[2px] bg-brand/70"
+              style={{ height: `${height}%` }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DocumentArtifactPreview() {
+  return (
+    <div className="size-full bg-muted p-1.5">
+      <div className="flex h-full flex-col rounded-sm bg-background p-2 shadow-(--shadow-hairline)">
+        <div className="h-1.5 w-5 rounded-full bg-brand/75" />
+        <div className="mt-2 flex flex-col gap-1">
+          <div className="h-1 w-full rounded-full bg-foreground/70" />
+          <div className="h-1 w-4/5 rounded-full bg-muted-foreground/25" />
+          <div className="h-1 w-full rounded-full bg-muted-foreground/25" />
+          <div className="h-1 w-3/5 rounded-full bg-muted-foreground/25" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SheetArtifactPreview() {
+  return (
+    <div className="size-full bg-muted p-1.5">
+      <div className="grid h-full grid-cols-3 grid-rows-4 gap-px overflow-hidden rounded-sm bg-border p-px shadow-(--shadow-hairline)">
+        {Array.from({ length: 12 }, (_, index) => (
+          <span
+            key={index}
+            className={cn(
+              "bg-background",
+              index < 3 && "bg-brand/18",
+              index % 3 === 0 && index >= 3 && "bg-success/12"
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -1273,6 +1503,24 @@ function ThumbIcon({ className }: { className?: string }) {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <path d="M7 11v9H4a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1z" />
       <path d="M7 11l4-8a2 2 0 0 1 3 1.8V9h4.6a2 2 0 0 1 2 2.5l-1.6 7A2 2 0 0 1 17 20H7" />
+    </svg>
+  )
+}
+
+function MoreIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <circle cx="5" cy="12" r="1.5" />
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="19" cy="12" r="1.5" />
+    </svg>
+  )
+}
+
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M12 3v12m-5-5 5 5 5-5M5 21h14" />
     </svg>
   )
 }
@@ -1359,6 +1607,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
 
       <Section index="07" title="Tasks">
         <TasksDemo />
+      </Section>
+
+      <Section index="08" title="Artifact">
+        <ArtifactDemo />
       </Section>
     </div>
   )

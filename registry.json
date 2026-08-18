@@ -1632,6 +1632,22 @@
       ]
     },
     {
+      "name": "artifact",
+      "type": "registry:ui",
+      "title": "Artifact",
+      "description": "A durable result intentionally presented by an assistant, with host-owned opening, preview and recovery actions.",
+      "files": [
+        {
+          "path": "registry/ui/artifact.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",
