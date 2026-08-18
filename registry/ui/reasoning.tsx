@@ -149,7 +149,7 @@ function ReasoningContent({
       data-slot="reasoning-content"
       className={cn(
         "overflow-hidden",
-        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+        "data-[state=open]:animate-reveal data-[state=closed]:animate-conceal",
         className
       )}
       {...props}

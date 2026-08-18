@@ -105,6 +105,13 @@
      travelling in from a direction it never was. For anything summoned by the
      thing it sits on: selection toolbars, popovers, menus. */
   --animate-emerge: swagui-emerge var(--duration-base) var(--ease-soft) both;
+
+  /* Disclosure, for Radix Collapsible specifically. The stock accordion
+     keyframes read --radix-accordion-content-height, which a collapsible never
+     sets, so they fall through to height:auto — and 0 to auto does not animate
+     at all. Exits run shorter than entrances. */
+  --animate-reveal: swagui-reveal var(--duration-base) var(--ease-soft);
+  --animate-conceal: swagui-conceal var(--duration-fast) var(--ease-soft);
 }
 
 @keyframes swagui-shimmer {
@@ -149,6 +156,30 @@
   to {
     opacity: 1;
     filter: blur(0);
+  }
+}
+
+/* Height and opacity together: the box growing while its contents are already
+   at full strength reads as a wipe, not a reveal. */
+@keyframes swagui-reveal {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes swagui-conceal {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
   }
 }
 

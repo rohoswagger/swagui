@@ -51,6 +51,17 @@ import {
   SelectionActionsMore,
   SelectionActionsToolbar,
 } from "@/registry/ui/selection-actions"
+import {
+  ToolCall,
+  ToolCallDiff,
+  ToolCallField,
+  ToolCallFields,
+  ToolCallFile,
+  ToolCallFiles,
+  ToolCallImage,
+  ToolCallOutput,
+  ToolCalls,
+} from "@/registry/ui/tool-call"
 import { faviconSrc, Source, SourceIcon } from "@/registry/ui/source"
 
 /* ------------------------------ demo chrome ------------------------------ */
@@ -975,6 +986,162 @@ function ShortenIcon() {
   )
 }
 
+/* ------------------------------ 06 tool calls ----------------------------- */
+
+type ToolScene = "run" | "kinds" | "failure" | "live"
+
+function ToolCallsDemo() {
+  const [scene, setScene] = React.useState<ToolScene>("run")
+
+  return (
+    <Demo
+      controls={
+        <Segmented
+          label="Scene"
+          value={scene}
+          onChange={setScene}
+          options={[
+            { value: "run", label: "A run" },
+            { value: "kinds", label: "Every kind" },
+            { value: "failure", label: "Failure" },
+            { value: "live", label: "In flight" },
+          ]}
+        />
+      }
+    >
+      <div className="min-h-[19rem]">
+        {scene === "run" ? <SceneRun /> : null}
+        {scene === "kinds" ? <SceneKinds /> : null}
+        {scene === "failure" ? <SceneFailure /> : null}
+        {scene === "live" ? <SceneLive /> : null}
+      </div>
+    </Demo>
+  )
+}
+
+/** The shape a real turn takes: think, read, change, verify, report. */
+function SceneRun() {
+  return (
+    <div className="flex flex-col gap-3">
+      <ToolCalls defaultOpen>
+        <ToolCall kind="think" label="Planned the churn schedule" />
+        <ToolCall kind="read" target="flavors.ts" meta="1.2 kB" />
+        <ToolCall kind="write" label="Write 204 lines" target="ChurnSchedule.tsx" />
+        <ToolCall kind="bash" label="Rebuild" target="npm run freeze" meta="1.2s">
+          <ToolCallOutput>{"✓ built in 1.2s\n✓ 34 checks passed"}</ToolCallOutput>
+        </ToolCall>
+      </ToolCalls>
+
+      <ToolCallFiles>
+        <ToolCallFile path="flavors.css" added={13} />
+        <ToolCallFile path="ChurnSchedule.tsx" added={74} removed={41} />
+        <ToolCallFile path="menu.ts" added={8} removed={2} />
+        <span className="mono text-[12px] text-muted-foreground/70">+2 more</span>
+      </ToolCallFiles>
+    </div>
+  )
+}
+
+/** One of each, so the weight difference between them is visible at a glance. */
+function SceneKinds() {
+  return (
+    <ToolCalls defaultOpen label="Every kind">
+      <ToolCall kind="read" target="flavors.ts" />
+      <ToolCall kind="search" target="best waffle cone supplier" meta="10 results" />
+      <ToolCall kind="fetch" target="joycone.com/wholesale" meta="200" />
+      <ToolCall kind="edit" target="menu.ts">
+        <ToolCallDiff added={8} removed={2} />
+        <ToolCallOutput>
+          {"- const flavors = base\n+ const flavors = base.filter(inSeason)"}
+        </ToolCallOutput>
+      </ToolCall>
+      <ToolCall kind="bash" label="Test" target="npm run freeze" meta="1.2s">
+        <ToolCallOutput>{"✓ built in 1.2s\n✓ 34 checks passed"}</ToolCallOutput>
+      </ToolCall>
+      <ToolCall kind="code" label="Run Python" target="forecast.py" meta="0.4s">
+        <ToolCallOutput>{"peak_week = 27\nconfidence = 0.86"}</ToolCallOutput>
+      </ToolCall>
+      <ToolCall kind="image" label="Generate" target="flavor-chart.png" meta="1280×720">
+        <ToolCallImage
+          src="https://www.google.com/s2/favicons?domain=joycone.com&sz=128"
+          caption="flavor-chart.png · 1280×720"
+        />
+      </ToolCall>
+      <ToolCall kind="skill" label="Skill" target="impeccable" meta="polish">
+        <ToolCallFields>
+          <ToolCallField name="target">registry/ui/menu.tsx</ToolCallField>
+          <ToolCallField name="mode">Operate</ToolCallField>
+        </ToolCallFields>
+      </ToolCall>
+      <ToolCall kind="task" label="Delegate" target="pricing-researcher" meta="running" />
+      <ToolCall kind="mcp" label="Call" target="linear.create_issue">
+        <ToolCallFields>
+          <ToolCallField name="team">Creamery Ops</ToolCallField>
+          <ToolCallField name="title">Retire Rocky Road</ToolCallField>
+        </ToolCallFields>
+      </ToolCall>
+    </ToolCalls>
+  )
+}
+
+/** The rule that matters: a failure cannot be tidied away. */
+function SceneFailure() {
+  return (
+    <ToolCalls defaultOpen={false}>
+      <ToolCall kind="read" target="flavors.ts" />
+      <ToolCall
+        kind="edit"
+        target="ChurnSchedule.tsx"
+        meta={<ToolCallDiff added={74} removed={41} />}
+      />
+      <ToolCall kind="bash" label="Rebuild" target="npm run freeze" status="error" meta="exit 1">
+        <ToolCallOutput>
+          {"ChurnSchedule.tsx:82:14 - error TS2551\n  Property 'churnAt' does not exist on type 'Batch'.\n\nFound 1 error."}
+        </ToolCallOutput>
+      </ToolCall>
+    </ToolCalls>
+  )
+}
+
+/** A run assembling itself: each call arrives, works, settles, then the next. */
+function SceneLive() {
+  const steps = [
+    { kind: "read" as const, target: "flavors.ts", meta: "1.2 kB" },
+    { kind: "write" as const, target: "ChurnSchedule.tsx", label: "Write 204 lines" },
+    { kind: "bash" as const, target: "npm run freeze", label: "Rebuild", meta: "1.2s" },
+    { kind: "image" as const, target: "flavor-chart.png", label: "Generate", meta: "1280×720" },
+  ]
+
+  // One tick per step, then a pause on the finished run before it replays.
+  const [tick, setTick] = React.useState(0)
+  React.useEffect(() => {
+    const id = window.setInterval(() => setTick((n) => (n + 1) % (steps.length + 3)), 1100)
+    return () => window.clearInterval(id)
+  }, [steps.length])
+
+  const settled = tick >= steps.length
+  const shown = settled ? steps.length : tick + 1
+
+  return (
+    <ToolCalls
+      key={settled ? "settled" : "working"}
+      defaultOpen
+      label={settled ? `${steps.length} tool calls · 4.1s` : "Working"}
+    >
+      {steps.slice(0, shown).map((step, i) => (
+        <ToolCall
+          key={step.target}
+          kind={step.kind}
+          label={step.label}
+          target={step.target}
+          meta={settled || i < tick ? step.meta : undefined}
+          status={settled || i < tick ? "success" : "running"}
+        />
+      ))}
+    </ToolCalls>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -1078,6 +1245,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
 
       <Section index="05" title="Selection actions">
         <SelectionActionsDemo />
+      </Section>
+
+      <Section index="06" title="Tool calls">
+        <ToolCallsDemo />
       </Section>
     </div>
   )

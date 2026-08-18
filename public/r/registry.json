@@ -68,7 +68,9 @@
           "duration-slow": "420ms",
           "animate-shimmer": "swagui-shimmer 1.8s linear infinite",
           "animate-snake": "swagui-snake 3.6s linear infinite",
-          "animate-emerge": "swagui-emerge var(--duration-base) var(--ease-soft) both"
+          "animate-emerge": "swagui-emerge var(--duration-base) var(--ease-soft) both",
+          "animate-reveal": "swagui-reveal var(--duration-base) var(--ease-soft)",
+          "animate-conceal": "swagui-conceal var(--duration-fast) var(--ease-soft)"
         },
         "light": {
           "font-display": "var(--font-body)",
@@ -138,6 +140,26 @@
           "to": {
             "opacity": "1",
             "filter": "blur(0)"
+          }
+        },
+        "@keyframes swagui-reveal": {
+          "from": {
+            "height": "0",
+            "opacity": "0"
+          },
+          "to": {
+            "height": "var(--radix-collapsible-content-height)",
+            "opacity": "1"
+          }
+        },
+        "@keyframes swagui-conceal": {
+          "from": {
+            "height": "var(--radix-collapsible-content-height)",
+            "opacity": "1"
+          },
+          "to": {
+            "height": "0",
+            "opacity": "0"
           }
         },
         "@keyframes swagui-wave": {
@@ -1570,6 +1592,25 @@
       ],
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "tool-call",
+      "type": "registry:ui",
+      "title": "Tool Call",
+      "description": "What the agent did and what came back: shell, file edits, code, search, images, skills and subagents, with failures that cannot be collapsed away.",
+      "files": [
+        {
+          "path": "registry/ui/tool-call.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
       ]
     },
     {
