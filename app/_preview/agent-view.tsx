@@ -62,6 +62,7 @@ import {
   ToolCallOutput,
   ToolCalls,
 } from "@/registry/ui/tool-call"
+import { Task, Tasks } from "@/registry/ui/tasks"
 import { faviconSrc, Source, SourceIcon } from "@/registry/ui/source"
 
 /* ------------------------------ demo chrome ------------------------------ */
@@ -1142,6 +1143,111 @@ function SceneLive() {
   )
 }
 
+/* -------------------------------- 07 tasks -------------------------------- */
+
+type TaskScene = "working" | "complete" | "failure"
+
+function TasksDemo() {
+  const [scene, setScene] = React.useState<TaskScene>("working")
+
+  return (
+    <Demo
+      controls={
+        <Segmented
+          label="Scene"
+          value={scene}
+          onChange={setScene}
+          options={[
+            { value: "working", label: "Working" },
+            { value: "complete", label: "Complete" },
+            { value: "failure", label: "Failure" },
+          ]}
+        />
+      }
+    >
+      <div className="mx-auto max-h-[22rem] max-w-[68ch] overflow-y-auto pr-2">
+        <div className="flex flex-col gap-3 pb-2">
+          <Reasoning streaming={scene === "working"} duration={scene === "working" ? undefined : 55} defaultOpen={false}>
+            <ReasoningTrigger>
+              {scene === "working" ? "Working" : "Worked for 55s"}
+            </ReasoningTrigger>
+            <ReasoningContent>
+              <ReasoningRow label="Read">Summer sales and freezer capacity</ReasoningRow>
+              <ReasoningRow label="Plan">Saturday churn order</ReasoningRow>
+            </ReasoningContent>
+          </Reasoning>
+
+          {scene === "working" ? <TasksWorking /> : null}
+          {scene === "complete" ? <TasksComplete /> : null}
+          {scene === "failure" ? <TasksFailure /> : null}
+
+          <Response>
+            <ResponseContent>
+              {scene === "working"
+                ? "I’m checking freezer capacity before I lock the Saturday batch order."
+                : scene === "complete"
+                  ? "Pistachio should churn first on Saturday. It has the strongest weekend lift, and the early freezer window gives the batch enough time to firm before the afternoon rush."
+                  : "I kept the completed sales analysis, but the churn plan needs a corrected batch record before I can finish the order."}
+            </ResponseContent>
+          </Response>
+        </div>
+      </div>
+    </Demo>
+  )
+}
+
+function TasksWorking() {
+  return (
+    <Tasks
+      title="Build the Saturday churn plan"
+      status="running"
+      completed={1}
+      total={4}
+      sticky
+      defaultOpen
+    >
+      <Task title="Inspect summer sales" status="completed" />
+      <Task title="Confirm freezer capacity" status="running" />
+      <Task title="Draft the batch order" status="pending" />
+      <Task title="Prepare the cone reorder" status="pending" />
+    </Tasks>
+  )
+}
+
+function TasksComplete() {
+  return (
+    <Tasks
+      title="Finished the Saturday churn plan"
+      status="completed"
+      completed={4}
+      total={4}
+      sticky
+    >
+      <Task title="Inspect summer sales" status="completed" />
+      <Task title="Confirm freezer capacity" status="completed" />
+      <Task title="Draft the batch order" status="completed" />
+      <Task title="Prepare the cone reorder" status="completed" />
+    </Tasks>
+  )
+}
+
+function TasksFailure() {
+  return (
+    <Tasks
+      title="Churn plan needs attention"
+      status="error"
+      completed={1}
+      total={4}
+      sticky
+    >
+      <Task title="Inspect summer sales" status="completed" />
+      <Task title="Confirm freezer capacity" status="error" meta="schema mismatch" />
+      <Task title="Draft the batch order" status="pending" />
+      <Task title="Prepare the cone reorder" status="pending" />
+    </Tasks>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -1249,6 +1355,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
 
       <Section index="06" title="Tool calls">
         <ToolCallsDemo />
+      </Section>
+
+      <Section index="07" title="Tasks">
+        <TasksDemo />
       </Section>
     </div>
   )

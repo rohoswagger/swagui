@@ -1614,6 +1614,24 @@
       ]
     },
     {
+      "name": "tasks",
+      "type": "registry:ui",
+      "title": "Tasks",
+      "description": "A sticky inline agent plan: one compact progress summary expanding to a flat list of tasks.",
+      "files": [
+        {
+          "path": "registry/ui/tasks.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ]
+    },
+    {
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",

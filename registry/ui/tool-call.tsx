@@ -105,6 +105,7 @@ function useToolCall(component: string) {
 function ToolCalls({
   className,
   label,
+  open,
   defaultOpen = false,
   children,
   ...props
@@ -132,13 +133,13 @@ function ToolCalls({
   return (
     <>
       <CollapsiblePrimitive.Root
+        {...props}
         data-slot="tool-calls"
         data-failed={failures ? "" : undefined}
         // A failed run opens itself. Nothing is hidden behind a tidy count.
         defaultOpen={defaultOpen || failures > 0}
-        open={failures > 0 ? true : undefined}
+        open={failures > 0 ? true : open}
         className={cn("w-full", className)}
-        {...props}
       >
         <CollapsiblePrimitive.Trigger
           data-slot="tool-calls-trigger"
