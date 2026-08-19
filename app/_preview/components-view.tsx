@@ -360,8 +360,8 @@ export function ComponentsView({ displayStyle }: { displayStyle: React.CSSProper
               <Label htmlFor="r1">Copy-paste registry</Label>
             </div>
             <div className="flex items-center gap-2">
-              <RadioGroupItem value="npm" id="r2" />
-              <Label htmlFor="r2">npm package</Label>
+              <RadioGroupItem value="bun" id="r2" />
+              <Label htmlFor="r2">Bun package</Label>
             </div>
           </RadioGroup>
           <div className="flex items-center gap-2">

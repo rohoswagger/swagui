@@ -132,6 +132,11 @@
             "--snake-angle": "360deg"
           }
         },
+        "@keyframes swagui-subagent-trail": {
+          "to": {
+            "stroke-dashoffset": "-100"
+          }
+        },
         "@keyframes swagui-emerge": {
           "from": {
             "opacity": "0",
@@ -443,6 +448,9 @@
             "animation": "var(--animate-snake)",
             "pointer-events": "none"
           },
+          ".subagent-trail": {
+            "animation": "swagui-subagent-trail 2.8s linear infinite"
+          },
           ".emerge": {
             "animation": "var(--animate-emerge)"
           },
@@ -486,6 +494,11 @@
           ".snake::after": {
             "animation": "none",
             "background": "color-mix(in oklch, var(--brand) 45%, transparent)"
+          },
+          ".subagent-trail": {
+            "animation": "none",
+            "opacity": "0.45",
+            "stroke-dasharray": "100 0"
           },
           ".wave-once::before": {
             "animation": "none",
@@ -1534,7 +1547,7 @@
       "name": "response",
       "type": "registry:ui",
       "title": "Response",
-      "description": "The agent's answer: streaming text, inline citations, sources, actions and follow-ups.",
+      "description": "The agent's answer: streaming text, inline citations, sources, usage receipts, actions and follow-ups.",
       "files": [
         {
           "path": "registry/ui/response.tsx",
@@ -1568,7 +1581,7 @@
       "name": "prompt-input",
       "type": "registry:ui",
       "title": "Prompt Input",
-      "description": "The composer: a contenteditable field with inline @ mention chips for files and connected apps, / commands, attachments, model picker, and a send that becomes a stop.",
+      "description": "The composer: a contenteditable field with inline mentions, attachments, context-window meter, detailed model and reasoning controls, and a send that becomes a stop.",
       "files": [
         {
           "path": "registry/ui/prompt-input.tsx",
@@ -1576,7 +1589,10 @@
         }
       ],
       "registryDependencies": [
-        "https://swagui.rohoswagger.com/r/theme.json"
+        "https://swagui.rohoswagger.com/r/theme.json",
+        "https://swagui.rohoswagger.com/r/popover.json",
+        "https://swagui.rohoswagger.com/r/tooltip.json",
+        "https://swagui.rohoswagger.com/r/slider.json"
       ]
     },
     {
@@ -1635,7 +1651,7 @@
       "name": "artifact",
       "type": "registry:ui",
       "title": "Artifact",
-      "description": "A durable result intentionally presented by an assistant, with host-owned opening, preview and recovery actions.",
+      "description": "Durable results intentionally presented by an assistant, with responsive multi-artifact layout, host-owned opening, previews and recovery actions.",
       "files": [
         {
           "path": "registry/ui/artifact.tsx",
@@ -1651,7 +1667,7 @@
       "name": "chat-header",
       "type": "registry:ui",
       "title": "Chat Header",
-      "description": "A composable conversation header with identity, title, host-owned actions and optional keyboard shortcuts.",
+      "description": "A composable conversation header with identity, clickable home wordmark, breadcrumbs, host-owned actions and optional keyboard shortcuts.",
       "files": [
         {
           "path": "registry/ui/chat-header.tsx",
@@ -1660,6 +1676,21 @@
       ],
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "subagent",
+      "type": "registry:ui",
+      "title": "Subagent",
+      "description": "A compact delegated-agent row with live duration, status color, running trail and host-controlled thread navigation.",
+      "files": [
+        {
+          "path": "registry/ui/subagent.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
         "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },

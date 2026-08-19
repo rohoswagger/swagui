@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils"
  *
  * All of those are the same object: a one-line summary you can open into the
  * evidence. So this is one shell rather than three components; the header is
- * the swagui mark, a label and a caret, and the body is a railed indent that
- * takes whatever content the activity produced.
+ * a caret, the swagui mark and a label, and the body takes whatever content
+ * the activity produced on the same inset as other agent disclosures.
  *
  * The governing rule is subordination. A trace is evidence for the answer and
  * never the answer, so the whole thing sits at muted-foreground and collapses
@@ -97,7 +97,7 @@ function ReasoningTrigger({
     <CollapsiblePrimitive.Trigger
       data-slot="reasoning-trigger"
       className={cn(
-        "group/reasoning flex items-center gap-2 rounded-md py-0.5 text-left text-sm outline-none",
+        "group/reasoning flex items-center gap-2 rounded-md py-1 text-left text-sm outline-none",
         "text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
@@ -105,6 +105,14 @@ function ReasoningTrigger({
       )}
       {...props}
     >
+      <Chevron
+        className={cn(
+          "size-3.5 shrink-0 text-muted-foreground/50",
+          "transition-transform duration-(--duration-base) ease-(--ease-swagui)",
+          "group-hover/reasoning:text-muted-foreground",
+          "group-data-[state=open]/reasoning:rotate-180"
+        )}
+      />
       <span
         className={cn(
           "flex size-4 shrink-0 items-center justify-center",
@@ -124,17 +132,6 @@ function ReasoningTrigger({
         {children ??
           (streaming ? "Thinking" : `Thought for ${formatDuration(elapsed)}`)}
       </span>
-
-      {/* Caret trails the label rather than leading it, so the labels of
-          stacked traces stay on one optical left edge. */}
-      <Chevron
-        className={cn(
-          "size-3.5 shrink-0 text-muted-foreground/50",
-          "transition-transform duration-(--duration-base) ease-(--ease-swagui)",
-          "group-hover/reasoning:text-muted-foreground",
-          "group-data-[state=open]/reasoning:rotate-180"
-        )}
-      />
     </CollapsiblePrimitive.Trigger>
   )
 }
@@ -154,21 +151,7 @@ function ReasoningContent({
       )}
       {...props}
     >
-      {/*
-        The rail sits at the centre of the trigger's icon, so it reads as
-        hanging off the header rather than as a separate block. Deriving --rail
-        from --spacing rather than hardcoding 8px keeps that alignment true in
-        compact density, where the icon is smaller.
-      */}
-      <div
-        className={cn(
-          "relative pt-1.5 pb-0.5 [--rail:calc(var(--spacing)*2)]",
-          "before:absolute before:inset-y-0 before:left-(--rail) before:w-px",
-          "before:-translate-x-1/2 before:bg-border"
-        )}
-      >
-        <div className="flex flex-col gap-1.5 pl-6">{children}</div>
-      </div>
+      <div className="flex flex-col gap-1 pt-1 pb-0.5 pl-6">{children}</div>
     </CollapsiblePrimitive.Content>
   )
 }

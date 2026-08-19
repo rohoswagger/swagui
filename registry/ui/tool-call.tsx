@@ -95,48 +95,38 @@ function useToolCall(component: string) {
 
 /* --------------------------------- group --------------------------------- */
 
-/**
- * A run of calls under one summary.
- *
- * The summary counts what happened rather than describing it, and a failure
- * anywhere inside promotes itself into that line. Collapsing is a convenience
- * for a clean run, never a way to put an error out of sight.
- */
+/** Tool rows are evidence inside a parent activity disclosure, not another disclosure. */
 function ToolCalls({
   className,
   label,
   open,
-  defaultOpen = false,
+  defaultOpen,
   children,
   ...props
 }: Omit<React.ComponentProps<typeof CollapsiblePrimitive.Root>, "title"> & {
-  /** Overrides the counted summary. */
+  /** @deprecated Put tool rows inside a parent Reasoning disclosure instead. */
   label?: React.ReactNode
 }) {
-  /*
-    Failures are counted from the children's own props rather than reported
-    upward by the children themselves.
+  const legacyDisclosure =
+    label !== undefined ||
+    open !== undefined ||
+    defaultOpen !== undefined ||
+    "onOpenChange" in props ||
+    "disabled" in props
 
-    A collapsed disclosure does not render its contents, so a failed call
-    inside a closed group would never mount, never report, and the group would
-    go on advertising a clean run while hiding the one row that matters.
-    Reading the props is synchronous and true before anything is mounted.
-  */
-  const items = React.Children.toArray(children)
-  const count = items.length
-  const failures = items.filter(
-    (child) =>
-      React.isValidElement<{ status?: Status }>(child) &&
-      child.props.status === "error"
-  ).length
+  if (legacyDisclosure) {
+    const items = React.Children.toArray(children)
+    const failures = items.filter(
+      (child) =>
+        React.isValidElement<{ status?: Status }>(child) &&
+        child.props.status === "error"
+    ).length
 
-  return (
-    <>
+    return (
       <CollapsiblePrimitive.Root
         {...props}
         data-slot="tool-calls"
         data-failed={failures ? "" : undefined}
-        // A failed run opens itself. Nothing is hidden behind a tidy count.
         defaultOpen={defaultOpen || failures > 0}
         open={failures > 0 ? true : open}
         className={cn("w-full", className)}
@@ -145,12 +135,10 @@ function ToolCalls({
           data-slot="tool-calls-trigger"
           disabled={failures > 0}
           className={cn(
-            "group/tools flex items-center gap-2 rounded-md py-0.5 text-left text-sm outline-none",
+            "group/tools flex items-center gap-2 rounded-md py-1 text-left text-sm outline-none",
             "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
             "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-            failures
-              ? "cursor-default text-destructive"
-              : "text-muted-foreground hover:text-foreground"
+            failures ? "cursor-default text-destructive" : "text-muted-foreground hover:text-foreground"
           )}
         >
           <Chevron
@@ -162,36 +150,31 @@ function ToolCalls({
             )}
           />
           <span>
-            {label ?? (
-              <>
-                {count} {count === 1 ? "tool call" : "tool calls"}
-                {failures ? ` · ${failures} failed` : null}
-              </>
-            )}
+            {label ?? `${items.length} ${items.length === 1 ? "tool call" : "tool calls"}`}
+            {failures ? ` · ${failures} failed` : null}
           </span>
         </CollapsiblePrimitive.Trigger>
-
         <CollapsiblePrimitive.Content
           data-slot="tool-calls-content"
-          className={cn(
-            "overflow-hidden",
-            /*
-              The timing is written into the shorthand rather than layered on
-              top of it. `animate-accordion-down` is itself a shorthand carrying
-              0.2s ease-out, so a separate animation-duration utility is the
-              same specificity and simply loses to source order.
-
-              A run of tool calls is taller than a menu and should read as a
-              list unfolding rather than a panel snapping, so it runs longer and
-              on the softer curve.
-            */
-            "data-[state=open]:animate-reveal data-[state=closed]:animate-conceal"
-          )}
+          className="overflow-hidden data-[state=open]:animate-reveal data-[state=closed]:animate-conceal"
         >
-          <div className="flex flex-col gap-1.5 pt-2 pl-[1.375rem]">{children}</div>
+          <div role="list" className="flex flex-col gap-1 pt-1 pb-0.5 pl-6">
+            {children}
+          </div>
         </CollapsiblePrimitive.Content>
       </CollapsiblePrimitive.Root>
-    </>
+    )
+  }
+
+  return (
+    <div
+      data-slot="tool-calls"
+      role="list"
+      className={cn("flex w-full flex-col gap-1", className)}
+      {...props}
+    >
+      {children}
+    </div>
   )
 }
 
@@ -199,7 +182,7 @@ function ToolCalls({
 
 const rowVariants = cva(
   [
-    "group/call flex w-full items-center gap-2 rounded-md px-1 py-1.5 text-left text-sm outline-none",
+    "group/call flex w-full items-center gap-2 rounded-md px-1 py-1 text-left text-sm outline-none",
     // A call is appended to a run as it happens, so it arrives rather than
     // simply existing.
     "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-soft)",
@@ -306,6 +289,7 @@ function ToolCall({
         data-slot="tool-call"
         data-kind={kind}
         data-status={status}
+        role="listitem"
         className={cn("min-w-0", className)}
         {...props}
       >
@@ -327,7 +311,7 @@ function ToolCall({
                 "data-[state=open]:animate-reveal data-[state=closed]:animate-conceal"
               )}
             >
-              <div className="flex flex-col gap-2 pt-2 pb-1.5 pl-7">{children}</div>
+              <div className="flex flex-col gap-1 pt-1 pb-1 pl-6">{children}</div>
             </CollapsiblePrimitive.Content>
           </CollapsiblePrimitive.Root>
         ) : (

@@ -7,9 +7,12 @@ import {
   ChatHeader,
   ChatHeaderAction,
   ChatHeaderActions,
+  ChatHeaderBreadcrumb,
+  ChatHeaderBreadcrumbs,
+  ChatHeaderBreadcrumbSeparator,
   ChatHeaderDivider,
+  ChatHeaderHome,
   ChatHeaderIdentity,
-  ChatHeaderShortcut,
   ChatHeaderTitle,
 } from "@/registry/ui/chat-header"
 import { Message, MessageContent } from "@/registry/ui/message"
@@ -25,20 +28,26 @@ import {
 import {
   Reasoning,
   ReasoningContent,
-  ReasoningRow,
   ReasoningTrigger,
 } from "@/registry/ui/reasoning"
 import { Task, Tasks } from "@/registry/ui/tasks"
-import { ToolCall, ToolCalls } from "@/registry/ui/tool-call"
+import { Subagent, Subagents } from "@/registry/ui/subagent"
+import {
+  ToolCall,
+  ToolCallOutput,
+  ToolCalls,
+} from "@/registry/ui/tool-call"
 import {
   Response,
   ResponseAction,
   ResponseActions,
   ResponseContent,
   ResponseSources,
+  ResponseUsage,
 } from "@/registry/ui/response"
 import { Source } from "@/registry/ui/source"
 import {
+  Artifacts,
   Artifact,
   ArtifactContent,
   ArtifactDescription,
@@ -49,6 +58,7 @@ import {
 import {
   PromptInput,
   PromptInputButton,
+  PromptInputContextIndicator,
   PromptInputEditor,
   PromptInputMenu,
   PromptInputModelSelect,
@@ -58,11 +68,20 @@ import {
 } from "@/registry/ui/prompt-input"
 
 type ChatScene = "working" | "complete"
+type ThreadId = "main" | "data-researcher" | "interface-builder" | "visual-reviewer" | "qa-auditor"
+
+const THREAD_LABEL: Record<ThreadId, string> = {
+  main: "Main agent",
+  "data-researcher": "Data researcher",
+  "interface-builder": "Interface builder",
+  "visual-reviewer": "Visual reviewer",
+  "qa-auditor": "QA auditor",
+}
 
 const MODELS = [
-  { value: "vanilla-1", label: "Vanilla 1" },
-  { value: "sprinkles-5", label: "Sprinkles 5" },
-  { value: "freezer-burn", label: "Freezer Burn" },
+  { value: "vanilla-1", label: "Vanilla 1", hint: "Fast", detail: "128k context" },
+  { value: "sprinkles-5", label: "Sprinkles 5", hint: "Flagship", detail: "256k context" },
+  { value: "freezer-burn", label: "Freezer Burn", hint: "Code", detail: "192k context" },
 ]
 
 const SOURCES = [
@@ -97,24 +116,22 @@ const CONTEXT_ITEMS = [
 export function ChatView() {
   const [scene, setScene] = React.useState<ChatScene>("working")
   const [model, setModel] = React.useState("vanilla-1")
+  const [reasoningEffort, setReasoningEffort] = React.useState("high")
   const [submitted, setSubmitted] = React.useState<string[]>([])
+  const [threadPath, setThreadPath] = React.useState<ThreadId[]>(["main"])
+  const activeThread = threadPath[threadPath.length - 1]
 
-  React.useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (!event.metaKey || !event.shiftKey) return
-      if (event.key.toLowerCase() === "k") {
-        event.preventDefault()
-        setSubmitted([])
-        setScene("working")
-      }
-      if (event.key.toLowerCase() === "a") {
-        event.preventDefault()
-        setScene("complete")
-      }
-    }
-    window.addEventListener("keydown", onKeyDown)
-    return () => window.removeEventListener("keydown", onKeyDown)
-  }, [])
+  if (activeThread !== "main") {
+    return (
+      <SubagentThreadView
+        path={threadPath}
+        scene={scene}
+        onBackToMain={() => setThreadPath(["main"])}
+        onNavigate={(index) => setThreadPath(threadPath.slice(0, index + 1))}
+        onOpenNested={(thread) => setThreadPath((path) => [...path, thread])}
+      />
+    )
+  }
 
   return (
     <div className="h-full min-h-[32rem]">
@@ -137,30 +154,27 @@ export function ChatView() {
                 className="text-[12px] text-muted-foreground"
               >
                 <span className={scene === "working" ? "size-1.5 rounded-full bg-brand" : "size-1.5 rounded-full bg-success"} />
-                <span className="hidden md:inline">
-                  {scene === "working" ? "Working" : "Complete"}
-                </span>
+                <span>{scene === "working" ? "Working" : "Completed"}</span>
               </ChatHeaderAction>
               <ChatHeaderAction
                 label="New chat"
-                size="sm"
+                size="icon-sm"
                 onClick={() => {
                   setSubmitted([])
                   setScene("working")
+                  setThreadPath(["main"])
                 }}
               >
                 <PlusIcon />
-                <ChatHeaderShortcut>⌘⇧K</ChatHeaderShortcut>
               </ChatHeaderAction>
               <ChatHeaderAction
                 label="Open artifacts"
-                size="sm"
+                size="icon-sm"
                 onClick={() => setScene("complete")}
               >
                 <FolderIcon />
-                <ChatHeaderShortcut>⌘⇧A</ChatHeaderShortcut>
               </ChatHeaderAction>
-              <ChatHeaderAction label="Open side panel" disabled>
+              <ChatHeaderAction label="Open side panel" size="icon-sm" disabled>
                 <PanelIcon />
               </ChatHeaderAction>
             </ChatHeaderActions>
@@ -193,6 +207,46 @@ export function ChatView() {
                             <ResponseSources count={1}>
                               <Source name="Scoop Data" host="scoopdata.io" />
                             </ResponseSources>
+                            <ResponseUsage duration={3} tokens={428} />
+                            <ResponseActions>
+                              <ResponseAction label="Copy"><CopyIcon /></ResponseAction>
+                            </ResponseActions>
+                          </Response>
+                        </MessageContent>
+                      </Message>
+                    </MessageScrollerItem>
+
+                    <MessageScrollerItem>
+                      <Message align="end">
+                        <MessageContent>
+                          <Bubble align="end" variant="secondary">
+                            <BubbleContent>
+                              Can Saturday’s freezer window handle a larger batch?
+                            </BubbleContent>
+                          </Bubble>
+                        </MessageContent>
+                      </Message>
+                    </MessageScrollerItem>
+
+                    <MessageScrollerItem>
+                      <Message>
+                        <MessageContent className="gap-2">
+                          <Reasoning duration={4} defaultOpen={false}>
+                            <ReasoningTrigger>Worked for 4s</ReasoningTrigger>
+                            <ReasoningContent>
+                              <ToolCalls>
+                                <ToolCall kind="read" target="freezer-capacity.json" meta="8 kB" />
+                                <ToolCall kind="code" label="Calculate" target="capacity-check.ts" meta="0.3s">
+                                  <ToolCallOutput>{"available_gallons = 42\nplanned_gallons = 36"}</ToolCallOutput>
+                                </ToolCall>
+                              </ToolCalls>
+                            </ReasoningContent>
+                          </Reasoning>
+                          <Response>
+                            <ResponseContent>
+                              Yes. The early freezer window has six gallons of headroom after the larger pistachio batch.
+                            </ResponseContent>
+                            <ResponseUsage duration={4} tokens={612} />
                             <ResponseActions>
                               <ResponseAction label="Copy"><CopyIcon /></ResponseAction>
                             </ResponseActions>
@@ -215,52 +269,70 @@ export function ChatView() {
 
                     <MessageScrollerItem scrollAnchor={!submitted.length}>
                       <Message>
-                        <MessageContent className="gap-3">
+                        <MessageContent className="gap-2">
                           <Reasoning
+                            key={scene}
                             streaming={scene === "working"}
                             duration={scene === "complete" ? 18 : undefined}
-                            defaultOpen={false}
+                            defaultOpen={scene === "working"}
                           >
                             <ReasoningTrigger>
                               {scene === "working" ? "Working" : "Worked for 18s"}
                             </ReasoningTrigger>
                             <ReasoningContent>
-                              <ReasoningRow label="Read">Summer sales and capacity</ReasoningRow>
-                              <ReasoningRow label="Plan">Four implementation steps</ReasoningRow>
+                              <Subagents>
+                                <Subagent
+                                  name="Data researcher"
+                                  description="Demand and margin signals"
+                                  status="completed"
+                                  duration={14}
+                                  onOpen={() => setThreadPath(["main", "data-researcher"])}
+                                />
+                                <Subagent
+                                  name="Interface builder"
+                                  description="Dashboard implementation"
+                                  status={scene === "working" ? "running" : "completed"}
+                                  duration={18}
+                                  onOpen={() => setThreadPath(["main", "interface-builder"])}
+                                />
+                                <Subagent
+                                  name="QA auditor"
+                                  description="Responsive preview checks"
+                                  status="failed"
+                                  duration={12}
+                                  onOpen={() => setThreadPath(["main", "qa-auditor"])}
+                                />
+                              </Subagents>
+                              <ToolCalls>
+                                <ToolCall kind="search" target="summer flavor demand trends" meta="8 results" />
+                                <ToolCall kind="read" target="sales-q3.csv" meta="24 kB" />
+                                <ToolCall kind="read" target="freezer-capacity.json" meta="8 kB" />
+                                <ToolCall kind="mcp" label="Query" target="scoop_data.weekly_sales" meta="200" />
+                                <ToolCall
+                                  kind="write"
+                                  label="Build dashboard"
+                                  target="inventory-dashboard"
+                                  status={scene === "working" ? "running" : "success"}
+                                />
+                                <ToolCall
+                                  kind="bash"
+                                  label="Verify"
+                                  target="bun run build"
+                                  status={scene === "working" ? "pending" : "success"}
+                                  meta={scene === "complete" ? "1.4s" : undefined}
+                                />
+                              </ToolCalls>
                             </ReasoningContent>
                           </Reasoning>
 
                           {scene === "working" ? <WorkingTasks /> : <CompleteTasks />}
 
-                          <ToolCalls
-                            defaultOpen={scene === "working"}
-                            label={scene === "working" ? "Running tools" : "4 tool calls · 3.8s"}
-                          >
-                            <ToolCall kind="read" target="sales-q3.csv" meta="24 kB" />
-                            <ToolCall kind="read" target="freezer-capacity.json" meta="8 kB" />
-                            <ToolCall
-                              kind="write"
-                              label="Build dashboard"
-                              target="inventory-dashboard"
-                              status={scene === "working" ? "running" : "success"}
-                            />
-                            <ToolCall
-                              kind="bash"
-                              label="Verify"
-                              target="npm run build"
-                              status={scene === "working" ? "pending" : "success"}
-                              meta={scene === "complete" ? "1.4s" : undefined}
-                            />
-                          </ToolCalls>
-
-                          <Response streaming={scene === "working"} caret={false}>
-                            <ResponseContent>
-                              {scene === "working"
-                                ? "I’m assembling the dashboard and checking the final preview."
-                                : "Pistachio should churn first on Saturday. I also built a live dashboard so you can explore sales and freezer windows together."}
-                            </ResponseContent>
-                            {scene === "complete" ? (
-                              <>
+                          {scene === "complete" ? (
+                            <Response>
+                              <ResponseContent>
+                                Pistachio should churn first on Saturday. I also built a live dashboard so you can explore sales and freezer windows together.
+                              </ResponseContent>
+                              <Artifacts>
                                 <Artifact
                                   kind="app"
                                   onOpen={() => {}}
@@ -273,18 +345,31 @@ export function ChatView() {
                                   </ArtifactContent>
                                   <ArtifactOpenMark />
                                 </Artifact>
-                                <ResponseSources count={3}>
-                                  {SOURCES.map((source) => (
-                                    <Source key={source.host} name={source.name} host={source.host} />
-                                  ))}
-                                </ResponseSources>
-                                <ResponseActions>
-                                  <ResponseAction label="Copy"><CopyIcon /></ResponseAction>
-                                  <ResponseAction label="Retry"><RetryIcon /></ResponseAction>
-                                </ResponseActions>
-                              </>
-                            ) : null}
-                          </Response>
+                                <Artifact
+                                  kind="spreadsheet"
+                                  onOpen={() => {}}
+                                  openLabel="Open Saturday churn plan"
+                                >
+                                  <ArtifactPreview />
+                                  <ArtifactContent>
+                                    <ArtifactTitle>Saturday churn plan</ArtifactTitle>
+                                    <ArtifactDescription>Excel workbook · 18 KB</ArtifactDescription>
+                                  </ArtifactContent>
+                                  <ArtifactOpenMark />
+                                </Artifact>
+                              </Artifacts>
+                              <ResponseSources count={3}>
+                                {SOURCES.map((source) => (
+                                  <Source key={source.host} name={source.name} host={source.host} />
+                                ))}
+                              </ResponseSources>
+                              <ResponseUsage duration={18} tokens={2840} />
+                              <ResponseActions>
+                                <ResponseAction label="Copy"><CopyIcon /></ResponseAction>
+                                <ResponseAction label="Retry"><RetryIcon /></ResponseAction>
+                              </ResponseActions>
+                            </Response>
+                          ) : null}
                         </MessageContent>
                       </Message>
                     </MessageScrollerItem>
@@ -338,7 +423,14 @@ export function ChatView() {
                     <PromptInputButton label="Add context" opensMenu="@"><PlusIcon /></PromptInputButton>
                     <PromptInputButton label="Dictate"><MicIcon /></PromptInputButton>
                   </PromptInputTools>
-                  <PromptInputModelSelect models={MODELS} value={model} onValueChange={setModel} />
+                  <PromptInputContextIndicator used={42680} total={128000} />
+                  <PromptInputModelSelect
+                    models={MODELS}
+                    value={model}
+                    onValueChange={setModel}
+                    reasoningEffort={reasoningEffort}
+                    onReasoningEffortChange={setReasoningEffort}
+                  />
                   <PromptInputSubmit />
                 </PromptInputToolbar>
               </PromptInput>
@@ -350,24 +442,195 @@ export function ChatView() {
   )
 }
 
+function SubagentThreadView({
+  path,
+  scene,
+  onBackToMain,
+  onNavigate,
+  onOpenNested,
+}: {
+  path: ThreadId[]
+  scene: ChatScene
+  onBackToMain: () => void
+  onNavigate: (index: number) => void
+  onOpenNested: (thread: ThreadId) => void
+}) {
+  const thread = path[path.length - 1]
+  const failed = thread === "qa-auditor"
+  const completed = thread === "data-researcher" || scene === "complete"
+  const running = !failed && !completed
+  const threadDuration = failed
+    ? 12
+    : thread === "data-researcher"
+      ? 14
+      : thread === "interface-builder"
+        ? 18
+        : 9
+  const assignment =
+    thread === "data-researcher"
+      ? "Research demand, margins, and capacity constraints for the Saturday churn plan."
+      : thread === "interface-builder"
+      ? "Build and polish the inventory dashboard, then verify the interaction states."
+      : thread === "visual-reviewer"
+        ? "Review the dashboard at desktop and mobile widths and report material issues."
+        : "Audit the responsive preview and identify why the narrow layout failed."
+
+  return (
+    <div className="h-full min-h-[32rem]">
+      <section className="flex size-full min-h-0 min-w-0 overflow-hidden bg-background text-foreground">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <ChatHeader>
+            <ChatHeaderHome onClick={onBackToMain} aria-label="Back to main agent">
+              <SwaguiMark size={20} />
+              <span className="hidden sm:inline">swagui</span>
+            </ChatHeaderHome>
+            <ChatHeaderDivider />
+            <ChatHeaderBreadcrumbs>
+              {path.map((item, index) => (
+                <React.Fragment key={item}>
+                  {index ? <ChatHeaderBreadcrumbSeparator /> : null}
+                  <ChatHeaderBreadcrumb
+                    current={index === path.length - 1}
+                    onClick={index === path.length - 1 ? undefined : () => onNavigate(index)}
+                  >
+                    {THREAD_LABEL[item]}
+                  </ChatHeaderBreadcrumb>
+                </React.Fragment>
+              ))}
+            </ChatHeaderBreadcrumbs>
+            <ChatHeaderActions>
+              <ChatHeaderAction
+                label={failed ? "Subagent failed" : completed ? "Subagent completed" : "Subagent running"}
+                size="sm"
+                disabled
+                className={failed ? "text-destructive" : "text-brand"}
+              >
+                <span className={failed ? "size-1.5 rounded-full bg-destructive" : completed ? "size-1.5 rounded-full bg-brand" : "size-1.5 animate-pulse rounded-full bg-brand motion-reduce:animate-none"} />
+                <span className="hidden sm:inline">{failed ? "Failed" : completed ? "Completed" : "Running"}</span>
+              </ChatHeaderAction>
+            </ChatHeaderActions>
+          </ChatHeader>
+
+          <div className="relative min-h-0 flex-1">
+            <MessageScrollerProvider>
+              <MessageScroller key={thread}>
+                <MessageScrollerViewport>
+                  <MessageScrollerContent className="mx-auto w-full max-w-[44rem] gap-6 px-4 py-6 sm:px-6">
+                    <MessageScrollerItem>
+                      <Message align="end">
+                        <MessageContent>
+                          <Bubble align="end" variant="secondary">
+                            <BubbleContent>{assignment}</BubbleContent>
+                          </Bubble>
+                        </MessageContent>
+                      </Message>
+                    </MessageScrollerItem>
+                    <MessageScrollerItem scrollAnchor>
+                      <Message>
+                        <MessageContent className="gap-2">
+                          <Reasoning
+                            streaming={running}
+                            duration={failed || completed ? threadDuration : undefined}
+                            defaultOpen
+                          >
+                            <ReasoningTrigger>
+                              {failed || completed ? `Worked for ${threadDuration}s` : "Working"}
+                            </ReasoningTrigger>
+                            <ReasoningContent>
+                              {thread === "data-researcher" ? (
+                                <ToolCalls>
+                                  <ToolCall kind="search" target="summer flavor demand trends" meta="8 results" />
+                                  <ToolCall kind="read" target="sales-q3.csv" meta="24 kB" />
+                                  <ToolCall kind="mcp" label="Query" target="scoop_data.weekly_sales" status="success" meta="200" />
+                                </ToolCalls>
+                              ) : thread === "interface-builder" ? (
+                                <>
+                                  <ToolCalls>
+                                    <ToolCall kind="read" target="app/dashboard/page.tsx" meta="6 kB" />
+                                    <ToolCall kind="edit" label="Build layout" target="dashboard-shell.tsx" status="success" />
+                                    <ToolCall kind="code" label="Render preview" target="localhost:4200" status={completed ? "success" : "running"} />
+                                  </ToolCalls>
+                                  <Subagents>
+                                    <Subagent
+                                      name="Visual reviewer"
+                                      description="Desktop and mobile design pass"
+                                      status={completed ? "completed" : "running"}
+                                      duration={completed ? 9 : 6}
+                                      onOpen={() => onOpenNested("visual-reviewer")}
+                                    />
+                                  </Subagents>
+                                </>
+                              ) : thread === "visual-reviewer" ? (
+                                <ToolCalls>
+                                  <ToolCall kind="image" label="Capture" target="desktop.png" meta="1440×900" />
+                                  <ToolCall kind="image" label="Capture" target="mobile.png" meta="390×844" />
+                                  <ToolCall kind="read" label="Inspect contrast" target="dashboard cards" status={completed ? "success" : "running"} />
+                                </ToolCalls>
+                              ) : (
+                                <ToolCalls>
+                                  <ToolCall kind="read" target="dashboard-shell.tsx" meta="4 kB" />
+                                  <ToolCall kind="bash" label="Run responsive checks" target="bun run build" status="error" meta="exit 1">
+                                    <ToolCallOutput>{"dashboard-shell.tsx:74\nSidebar overlaps content below 640px."}</ToolCallOutput>
+                                  </ToolCall>
+                                </ToolCalls>
+                              )}
+                            </ReasoningContent>
+                          </Reasoning>
+                          {failed || completed ? (
+                            <Response>
+                              <ResponseContent>
+                                {failed
+                                  ? "The narrow layout failed because the reserved panel width never collapses below 640px."
+                                  : thread === "data-researcher"
+                                    ? "Pistachio leads summer growth, while Saturday capacity leaves six gallons of headroom."
+                                    : thread === "interface-builder"
+                                      ? "The dashboard implementation is complete and the live preview is ready."
+                                      : "The desktop and mobile review is complete with no blocking visual issues."}
+                              </ResponseContent>
+                              <ResponseUsage
+                                duration={threadDuration}
+                                tokens={failed ? 890 : thread === "data-researcher" ? 1650 : thread === "interface-builder" ? 2210 : 760}
+                              />
+                            </Response>
+                          ) : null}
+                        </MessageContent>
+                      </Message>
+                    </MessageScrollerItem>
+                  </MessageScrollerContent>
+                </MessageScrollerViewport>
+                <MessageScrollerButton className="bottom-3" />
+              </MessageScroller>
+            </MessageScrollerProvider>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  )
+}
+
 function WorkingTasks() {
   return (
-    <Tasks title="Build the inventory dashboard" status="running" completed={2} total={4} defaultOpen>
+    <Tasks title="Build the inventory dashboard" status="running" completed={3} total={6} defaultOpen>
       <Task title="Inspect summer sales" status="completed" />
       <Task title="Confirm freezer capacity" status="completed" />
+      <Task title="Delegate data research" status="completed" />
       <Task title="Build the dashboard" status="running" />
       <Task title="Verify the preview" status="pending" />
+      <Task title="Review responsive behavior" status="pending" />
     </Tasks>
   )
 }
 
 function CompleteTasks() {
   return (
-    <Tasks title="Built the inventory dashboard" status="completed" completed={4} total={4}>
+    <Tasks title="Built the inventory dashboard" status="completed" completed={6} total={6}>
       <Task title="Inspect summer sales" status="completed" />
       <Task title="Confirm freezer capacity" status="completed" />
+      <Task title="Delegate data research" status="completed" />
       <Task title="Build the dashboard" status="completed" />
       <Task title="Verify the preview" status="completed" />
+      <Task title="Review responsive behavior" status="completed" />
     </Tasks>
   )
 }

@@ -2,14 +2,16 @@
   "name": "swagui",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "bun@1.3.6",
   "scripts": {
     "dev": "next dev --turbopack --port 4200",
-    "build": "pnpm registry:build && next build",
+    "build": "bun run registry:build && next build",
     "start": "next start",
+    "test": "bun test",
     "lint": "next lint",
-    "registry:build": "node scripts/build-theme.mjs && shadcn build",
-    "theme:build": "node scripts/build-theme.mjs",
-    "logo:build": "node scripts/build-logo.mjs"
+    "registry:build": "bun scripts/build-theme.mjs && shadcn build",
+    "theme:build": "bun scripts/build-theme.mjs",
+    "logo:build": "bun scripts/build-logo.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -53,11 +55,9 @@
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.1.2",
-      "@types/react-dom": "19.1.2"
-    }
+  "overrides": {
+    "@types/react": "19.1.2",
+    "@types/react-dom": "19.1.2"
   },
   "description": "A shadcn-compatible component registry.",
   "browserslist": [

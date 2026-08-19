@@ -19,6 +19,7 @@ import {
   ResponseFollowUp,
   ResponseFollowUps,
   ResponseSources,
+  ResponseUsage,
   useTypewriter,
 } from "@/registry/ui/response"
 import {
@@ -36,6 +37,7 @@ import {
   PromptInputAttachment,
   PromptInputAttachments,
   PromptInputButton,
+  PromptInputContextIndicator,
   PromptInputMenu,
   PromptInputModelSelect,
   PromptInputSubmit,
@@ -63,6 +65,7 @@ import {
   ToolCalls,
 } from "@/registry/ui/tool-call"
 import { Task, Tasks } from "@/registry/ui/tasks"
+import { Subagent, Subagents } from "@/registry/ui/subagent"
 import {
   Artifact,
   ArtifactAction,
@@ -290,7 +293,7 @@ function TraceBody({ kind, shown }: { kind: TraceKind; shown: number }) {
           </>
         ),
       },
-      { label: "Run", body: <>npm run freeze</> },
+      { label: "Run", body: <>bun run freeze</> },
     ]
     return (
       <>
@@ -422,6 +425,7 @@ function AnswerBlock({
           <Source key={x.host} name={x.name} host={x.host} />
         ))}
       </ResponseSources>
+      <ResponseUsage duration={8} tokens={1248} />
       <ResponseActions>
         <ResponseAction label="Copy">
           <CopyIcon />
@@ -726,6 +730,7 @@ function buildSources(onUpload: () => void) {
 function PromptInputDemo() {
   const [shape, setShape] = React.useState("rounded")
   const [model, setModel] = React.useState("vanilla-1")
+  const [reasoningEffort, setReasoningEffort] = React.useState("medium")
   const [status, setStatus] = React.useState("ready")
   const [files, setFiles] = React.useState(["sales-q3.csv"])
   const uploadRef = React.useRef<HTMLInputElement | null>(null)
@@ -829,10 +834,13 @@ function PromptInputDemo() {
                 <MicIcon />
               </PromptInputButton>
             </PromptInputTools>
+            <PromptInputContextIndicator used={28400} total={128000} />
             <PromptInputModelSelect
               models={MODELS}
               value={model}
               onValueChange={setModel}
+              reasoningEffort={reasoningEffort}
+              onReasoningEffortChange={setReasoningEffort}
             />
             <PromptInputSubmit />
           </PromptInputToolbar>
@@ -1035,11 +1043,11 @@ function ToolCallsDemo() {
 function SceneRun() {
   return (
     <div className="flex flex-col gap-3">
-      <ToolCalls defaultOpen>
+      <ToolCalls>
         <ToolCall kind="think" label="Planned the churn schedule" />
         <ToolCall kind="read" target="flavors.ts" meta="1.2 kB" />
         <ToolCall kind="write" label="Write 204 lines" target="ChurnSchedule.tsx" />
-        <ToolCall kind="bash" label="Rebuild" target="npm run freeze" meta="1.2s">
+        <ToolCall kind="bash" label="Rebuild" target="bun run freeze" meta="1.2s">
           <ToolCallOutput>{"✓ built in 1.2s\n✓ 34 checks passed"}</ToolCallOutput>
         </ToolCall>
       </ToolCalls>
@@ -1057,7 +1065,7 @@ function SceneRun() {
 /** One of each, so the weight difference between them is visible at a glance. */
 function SceneKinds() {
   return (
-    <ToolCalls defaultOpen label="Every kind">
+    <ToolCalls>
       <ToolCall kind="read" target="flavors.ts" />
       <ToolCall kind="search" target="best waffle cone supplier" meta="10 results" />
       <ToolCall kind="fetch" target="joycone.com/wholesale" meta="200" />
@@ -1067,7 +1075,7 @@ function SceneKinds() {
           {"- const flavors = base\n+ const flavors = base.filter(inSeason)"}
         </ToolCallOutput>
       </ToolCall>
-      <ToolCall kind="bash" label="Test" target="npm run freeze" meta="1.2s">
+      <ToolCall kind="bash" label="Test" target="bun run freeze" meta="1.2s">
         <ToolCallOutput>{"✓ built in 1.2s\n✓ 34 checks passed"}</ToolCallOutput>
       </ToolCall>
       <ToolCall kind="code" label="Run Python" target="forecast.py" meta="0.4s">
@@ -1085,7 +1093,6 @@ function SceneKinds() {
           <ToolCallField name="mode">Operate</ToolCallField>
         </ToolCallFields>
       </ToolCall>
-      <ToolCall kind="task" label="Delegate" target="pricing-researcher" meta="running" />
       <ToolCall kind="mcp" label="Call" target="linear.create_issue">
         <ToolCallFields>
           <ToolCallField name="team">Creamery Ops</ToolCallField>
@@ -1099,14 +1106,14 @@ function SceneKinds() {
 /** The rule that matters: a failure cannot be tidied away. */
 function SceneFailure() {
   return (
-    <ToolCalls defaultOpen={false}>
+    <ToolCalls>
       <ToolCall kind="read" target="flavors.ts" />
       <ToolCall
         kind="edit"
         target="ChurnSchedule.tsx"
         meta={<ToolCallDiff added={74} removed={41} />}
       />
-      <ToolCall kind="bash" label="Rebuild" target="npm run freeze" status="error" meta="exit 1">
+      <ToolCall kind="bash" label="Rebuild" target="bun run freeze" status="error" meta="exit 1">
         <ToolCallOutput>
           {"ChurnSchedule.tsx:82:14 - error TS2551\n  Property 'churnAt' does not exist on type 'Batch'.\n\nFound 1 error."}
         </ToolCallOutput>
@@ -1120,7 +1127,7 @@ function SceneLive() {
   const steps = [
     { kind: "read" as const, target: "flavors.ts", meta: "1.2 kB" },
     { kind: "write" as const, target: "ChurnSchedule.tsx", label: "Write 204 lines" },
-    { kind: "bash" as const, target: "npm run freeze", label: "Rebuild", meta: "1.2s" },
+    { kind: "bash" as const, target: "bun run freeze", label: "Rebuild", meta: "1.2s" },
     { kind: "image" as const, target: "flavor-chart.png", label: "Generate", meta: "1280×720" },
   ]
 
@@ -1135,11 +1142,7 @@ function SceneLive() {
   const shown = settled ? steps.length : tick + 1
 
   return (
-    <ToolCalls
-      key={settled ? "settled" : "working"}
-      defaultOpen
-      label={settled ? `${steps.length} tool calls · 4.1s` : "Working"}
-    >
+    <ToolCalls key={settled ? "settled" : "working"}>
       {steps.slice(0, shown).map((step, i) => (
         <ToolCall
           key={step.target}
@@ -1478,6 +1481,57 @@ function SheetArtifactPreview() {
   )
 }
 
+/* ------------------------------ 09 subagents ------------------------------ */
+
+function SubagentDemo() {
+  const [opened, setOpened] = React.useState("")
+
+  return (
+    <Demo>
+      <div className="mx-auto flex max-w-[34rem] flex-col gap-2">
+        <Subagents>
+          <Subagent
+            name="Source checker"
+            description="Waiting for the research brief"
+            status="pending"
+            duration={0}
+          />
+          <Subagent
+            name="Interface builder"
+            description="Building the dashboard preview"
+            status="running"
+            duration={9}
+            onOpen={() => setOpened("Opened interface-builder thread")}
+          />
+          <Subagent
+            name="Data researcher"
+            description="Found three useful demand signals"
+            status="completed"
+            duration={24}
+            onOpen={() => setOpened("Opened completed research thread")}
+          />
+          <Subagent
+            name="QA auditor"
+            description="Responsive check failed at 390px"
+            status="failed"
+            duration={16}
+            onOpen={() => setOpened("Opened QA failure thread")}
+          />
+          <Subagent
+            name="Copy editor"
+            description="Stopped when the brief changed"
+            status="cancelled"
+            duration={7}
+          />
+        </Subagents>
+        <div aria-live="polite" className="h-4 text-[11px] text-muted-foreground">
+          {opened}
+        </div>
+      </div>
+    </Demo>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -1611,6 +1665,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
 
       <Section index="08" title="Artifact">
         <ArtifactDemo />
+      </Section>
+
+      <Section index="09" title="Subagents">
+        <SubagentDemo />
       </Section>
     </div>
   )

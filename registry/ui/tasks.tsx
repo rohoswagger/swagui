@@ -49,7 +49,7 @@ function Tasks({
       <div
         data-slot="tasks-summary"
         className={cn(
-          "border-t border-border bg-background pt-2",
+          "border-t border-border bg-background pt-1",
           sticky && "sticky top-0 z-10"
         )}
       >
@@ -91,7 +91,7 @@ function Tasks({
         data-slot="tasks-content"
         className="overflow-hidden data-[state=open]:animate-reveal data-[state=closed]:animate-conceal"
       >
-        <div role="list" className="flex flex-col gap-0 pt-0.5 pb-0.5 pl-6">
+        <div role="list" className="flex flex-col gap-1 pt-1 pb-0.5 pl-6">
           {children}
         </div>
       </CollapsiblePrimitive.Content>

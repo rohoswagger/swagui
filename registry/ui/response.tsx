@@ -256,6 +256,37 @@ function ResponseActions({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/** Final receipt for a completed assistant turn. */
+function ResponseUsage({
+  className,
+  duration,
+  tokens,
+  ...props
+}: React.ComponentProps<"div"> & {
+  /** Total wall-clock seconds for the turn. */
+  duration: number
+  /** Total input and output tokens consumed by the turn. */
+  tokens: number
+}) {
+  const { streaming } = React.useContext(ResponseContext)
+  if (streaming) return null
+
+  return (
+    <div
+      data-slot="response-usage"
+      className={cn(
+        "flex items-center gap-1.5 text-[11px] text-muted-foreground/70",
+        className
+      )}
+      {...props}
+    >
+      <span className="tabular-nums">{formatDuration(duration)}</span>
+      <span aria-hidden>·</span>
+      <span className="tabular-nums">{formatTokens(tokens)} tokens</span>
+    </div>
+  )
+}
+
 function ResponseAction({
   className,
   label,
@@ -282,6 +313,16 @@ function ResponseAction({
       {children}
     </button>
   )
+}
+
+function formatDuration(seconds: number) {
+  if (seconds < 60) return `${seconds}s`
+  const minutes = Math.floor(seconds / 60)
+  return `${minutes}m ${seconds % 60}s`
+}
+
+function formatTokens(tokens: number) {
+  return new Intl.NumberFormat("en-US").format(tokens)
 }
 
 /** Suggested next prompts. Also withheld while streaming. */
@@ -448,6 +489,7 @@ export {
   ResponseContent,
   ResponseCitation,
   ResponseSources,
+  ResponseUsage,
   ResponseActions,
   ResponseAction,
   ResponseFollowUps,

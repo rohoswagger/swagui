@@ -128,6 +128,11 @@
         "--snake-angle": "360deg"
       }
     },
+    "@keyframes swagui-subagent-trail": {
+      "to": {
+        "stroke-dashoffset": "-100"
+      }
+    },
     "@keyframes swagui-emerge": {
       "from": {
         "opacity": "0",
@@ -439,6 +444,9 @@
         "animation": "var(--animate-snake)",
         "pointer-events": "none"
       },
+      ".subagent-trail": {
+        "animation": "swagui-subagent-trail 2.8s linear infinite"
+      },
       ".emerge": {
         "animation": "var(--animate-emerge)"
       },
@@ -482,6 +490,11 @@
       ".snake::after": {
         "animation": "none",
         "background": "color-mix(in oklch, var(--brand) 45%, transparent)"
+      },
+      ".subagent-trail": {
+        "animation": "none",
+        "opacity": "0.45",
+        "stroke-dasharray": "100 0"
       },
       ".wave-once::before": {
         "animation": "none",

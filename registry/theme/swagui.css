@@ -138,6 +138,14 @@
   }
 }
 
+/* A fixed-length dash moving along the actual perimeter. Unlike a conic
+   gradient, path distance stays constant through corners and long edges. */
+@keyframes swagui-subagent-trail {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
 /*
    Depth rather than displacement, and depth only. Sliding implies the surface
    came from somewhere off-screen; this one was conjured in place, so it simply
@@ -805,6 +813,10 @@
     pointer-events: none;
   }
 
+  .subagent-trail {
+    animation: swagui-subagent-trail 2.8s linear infinite;
+  }
+
   /* Applied to the element that moves, never to the one that is positioned:
      a keyframe writing transform overrides the inline transform a positioned
      parent uses to centre itself, which shows up as a jump on arrival. */
@@ -883,6 +895,12 @@
   .snake::after {
     animation: none;
     background: color-mix(in oklch, var(--brand) 45%, transparent);
+  }
+
+  .subagent-trail {
+    animation: none;
+    opacity: 0.45;
+    stroke-dasharray: 100 0;
   }
 
   /* The confirmation still has to register, so the tint appears and fades

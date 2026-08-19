@@ -14,7 +14,7 @@ vendored and restyled, so upstream changes are not inherited.
 ## Install
 
 ```bash
-npx shadcn@latest add https://swagui.rohoswagger.com/r/button.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/button.json
 ```
 
 Every component declares the theme as a registry dependency, so the first install
@@ -83,10 +83,10 @@ Dark mode is class-driven — put `dark` on `<html>` or any wrapper.
 ## Development
 
 ```bash
-pnpm install
-pnpm dev            # docs + live token preview at /
-pnpm registry:build # writes public/r/*.json
-pnpm build          # registry:build + static export to ./out
+bun install
+bun run dev            # docs + live token preview at /
+bun run registry:build # writes public/r/*.json
+bun run build          # registry:build + static export to ./out
 ```
 
 The preview at `/` renders every component against live token controls, with
@@ -97,7 +97,7 @@ Marketing, Components and App views.
 Composed marketing sections, installed the same way:
 
 ```bash
-npx shadcn@latest add https://swagui.rohoswagger.com/r/hero-centered.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/hero-centered.json
 ```
 
 `section`, `reveal`, `hero-centered`, `feature-grid`, `logo-marquee`, `cta-band`.
@@ -106,7 +106,7 @@ Blocks may depend on `motion`; components never do, so app bundles stay lean.
 
 ## Adding a component
 
-> **Do not run `npx shadcn add <name>` from shadcn's own registry in this repo.**
+> **Do not run `bunx shadcn add <name>` from shadcn's own registry in this repo.**
 > It writes into `registry/ui/` and will clobber swagui's edits. Pull upstream
 > files into a scratch directory first, then move them in deliberately.
 
@@ -126,8 +126,8 @@ Blocks may depend on `motion`; components never do, so app bundles stay lean.
 }
 ```
 
-3. `pnpm registry:build`
+3. `bun run registry:build`
 
 ## Deployment
 
-Static export to Cloudflare Workers static assets. `pnpm build` produces `./out`.
+Static export to Cloudflare Workers static assets. `bun run build` produces `./out`.

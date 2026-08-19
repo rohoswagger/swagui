@@ -11,8 +11,15 @@ function Slider({
   value,
   min = 0,
   max = 100,
+  marks,
+  thumbLabel,
+  thumbValueText,
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: React.ComponentProps<typeof SliderPrimitive.Root> & {
+  marks?: number
+  thumbLabel?: string
+  thumbValueText?: string | string[]
+}) {
   const _values = React.useMemo(
     () =>
       Array.isArray(value)
@@ -48,11 +55,20 @@ function Slider({
             "absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full"
           )}
         />
+        {marks && marks > 1 ? (
+          <span aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-0.5">
+            {Array.from({ length: marks }, (_, index) => (
+              <span key={index} className="size-1 rounded-full bg-background/70" />
+            ))}
+          </span>
+        ) : null}
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
+          aria-label={thumbLabel}
+          aria-valuetext={Array.isArray(thumbValueText) ? thumbValueText[index] : thumbValueText}
           className="block size-4 shrink-0 rounded-full border border-primary bg-white shadow-(--shadow-raised) ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
         />
       ))}

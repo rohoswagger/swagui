@@ -27,6 +27,16 @@ const ArtifactContext = React.createContext<ArtifactContextValue>({
   status: "ready",
 })
 
+function Artifacts({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="artifacts"
+      className={cn("grid w-full grid-cols-1 items-start gap-2 sm:grid-cols-2", className)}
+      {...props}
+    />
+  )
+}
+
 function Artifact({
   className,
   kind = "file",
@@ -51,7 +61,7 @@ function Artifact({
         data-kind={kind}
         data-status={status}
         className={cn(
-          "group/artifact relative mx-auto grid w-full max-w-[23rem] grid-cols-[5.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-border bg-card text-card-foreground",
+          "group/artifact relative grid w-full max-w-[23rem] self-start grid-cols-[5.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-border bg-card text-card-foreground",
           "transition-[border-color,background-color,transform] duration-(--duration-fast) ease-(--ease-swagui)",
           unavailable
             ? "border-destructive/25"
@@ -299,6 +309,7 @@ function UnavailableIcon() {
 }
 
 export {
+  Artifacts,
   Artifact,
   ArtifactPreview,
   ArtifactContent,

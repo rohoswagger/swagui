@@ -29,6 +29,23 @@ function ChatHeaderIdentity({ className, ...props }: React.ComponentProps<"div">
   )
 }
 
+/** Host-provided wordmark that can also act as the route back to the root thread. */
+function ChatHeaderHome({ className, ...props }: React.ComponentProps<"button">) {
+  return (
+    <button
+      type="button"
+      data-slot="chat-header-home"
+      className={cn(
+        "inline-flex min-w-0 shrink-0 items-center gap-2 rounded-md text-sm font-medium text-muted-foreground outline-none",
+        "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
+        "hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
 function ChatHeaderDivider({ className, children = "/", ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -56,7 +73,7 @@ function ChatHeaderActions({ className, ...props }: React.ComponentProps<"div">)
   return (
     <div
       data-slot="chat-header-actions"
-      className={cn("ml-auto flex shrink-0 items-center gap-1.5", className)}
+      className={cn("ms-auto flex shrink-0 items-center gap-1.5", className)}
       {...props}
     />
   )
@@ -65,7 +82,7 @@ function ChatHeaderActions({ className, ...props }: React.ComponentProps<"div">)
 function ChatHeaderAction({
   className,
   label,
-  size = "icon-sm",
+  size = "sm",
   variant = "outline",
   children,
   ...props
@@ -86,6 +103,85 @@ function ChatHeaderAction({
   )
 }
 
+function ChatHeaderBack({
+  className,
+  children = "Back to main",
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  return (
+    <Button
+      type="button"
+      data-slot="chat-header-back"
+      variant="ghost"
+      size="sm"
+      className={cn("rounded-lg px-2", className)}
+      {...props}
+    >
+      <BackIcon />
+      <span className="hidden sm:inline">{children}</span>
+      <span className="sr-only sm:hidden">{children}</span>
+    </Button>
+  )
+}
+
+function ChatHeaderBreadcrumbs({ className, ...props }: React.ComponentProps<"nav">) {
+  return (
+    <nav
+      data-slot="chat-header-breadcrumbs"
+      aria-label="Agent thread"
+      className={cn("flex min-w-0 flex-1 items-center gap-1.5", className)}
+      {...props}
+    />
+  )
+}
+
+function ChatHeaderBreadcrumb({
+  className,
+  current = false,
+  children,
+  ...props
+}: React.ComponentProps<"button"> & { current?: boolean }) {
+  if (current) {
+    return (
+      <span
+        data-slot="chat-header-breadcrumb"
+        aria-current="page"
+        className={cn("min-w-0 truncate text-sm font-medium text-foreground", className)}
+        {...props}
+      >
+        {children}
+      </span>
+    )
+  }
+
+  return (
+    <button
+      type="button"
+      data-slot="chat-header-breadcrumb"
+      className={cn(
+        "min-w-0 truncate rounded-md px-1 py-0.5 text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+
+function ChatHeaderBreadcrumbSeparator({ className, ...props }: React.ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="chat-header-breadcrumb-separator"
+      aria-hidden
+      className={cn("shrink-0 text-muted-foreground/40", className)}
+      {...props}
+    >
+      /
+    </span>
+  )
+}
+
 function ChatHeaderShortcut({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd
@@ -99,12 +195,25 @@ function ChatHeaderShortcut({ className, ...props }: React.ComponentProps<"kbd">
   )
 }
 
+function BackIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  )
+}
+
 export {
   ChatHeader,
   ChatHeaderIdentity,
+  ChatHeaderHome,
   ChatHeaderDivider,
   ChatHeaderTitle,
   ChatHeaderActions,
   ChatHeaderAction,
+  ChatHeaderBack,
+  ChatHeaderBreadcrumbs,
+  ChatHeaderBreadcrumb,
+  ChatHeaderBreadcrumbSeparator,
   ChatHeaderShortcut,
 }

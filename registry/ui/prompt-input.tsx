@@ -3,6 +3,18 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/registry/ui/popover"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/registry/ui/tooltip"
+import { Slider } from "@/registry/ui/slider"
 
 /**
  * The composer.
@@ -467,48 +479,235 @@ function PromptInputSubmit({
   )
 }
 
-/** Model picker. A native select, so it behaves on touch and with a keyboard. */
+type ReasoningEffort = "low" | "medium" | "high" | "xhigh" | "max"
+
+const DEFAULT_REASONING_EFFORTS: {
+  value: ReasoningEffort
+  label: string
+  hint: string
+}[] = [
+  { value: "low", label: "Low", hint: "Faster replies" },
+  { value: "medium", label: "Medium", hint: "Balanced" },
+  { value: "high", label: "High", hint: "Deeper analysis" },
+  { value: "xhigh", label: "XHigh", hint: "Extended reasoning" },
+  { value: "max", label: "Max", hint: "Maximum depth" },
+]
+
+/** Detailed model and reasoning picker for the current turn. */
 function PromptInputModelSelect({
   className,
   models,
   value,
   onValueChange,
-  ...props
-}: Omit<React.ComponentProps<"select">, "value" | "onChange"> & {
-  models: { value: string; label: string; hint?: string }[]
+  reasoningEffort = "medium",
+  onReasoningEffortChange,
+  reasoningEfforts = DEFAULT_REASONING_EFFORTS,
+  ...nativeProps
+}: Omit<React.ComponentProps<"select">, "value" | "onChange" | "children"> & {
+  models: { value: string; label: string; hint?: string; detail?: string }[]
   value: string
   onValueChange: (value: string) => void
+  reasoningEffort?: string
+  onReasoningEffortChange?: (value: string) => void
+  reasoningEfforts?: { value: string; label: string; hint?: string }[]
 }) {
   const active = models.find((m) => m.value === value)
+  const activeEffort = reasoningEfforts.find((effort) => effort.value === reasoningEffort)
+  const effortIndex = Math.max(0, reasoningEfforts.findIndex((effort) => effort.value === reasoningEffort))
+  // Native select props opt into the old surface so form participation,
+  // disabled state and browser focus behavior are not silently degraded.
+  const legacyNativeSelect = Object.keys(nativeProps).length > 0
+
+  if (legacyNativeSelect) {
+    return (
+      <label
+        className={cn(
+          "relative inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2 py-1.5",
+          "text-[13px] text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
+          "hover:bg-accent hover:text-foreground focus-within:ring-2 focus-within:ring-ring/60",
+          className
+        )}
+      >
+        <span className="max-w-[14ch] truncate">{active?.label ?? value}</span>
+        <Chevron className="size-3 shrink-0 opacity-60" />
+        <select
+          data-slot="prompt-input-model"
+          aria-label="Model"
+          value={value}
+          onChange={(event) => onValueChange(event.target.value)}
+          className="absolute inset-0 cursor-pointer opacity-0"
+          {...nativeProps}
+        >
+          {models.map((model) => (
+            <option key={model.value} value={model.value}>
+              {model.hint ? `${model.label} — ${model.hint}` : model.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    )
+  }
 
   return (
-    <label
-      className={cn(
-        "relative inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2 py-1.5",
-        "text-[13px] text-muted-foreground",
-        "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
-        "hover:bg-accent hover:text-foreground",
-        "focus-within:ring-2 focus-within:ring-ring/60",
-        className
-      )}
-    >
-      <span className="max-w-[14ch] truncate">{active?.label ?? value}</span>
-      <Chevron className="size-3 shrink-0 opacity-60" />
-      <select
-        data-slot="prompt-input-model"
-        aria-label="Model"
-        value={value}
-        onChange={(e) => onValueChange(e.target.value)}
-        className="absolute inset-0 cursor-pointer opacity-0"
-        {...props}
-      >
-        {models.map((m) => (
-          <option key={m.value} value={m.value}>
-            {m.hint ? `${m.label} — ${m.hint}` : m.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <Popover>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          data-slot="prompt-input-model"
+          aria-label={`Model: ${active?.label ?? value}; reasoning: ${activeEffort?.label ?? reasoningEffort}`}
+          className={cn(
+            "inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1.5 text-[13px] text-muted-foreground outline-none",
+            "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
+            "hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
+            className
+          )}
+        >
+          <span className="min-w-0 flex-1 truncate text-left">{active?.label ?? value}</span>
+          <span aria-hidden className="text-muted-foreground/40">·</span>
+          <span className="hidden text-[11px] sm:inline">{activeEffort?.label ?? reasoningEffort}</span>
+          <Chevron className="size-3 shrink-0 opacity-60" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent side="top" align="end" sideOffset={8} className="w-56 p-2">
+        <div className="px-2 pt-1 pb-1.5 text-[11px] font-medium text-muted-foreground">Model</div>
+        <div
+          role="radiogroup"
+          aria-label="Model"
+          className="flex flex-col gap-0.5"
+          onKeyDown={(event) => {
+            if (!["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft", "Home", "End"].includes(event.key)) return
+            const items = Array.from(
+              event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]')
+            )
+            if (!items.length) return
+            const current = Math.max(0, items.indexOf(document.activeElement as HTMLButtonElement))
+            const next = event.key === "Home"
+              ? 0
+              : event.key === "End"
+                ? items.length - 1
+                : event.key === "ArrowDown" || event.key === "ArrowRight"
+                  ? (current + 1) % items.length
+                  : (current - 1 + items.length) % items.length
+            event.preventDefault()
+            items[next].focus()
+            items[next].click()
+          }}
+        >
+          {models.map((model) => {
+            const selected = model.value === value
+            return (
+              <button
+                key={model.value}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => onValueChange(model.value)}
+                className={cn(
+                  "flex items-start gap-2 rounded-md px-2 py-1.5 text-left outline-none",
+                  "hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/60",
+                  selected && "bg-accent/70"
+                )}
+              >
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-medium text-foreground">{model.label}</span>
+                  {model.hint || model.detail ? (
+                    <span className="block truncate text-[11px] text-muted-foreground">
+                      {[model.hint, model.detail].filter(Boolean).join(" · ")}
+                    </span>
+                  ) : null}
+                </span>
+                <span className="mt-1 flex size-3.5 shrink-0 items-center justify-center text-brand">
+                  {selected ? <Check /> : null}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="my-2 h-px bg-border" />
+        <div className="flex items-center justify-between px-2 pb-2 text-[11px] font-medium text-muted-foreground">
+          <span>Reasoning effort</span>
+          <span className="text-foreground">{activeEffort?.label ?? reasoningEffort}</span>
+        </div>
+        <div className="px-2 pb-1">
+          <Slider
+            value={[effortIndex]}
+            min={0}
+            max={reasoningEfforts.length - 1}
+            step={1}
+            marks={reasoningEfforts.length}
+            thumbLabel="Reasoning effort"
+            thumbValueText={activeEffort?.label ?? reasoningEffort}
+            disabled={!onReasoningEffortChange}
+            onValueChange={([next]) => onReasoningEffortChange?.(reasoningEfforts[next]?.value)}
+            className="py-1 [&_[data-slot=slider-range]]:bg-brand [&_[data-slot=slider-thumb]]:border-brand [&_[data-slot=slider-thumb]]:ring-brand/30"
+          />
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+/** Compact context-window meter with its exact usage disclosed on hover. */
+function PromptInputContextIndicator({
+  className,
+  used,
+  total,
+  label = "Context window",
+}: {
+  className?: string
+  used: number
+  total: number
+  label?: string
+}) {
+  const percentage = total > 0 ? Math.min(100, Math.max(0, (used / total) * 100)) : 0
+  const summary = `${formatTokenCount(used)} of ${formatTokenCount(total)} tokens used (${Math.round(percentage)}%)`
+
+  return (
+    <TooltipProvider delayDuration={250}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span
+            data-slot="prompt-input-context"
+            role="meter"
+            tabIndex={0}
+            aria-valuemin={0}
+            aria-valuemax={total}
+            aria-valuenow={Math.min(total, Math.max(0, used))}
+            aria-valuetext={summary}
+            aria-label={`${label}: ${summary}`}
+            className={cn(
+              "inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground outline-none",
+              "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
+              "hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
+              className
+            )}
+          >
+            <svg viewBox="0 0 20 20" className="size-[18px] -rotate-90" aria-hidden>
+              <circle cx="10" cy="10" r="7" pathLength="100" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-20" />
+              <circle
+                cx="10"
+                cy="10"
+                r="7"
+                pathLength="100"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray="100"
+                strokeDashoffset={100 - percentage}
+                className="text-muted-foreground"
+              />
+            </svg>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={6}>
+          <span className="font-medium">{label}</span>
+          <span className="ml-1.5 opacity-75">{summary}</span>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 
@@ -833,6 +1032,18 @@ function Cross() {
   )
 }
 
+function Check() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="size-3.5">
+      <path d="m5 12.5 4 4L19 7" />
+    </svg>
+  )
+}
+
+function formatTokenCount(tokens: number) {
+  return new Intl.NumberFormat("en-US").format(tokens)
+}
+
 export {
   PromptInput,
   PromptInputEditor,
@@ -841,6 +1052,7 @@ export {
   PromptInputButton,
   PromptInputSubmit,
   PromptInputModelSelect,
+  PromptInputContextIndicator,
   PromptInputAttachments,
   PromptInputAttachment,
   PromptInputMenu,
