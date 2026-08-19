@@ -797,7 +797,7 @@
       "name": "site-footer",
       "type": "registry:block",
       "title": "Site Footer",
-      "description": "Multi-column link footer with brand block and bottom bar.",
+      "description": "Multi-column link footer with brand block, bottom bar and an oversized terminal company wordmark.",
       "files": [
         {
           "path": "registry/blocks/site-footer/site-footer.tsx",

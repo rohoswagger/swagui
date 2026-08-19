@@ -9,6 +9,8 @@ function SiteFooter({
   tagline,
   columns = [],
   bottom,
+  wordmark,
+  wordmarkStyle,
   className,
   ...props
 }: React.ComponentProps<"footer"> & {
@@ -16,11 +18,32 @@ function SiteFooter({
   tagline?: React.ReactNode
   columns?: FooterColumn[]
   bottom?: React.ReactNode
+  /** Decorative terminal brand line. Defaults to `brand`; pass false to hide. */
+  wordmark?: React.ReactNode | false
+  wordmarkStyle?: React.CSSProperties
 }) {
+  const terminalWordmark =
+    wordmark === undefined
+      ? typeof brand === "string" || typeof brand === "number"
+        ? brand
+        : false
+      : wordmark
+  const terminalWordmarkStyle: React.CSSProperties = {
+    fontFamily: "var(--font-display)",
+    fontWeight: 400,
+    letterSpacing: "var(--display-tracking, -0.04em)",
+    fontStyle: "normal",
+    fontVariationSettings: "var(--display-variation, normal)",
+    ...wordmarkStyle,
+  }
+
   return (
     <footer
       data-slot="site-footer"
-      className={cn("border-border/60 w-full border-t px-6 pt-20 pb-10 sm:px-8", className)}
+      className={cn(
+        "border-border/60 w-full overflow-hidden border-t px-6 pt-20 pb-10 sm:px-8",
+        className
+      )}
       {...props}
     >
       <div className="mx-auto w-full max-w-[75rem]">
@@ -58,6 +81,21 @@ function SiteFooter({
         <div className="border-border/60 text-muted-foreground mt-16 flex flex-wrap items-center justify-between gap-4 border-t pt-8 text-[0.8125rem]">
           {bottom}
         </div>
+
+        {terminalWordmark !== false ? (
+          <div
+            data-slot="site-footer-wordmark"
+            aria-hidden
+            className="mt-14 flex w-full justify-center overflow-visible pt-3 pb-[0.1em] text-center"
+          >
+            <div
+              className="max-w-full text-[clamp(4.5rem,26vw,20rem)] leading-[0.82] whitespace-nowrap text-foreground select-none"
+              style={terminalWordmarkStyle}
+            >
+              {terminalWordmark}
+            </div>
+          </div>
+        ) : null}
       </div>
     </footer>
   )

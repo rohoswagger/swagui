@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs"
 import { renderToStaticMarkup } from "react-dom/server"
 
 import { Artifact, ArtifactContent, ArtifactTitle, Artifacts } from "@/registry/ui/artifact"
+import { SiteFooter } from "@/registry/blocks/site-footer/site-footer"
 import {
   AGENT_WORKING_MARK_OPTIONS,
   AgentWorkingMark,
@@ -15,6 +16,30 @@ import { ToolCall, ToolCalls } from "@/registry/ui/tool-call"
 import { readWorkingMarkParam } from "@/app/_preview/working-mark-config"
 
 describe("agent component contracts", () => {
+  test("site footer ends with an overridable decorative wordmark", () => {
+    const defaultWordmark = renderToStaticMarkup(<SiteFooter brand="swagui" />)
+    const hiddenWordmark = renderToStaticMarkup(
+      <SiteFooter brand="swagui" wordmark={false} />
+    )
+    const linkedBrand = renderToStaticMarkup(
+      <SiteFooter brand={<a href="/">swagui</a>} />
+    )
+    const customWordmark = renderToStaticMarkup(
+      <SiteFooter brand={<a href="/">swagui</a>} wordmark="swagui studio" />
+    )
+
+    expect(defaultWordmark).toContain('data-slot="site-footer-wordmark"')
+    expect(defaultWordmark).toContain(">swagui</div>")
+    expect(defaultWordmark).toContain("justify-center")
+    expect(defaultWordmark).toContain("font-family:var(--font-display)")
+    expect(defaultWordmark).toContain("font-style:normal")
+    expect(defaultWordmark).toContain("font-weight:400")
+    expect(defaultWordmark).toContain("text-foreground")
+    expect(hiddenWordmark).not.toContain('data-slot="site-footer-wordmark"')
+    expect(linkedBrand).not.toContain('data-slot="site-footer-wordmark"')
+    expect(customWordmark).toContain(">swagui studio</div>")
+  })
+
   test("working mark variants expose a stable accessible status", () => {
     const html = renderToStaticMarkup(
       <>

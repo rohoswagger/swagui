@@ -184,6 +184,7 @@ export function PreviewClient() {
     "--mono-font": pairing.mono,
     "--display-weight": pairing.displayWeight,
     "--display-tracking": pairing.displayTracking,
+    "--display-variation": pairing.displayVariation ?? "normal",
     "--brand": isDark ? accent.dark : accent.light,
     "--brand-content":
       state.accent === "none" ? "var(--fg)" : isDark ? accent.dark : accent.lightContent,
