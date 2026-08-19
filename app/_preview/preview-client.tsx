@@ -16,6 +16,11 @@ import { ChatView } from "./chat-view"
 import { LogoView } from "./logo-view"
 import { ACCENTS, BASES, PAIRINGS, SURFACES } from "./config"
 import { ArrowRight, IconLib, IconProvider, IconWeight, Search } from "./icons"
+import {
+  AGENT_WORKING_MARK_OPTIONS,
+  type AgentWorkingMarkVariant,
+} from "@/registry/ui/agent-working-mark"
+import { DEFAULT_WORKING_MARK, readWorkingMarkParam } from "./working-mark-config"
 
 type State = {
   font: string
@@ -27,6 +32,7 @@ type State = {
   density: "comfortable" | "compact"
   icons: IconLib
   iconWeight: IconWeight
+  workingMark: AgentWorkingMarkVariant
   squircle: boolean
   grain: boolean
 }
@@ -41,6 +47,7 @@ const DEFAULTS: State = {
   density: "comfortable",
   icons: "lucide",
   iconWeight: "light",
+  workingMark: DEFAULT_WORKING_MARK,
   squircle: true,
   grain: true,
 }
@@ -61,7 +68,7 @@ function Control<T extends string>({
   return (
     <label
       title={active?.note}
-      className="group relative flex shrink-0 cursor-pointer flex-col gap-0.5 rounded-lg border border-neutral-200 bg-white px-3 py-2 transition-colors hover:border-neutral-300"
+      className="group relative flex shrink-0 cursor-pointer flex-col gap-0.5 rounded-lg border border-neutral-200 bg-white px-3 py-2 transition-colors hover:border-neutral-300 focus-within:border-neutral-400 focus-within:ring-2 focus-within:ring-neutral-900/20"
     >
       <span className="text-[10px] leading-none text-neutral-400">{label}</span>
       <span className="pr-4 text-[12.5px] leading-tight font-medium text-neutral-900">
@@ -132,6 +139,7 @@ export function PreviewClient() {
     density: (params.get("density") as State["density"]) ?? DEFAULTS.density,
     icons: (params.get("icons") as IconLib) ?? DEFAULTS.icons,
     iconWeight: (params.get("iconWeight") as IconWeight) ?? DEFAULTS.iconWeight,
+    workingMark: readWorkingMarkParam(params),
     squircle: params.get("squircle") !== "0",
     grain: params.get("grain") !== "0",
   }))
@@ -153,6 +161,7 @@ export function PreviewClient() {
       density: state.density,
       icons: state.icons,
       iconWeight: state.iconWeight,
+      workingMark: state.workingMark,
       squircle: state.squircle ? "1" : "0",
       grain: state.grain ? "1" : "0",
     })
@@ -206,6 +215,7 @@ export function PreviewClient() {
       surface: pick(SURFACES).id,
       base: pick(BASES).id,
       theme: pick(["light", "dark"] as const),
+      workingMark: pick(AGENT_WORKING_MARK_OPTIONS).id,
       squircle: Math.random() > 0.35,
     }))
   }
@@ -237,7 +247,7 @@ export function PreviewClient() {
           ) : state.view === "blocks" ? (
             <BlocksView />
           ) : state.view === "agent" ? (
-            <AgentView displayStyle={displayStyle} />
+            <AgentView displayStyle={displayStyle} workingMark={state.workingMark} />
           ) : state.view === "chat" ? (
             <ChatView />
           ) : state.view === "logo" ? (
@@ -327,6 +337,12 @@ export function PreviewClient() {
               { id: "regular" as const, label: "Regular" },
             ]}
             onChange={(v) => set("iconWeight", v)}
+          />
+          <Control
+            label="Working"
+            value={state.workingMark}
+            options={AGENT_WORKING_MARK_OPTIONS}
+            onChange={(v) => set("workingMark", v)}
           />
           <Toggle
             label="Squircle"

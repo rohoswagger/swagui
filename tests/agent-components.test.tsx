@@ -1,14 +1,70 @@
 import { describe, expect, test } from "bun:test"
+import { readFileSync } from "node:fs"
 import { renderToStaticMarkup } from "react-dom/server"
 
 import { Artifact, ArtifactContent, ArtifactTitle, Artifacts } from "@/registry/ui/artifact"
+import {
+  AGENT_WORKING_MARK_OPTIONS,
+  AgentWorkingMark,
+} from "@/registry/ui/agent-working-mark"
 import { ChatHeaderBreadcrumb } from "@/registry/ui/chat-header"
 import { PromptInputContextIndicator, PromptInputModelSelect } from "@/registry/ui/prompt-input"
 import { Response, ResponseContent, ResponseUsage } from "@/registry/ui/response"
 import { Subagent, Subagents } from "@/registry/ui/subagent"
 import { ToolCall, ToolCalls } from "@/registry/ui/tool-call"
+import { readWorkingMarkParam } from "@/app/_preview/working-mark-config"
 
 describe("agent component contracts", () => {
+  test("working mark variants expose a stable accessible status", () => {
+    const html = renderToStaticMarkup(
+      <>
+        <AgentWorkingMark variant="mobius" />
+        <AgentWorkingMark variant="tesseract" />
+        <AgentWorkingMark variant="circuit" />
+        <AgentWorkingMark variant="blocks" />
+      </>
+    )
+
+    expect(html.match(/data-slot="agent-working-mark"/g)).toHaveLength(4)
+    expect(html).toContain('data-variant="mobius"')
+    expect(html).toContain('data-variant="tesseract"')
+    expect(html).toContain('data-variant="circuit"')
+    expect(html).toContain('data-variant="blocks"')
+    expect(html.match(/aria-label="Working"/g)).toHaveLength(4)
+    expect(html.match(/role="status"/g)).toHaveLength(4)
+    expect(AGENT_WORKING_MARK_OPTIONS.map((option) => option.id)).toHaveLength(4)
+    expect(AGENT_WORKING_MARK_OPTIONS.map((option) => option.id).join(",")).toBe(
+      "mobius,tesseract,circuit,blocks"
+    )
+    expect(html).toContain("agent-mobius-weave")
+    expect(html).toContain("agent-tesseract-fold")
+    expect(html).toContain("agent-inward-circuit")
+    expect(html).toContain("agent-bumping-blocks")
+    expect(renderToStaticMarkup(<AgentWorkingMark paused />)).toContain(
+      "agent-working-mark-paused"
+    )
+  })
+
+  test("working mark query selection validates known and unknown values", () => {
+    expect(readWorkingMarkParam(new URLSearchParams("workingMark=circuit"))).toBe("circuit")
+    expect(readWorkingMarkParam(new URLSearchParams("workingMark=unknown"))).toBe("mobius")
+    expect(readWorkingMarkParam(new URLSearchParams())).toBe("mobius")
+  })
+
+  test("working mark motion has a reduced-motion fallback", () => {
+    const css = readFileSync(
+      new URL("../registry/theme/swagui.css", import.meta.url),
+      "utf8"
+    )
+    const reducedMotion = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"))
+
+    expect(reducedMotion).toContain(".agent-mobius-runner")
+    expect(reducedMotion).toContain(".agent-tesseract-inner")
+    expect(reducedMotion).toContain(".agent-inward-circuit-runner")
+    expect(reducedMotion).toContain(".agent-bumping-block")
+    expect(reducedMotion).toContain("animation: none")
+  })
+
   test("navigable subagents retain native button semantics inside the list", () => {
     const html = renderToStaticMarkup(
       <Subagents>

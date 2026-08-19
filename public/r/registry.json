@@ -137,6 +137,46 @@
             "stroke-dashoffset": "-100"
           }
         },
+        "@keyframes swagui-agent-runner": {
+          "to": {
+            "stroke-dashoffset": "-100"
+          }
+        },
+        "@keyframes swagui-agent-tesseract-fold": {
+          "0%, 100%": {
+            "opacity": "0.48",
+            "transform": "rotate(0deg) scale(0.72)"
+          },
+          "50%": {
+            "opacity": "1",
+            "transform": "rotate(45deg) scale(1)"
+          },
+          "100%": {
+            "transform": "rotate(90deg) scale(0.72)"
+          }
+        },
+        "@keyframes swagui-agent-tesseract-connectors": {
+          "0%, 100%": {
+            "opacity": "0.16"
+          },
+          "50%": {
+            "opacity": "0.72"
+          }
+        },
+        "@keyframes swagui-agent-bumping-block": {
+          "0%, 100%": {
+            "opacity": "0.36",
+            "transform": "scale(0.78)"
+          },
+          "34%": {
+            "opacity": "1",
+            "transform": "scale(1.14)"
+          },
+          "62%": {
+            "opacity": "0.52",
+            "transform": "scale(0.88)"
+          }
+        },
         "@keyframes swagui-emerge": {
           "from": {
             "opacity": "0",
@@ -451,6 +491,31 @@
           ".subagent-trail": {
             "animation": "swagui-subagent-trail 2.8s linear infinite"
           },
+          ".agent-mobius-runner": {
+            "animation": "swagui-agent-runner 2.1s linear infinite"
+          },
+          ".agent-tesseract-inner": {
+            "transform-box": "view-box",
+            "transform-origin": "center",
+            "animation": "swagui-agent-tesseract-fold 2.8s var(--ease-soft) infinite"
+          },
+          ".agent-tesseract-connectors": {
+            "animation": "swagui-agent-tesseract-connectors 2.8s var(--ease-soft) infinite"
+          },
+          ".agent-inward-circuit-runner": {
+            "animation": "swagui-agent-runner 2.3s linear infinite"
+          },
+          ".agent-inward-circuit-runner-secondary": {
+            "animation-delay": "-1.15s"
+          },
+          ".agent-bumping-block": {
+            "transform-box": "fill-box",
+            "transform-origin": "center bottom",
+            "animation": "swagui-agent-bumping-block 1.32s var(--ease-soft) infinite"
+          },
+          ".agent-working-mark-paused *": {
+            "animation-play-state": "paused"
+          },
           ".emerge": {
             "animation": "var(--animate-emerge)"
           },
@@ -499,6 +564,24 @@
             "animation": "none",
             "opacity": "0.45",
             "stroke-dasharray": "100 0"
+          },
+          ".agent-mobius-runner,\n  .agent-tesseract-inner,\n  .agent-tesseract-connectors,\n  .agent-bumping-block,\n  .agent-inward-circuit-runner": {
+            "animation": "none"
+          },
+          ".agent-mobius-runner,\n  .agent-inward-circuit-runner": {
+            "stroke-dasharray": "none",
+            "stroke-dashoffset": "0",
+            "opacity": "0.58"
+          },
+          ".agent-inward-circuit-runner-secondary": {
+            "opacity": "0"
+          },
+          ".agent-tesseract-inner": {
+            "opacity": "0.76",
+            "transform": "rotate(22.5deg) scale(0.86)"
+          },
+          ".agent-tesseract-connectors": {
+            "opacity": "0.42"
           },
           ".wave-once::before": {
             "animation": "none",
@@ -1676,6 +1759,21 @@
       ],
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "agent-working-mark",
+      "type": "registry:ui",
+      "title": "Agent Working Mark",
+      "description": "Original infinite optical marks for communicating active agent work without implying percentage progress.",
+      "files": [
+        {
+          "path": "registry/ui/agent-working-mark.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
         "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },

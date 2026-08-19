@@ -65,6 +65,7 @@ import {
   ToolCalls,
 } from "@/registry/ui/tool-call"
 import { Task, Tasks } from "@/registry/ui/tasks"
+import { AgentWorkingMark, type AgentWorkingMarkVariant } from "@/registry/ui/agent-working-mark"
 import { Subagent, Subagents } from "@/registry/ui/subagent"
 import {
   Artifact,
@@ -1532,6 +1533,76 @@ function SubagentDemo() {
   )
 }
 
+/* -------------------------- 10 working mark lab -------------------------- */
+
+const WORKING_MARKS: {
+  variant: AgentWorkingMarkVariant
+  label: string
+  description: string
+}[] = [
+  {
+    variant: "mobius",
+    label: "Möbius weave",
+    description: "A bright thread passes over and under one continuous loop.",
+  },
+  {
+    variant: "tesseract",
+    label: "Tesseract fold",
+    description: "Nested frames trade depth like a four-dimensional hinge.",
+  },
+  {
+    variant: "circuit",
+    label: "Inward circuit",
+    description: "Two signals run toward the center of an endless square path.",
+  },
+  {
+    variant: "blocks",
+    label: "Block wave",
+    description: "A straight row of shaded blocks bumps in a continuous wave.",
+  },
+]
+
+function WorkingMarkDemo({ workingMark }: { workingMark: AgentWorkingMarkVariant }) {
+  return (
+    <Demo>
+      <div className="mx-auto grid w-full max-w-[42rem] gap-2 sm:grid-cols-2">
+        {WORKING_MARKS.map((mark) => (
+          <div key={mark.variant} className="flex min-w-0 flex-col gap-3 rounded-lg bg-muted/45 p-3">
+            <div className="flex h-16 items-center justify-center">
+              <AgentWorkingMark
+                variant={mark.variant}
+                size={42}
+                paused={mark.variant !== workingMark}
+              />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 text-[13px] font-medium text-foreground">
+                {mark.label}
+                {mark.variant === workingMark ? (
+                  <span className="rounded-sm bg-brand/10 px-1.5 py-0.5 text-[9px] font-medium text-brand">
+                    Selected
+                  </span>
+                ) : null}
+              </div>
+              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                {mark.description}
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-[12px] text-muted-foreground">
+              <AgentWorkingMark
+                variant={mark.variant}
+                size={16}
+                paused={mark.variant !== workingMark}
+              />
+              <span>Working</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Demo>
+  )
+}
+
 /* --------------------------------- icons --------------------------------- */
 
 function CopyIcon() {
@@ -1581,7 +1652,13 @@ function DownloadIcon() {
 
 /* ---------------------------------- view ---------------------------------- */
 
-export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties }) {
+export function AgentView({
+  displayStyle,
+  workingMark,
+}: {
+  displayStyle: React.CSSProperties
+  workingMark: AgentWorkingMarkVariant
+}) {
   return (
     <div className="mx-auto max-w-[860px] px-10 py-10">
       <header className="pb-10">
@@ -1669,6 +1746,10 @@ export function AgentView({ displayStyle }: { displayStyle: React.CSSProperties 
 
       <Section index="09" title="Subagents">
         <SubagentDemo />
+      </Section>
+
+      <Section index="10" title="Working mark studies">
+        <WorkingMarkDemo workingMark={workingMark} />
       </Section>
     </div>
   )
