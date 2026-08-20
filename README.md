@@ -1,7 +1,8 @@
 # swagui
 
-A personal, shadcn-compatible component registry. 51 components plus a design-token
-theme, served from `https://swagui.rohoswagger.com`.
+A public, shadcn-compatible component registry for React 19 and Tailwind CSS v4.
+It includes foundational controls, composed blocks, agent/chat primitives and a
+design-token theme, served from [swagui.rohoswagger.com](https://swagui.rohoswagger.com).
 
 swagui replaces shadcn/ui rather than layering on top of it — the components are
 vendored and restyled, so upstream changes are not inherited.
@@ -10,22 +11,80 @@ vendored and restyled, so upstream changes are not inherited.
 
 - Tailwind CSS v4
 - React 19
+- A shadcn-compatible project with `components.json`
 
-## Install
+If shadcn is not configured yet, initialize it from the root of your app:
 
 ```bash
-bunx shadcn@latest add https://swagui.rohoswagger.com/r/button.json
+bunx shadcn@latest init
 ```
 
-Install one of the curated bundles:
+## Quick start
+
+Choose the bundle that matches your project:
+
+| Bundle | Includes | Install command |
+| --- | --- | --- |
+| Core | Foundational controls and utilities | `bunx shadcn@latest add https://swagui.rohoswagger.com/r/core.json` |
+| Agent/chat | The complete agent and chat interface set | `bunx shadcn@latest add https://swagui.rohoswagger.com/r/agent.json` |
+| All | Every component, block and agent primitive | `bunx shadcn@latest add https://swagui.rohoswagger.com/r/all.json` |
+
+Copy-paste versions:
 
 ```bash
+# Core UI
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/core.json
+
+# Chat and agent UI
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/agent.json
+
+# The entire registry
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/all.json
 ```
 
-Or configure the namespace once in a project with `components.json`:
+The CLI shows the files it will write and asks before replacing conflicting files.
+swagui components are vendored into your project, so you own and can edit the
+installed source.
+
+## Add individual components
+
+Every registry item is independently installable. Use the component's name in the
+hosted URL:
+
+```bash
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/button.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/dialog.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/form.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/table.json
+```
+
+Agent and chat primitives work the same way:
+
+```bash
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/message.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/prompt-input.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/reasoning.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/tool-call.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/tasks.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/artifact.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/input-request.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/subagent.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/chat-header.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/conversation-sidebar.json
+```
+
+Composed site blocks are also registry items:
+
+```bash
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/hero-centered.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/feature-grid.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/pricing-tiers.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/site-footer.json
+```
+
+### Configure the `@swagui` namespace
+
+Register the namespace once to use shorter commands in that project:
 
 ```bash
 bunx shadcn@latest registry add \
@@ -36,9 +95,28 @@ bunx shadcn@latest add @swagui/input-request
 bunx shadcn@latest add @swagui/agent
 ```
 
+After registration, any item can be installed as `@swagui/{name}`:
+
+```bash
+bunx shadcn@latest add @swagui/core
+bunx shadcn@latest add @swagui/agent
+bunx shadcn@latest add @swagui/all
+bunx shadcn@latest add @swagui/artifact
+bunx shadcn@latest add @swagui/site-footer
+```
+
 Every component declares the theme as a registry dependency, so the first install
 writes the whole token layer straight into your `globals.css`. There is no file to
 import and no manual step.
+
+### Public endpoints
+
+| Resource | URL |
+| --- | --- |
+| Documentation and showcase | `https://swagui.rohoswagger.com` |
+| Registry catalog | `https://swagui.rohoswagger.com/r/registry.json` |
+| Individual item | `https://swagui.rohoswagger.com/r/{name}.json` |
+| Source | `https://github.com/rohoswagger/swagui` |
 
 ## Theme
 
@@ -99,21 +177,6 @@ control heights and icon sizes all tighten at once. Colour is untouched.
 
 Dark mode is class-driven — put `dark` on `<html>` or any wrapper.
 
-## Development
-
-```bash
-bun install
-bun run dev            # docs + live token preview at /
-bun run registry:build # writes public/r/*.json
-bun run build          # registry:build + static export to ./out
-```
-
-The preview at `/` renders every component against live token controls, with
-Marketing, Blocks, Components, App, Agent, Chat and Logo views.
-
-The next agent-facing components are tracked in the
-[agent component roadmap](docs/agent-component-roadmap.md).
-
 ## Blocks
 
 Composed marketing sections, installed the same way:
@@ -126,33 +189,11 @@ bunx shadcn@latest add https://swagui.rohoswagger.com/r/hero-centered.json
 
 Blocks may depend on `motion`; components never do, so app bundles stay lean.
 
-## Adding a component
+## Contributing
 
-> **Do not run `bunx shadcn add <name>` from shadcn's own registry in this repo.**
-> It writes into `registry/ui/` and will clobber swagui's edits. Pull upstream
-> files into a scratch directory first, then move them in deliberately.
-
-
-1. Add the file to `registry/ui/`.
-2. Add an entry to `registry.json`. Cross-references must use full URLs —
-   a bare `"button"` resolves against `ui.shadcn.com`, not swagui.
-
-```json
-{
-  "name": "my-component",
-  "type": "registry:ui",
-  "title": "My Component",
-  "description": "…",
-  "registryDependencies": ["https://swagui.rohoswagger.com/r/theme.json"],
-  "files": [{ "path": "registry/ui/my-component.tsx", "type": "registry:ui" }]
-}
-```
-
-3. `bun run registry:build`
-
-## Deployment
-
-Static export to Cloudflare Workers static assets. `bun run build` produces `./out`.
+Want to add a component, improve the showcase or publish a release? See
+[CONTRIBUTING.md](CONTRIBUTING.md) for the local setup, registry workflow,
+verification requirements and Cloudflare deployment process.
 
 ## License
 
