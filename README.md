@@ -134,3 +134,7 @@ Blocks may depend on `motion`; components never do, so app bundles stay lean.
 ## Deployment
 
 Static export to Cloudflare Workers static assets. `bun run build` produces `./out`.
+
+## License
+
+[MIT](LICENSE) © 2026 rohoswagger.

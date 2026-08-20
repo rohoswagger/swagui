@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack --port 4200",
     "build": "bun run registry:build && next build",
+    "deploy": "bun run build && wrangler deploy",
     "start": "next start",
     "test": "bun test",
     "lint": "next lint",
@@ -53,13 +54,15 @@
     "eslint-config-next": "15.3.1",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "wrangler": "^4.125.0"
   },
   "overrides": {
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2"
   },
   "description": "A shadcn-compatible component registry.",
+  "license": "MIT",
   "browserslist": [
     "chrome >= 111",
     "safari >= 16.4",
