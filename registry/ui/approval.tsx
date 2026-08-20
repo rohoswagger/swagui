@@ -4,24 +4,19 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
+import {
+  Request,
+  RequestCollapse,
+  RequestDescription,
+  RequestQuestion,
+} from "@/registry/ui/request"
 
 /**
- * A question the agent has to ask before it can act.
+ * Authorization for a known action. Request owns the shared blocking shell;
+ * Approval adds decision selection, destructive intent and a durable record
+ * of what the user allowed or declined.
  *
- * The other agent primitives report; this one blocks. That difference is the
- * whole design. Where the trace is muted evidence and the answer is quiet
- * prose, this is an object with a border and a brand rail — the one surface in
- * the set that is allowed the hot colour at full strength, because it is the
- * only moment the interface needs something from the reader rather than the
- * other way round.
- *
- * Answering is staged rather than instant. The choice is acknowledged, the
- * alternatives collapse away, and only then does the card settle into a record
- * of the decision: rail neutral, question dropped back, nothing left to click.
- * A transcript scrolled back through reads as history, not as a live prompt.
- *
- * `multiple` turns the same card into a pick-several question: options toggle
- * instead of committing, and nothing is decided until the confirm.
+ * `multiple` stages several decisions before one explicit confirmation.
  */
 
 /**
@@ -61,27 +56,6 @@ function useApproval(component: string) {
  * overshoot on something disappearing reads as a glitch rather than as weight.
  * Under reduced motion it simply goes, since the height change is the movement.
  */
-function Collapse({
-  collapsed,
-  children,
-}: {
-  collapsed: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <div
-      className={cn(
-        "grid transition-[grid-template-rows,opacity] duration-(--duration-base) ease-(--ease-out-expo)",
-        "motion-reduce:transition-none",
-        collapsed ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"
-      )}
-      inert={collapsed || undefined}
-    >
-      <div className="overflow-hidden">{children}</div>
-    </div>
-  )
-}
-
 function Approval(
   allProps: Omit<React.ComponentProps<"div">, "onChange" | "defaultValue"> & {
     value?: string | string[]
@@ -182,102 +156,28 @@ function Approval(
 
   return (
     <ApprovalContext.Provider value={context}>
-      <div
+      <Request
         data-slot="approval"
         data-answered={answered || undefined}
-        data-resolving={resolving ? "" : undefined}
         data-multiple={multiple || undefined}
-        role="group"
-        className={cn(
-          "snake relative mx-auto w-full max-w-[46ch] overflow-hidden rounded-xl bg-card",
-          // Elevation is declared once, as shadow. There is no border: while
-          // the card is waiting, the only thing drawn at its edge is the light
-          // running around it, and when it settles the edge goes quiet.
-          "shadow-(--shadow-raised)",
-          // Cut quickly. The ring is a conic gradient, so a slow fade leaves its
-          // bright head visible as a hard line across the top edge while the
-          // wave is crossing.
-          "after:transition-opacity after:duration-(--duration-fast) after:ease-(--ease-out-expo)",
-          answered && "after:opacity-0",
-          // Runs once, when the class arrives with the answer.
-          answered && "wave-once",
-          className
-        )}
-        style={
-          tone === "danger"
-            ? ({ "--wave-tone": "var(--destructive)" } as React.CSSProperties)
-            : undefined
-        }
+        status={answered ? "submitted" : "pending"}
+        resolving={!!resolving}
+        tone={tone}
+        className={className}
         {...props}
       >
-        {/*
-          No flex gap. A gap survives its own collapsing child, so when the
-          description and footer unmounted at the end of the resolve their gaps
-          vanished with them and the card lost ~16px in a single frame. Each
-          section carries its spacing inside its own collapsible instead, so
-          the space leaves with the content.
-        */}
-        {/*
-          The tightening starts with the collapse rather than at the commit,
-          and transitions on the same duration and curve as everything else.
-          Switching it at the moment the answer lands put an 8px step in the
-          middle of the wave.
-        */}
-        <div
-          className={cn(
-            "flex flex-col transition-[padding] duration-(--duration-base) ease-(--ease-out-expo)",
-            resolving || answered ? "p-2" : "p-3"
-          )}
-        >
-          {children}
-        </div>
-      </div>
+        {children}
+      </Request>
     </ApprovalContext.Provider>
   )
 }
 
-/**
- * The ask. It leaves with everything else once the question is settled: what
- * remains is the decision, and a card still holding its own question reads as
- * though it might be asking again.
- */
-function ApprovalQuestion({ className, children, ...props }: React.ComponentProps<"p">) {
-  const { answered, resolving } = useApproval("ApprovalQuestion")
-  if (answered) return null
-
-  return (
-    <Collapse collapsed={!!resolving}>
-      <p
-        data-slot="approval-question"
-        className={cn(
-          "text-[13.5px] leading-snug font-medium text-balance text-foreground",
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </p>
-    </Collapse>
-  )
+function ApprovalQuestion(props: React.ComponentProps<typeof RequestQuestion>) {
+  return <RequestQuestion data-slot="approval-question" {...props} />
 }
 
-/** What actually happens if this goes ahead. Worth spelling out before it does. */
-function ApprovalDescription({ className, ...props }: React.ComponentProps<"p">) {
-  const { answered, resolving } = useApproval("ApprovalDescription")
-  if (answered) return null
-
-  return (
-    <Collapse collapsed={!!resolving}>
-      <p
-        data-slot="approval-description"
-        className={cn(
-          "pt-1 text-[12.5px] leading-normal text-muted-foreground",
-          className
-        )}
-        {...props}
-      />
-    </Collapse>
-  )
+function ApprovalDescription(props: React.ComponentProps<typeof RequestDescription>) {
+  return <RequestDescription data-slot="approval-description" {...props} />
 }
 
 function ApprovalOptions({ className, children, ...props }: React.ComponentProps<"div">) {
@@ -316,7 +216,7 @@ function ApprovalOptions({ className, children, ...props }: React.ComponentProps
         const losing = !!resolving && !!childValue && !resolving.includes(childValue)
 
         return (
-          <Collapse key={childValue ?? i} collapsed={losing}>
+          <RequestCollapse key={childValue ?? i} collapsed={losing}>
             <div
               className={cn(
                 i > 0 && "pt-1",
@@ -327,7 +227,7 @@ function ApprovalOptions({ className, children, ...props }: React.ComponentProps
             >
               {child}
             </div>
-          </Collapse>
+          </RequestCollapse>
         )
       })}
     </div>
@@ -490,7 +390,7 @@ function ApprovalConfirm({
   const count = selection.length
 
   return (
-    <Collapse collapsed={!!resolving}>
+    <RequestCollapse collapsed={!!resolving}>
       <button
         type="button"
         data-slot="approval-confirm"
@@ -524,7 +424,7 @@ function ApprovalConfirm({
           </span>
         ) : null}
       </button>
-    </Collapse>
+    </RequestCollapse>
   )
 }
 
@@ -537,13 +437,13 @@ function ApprovalFooter({ className, ...props }: React.ComponentProps<"div">) {
   if (answered) return null
 
   return (
-    <Collapse collapsed={!!resolving}>
+    <RequestCollapse collapsed={!!resolving}>
       <div
         data-slot="approval-footer"
         className={cn("flex items-center gap-3 pt-2", className)}
         {...props}
       />
-    </Collapse>
+    </RequestCollapse>
   )
 }
 

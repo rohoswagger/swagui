@@ -90,7 +90,10 @@ bun run build          # registry:build + static export to ./out
 ```
 
 The preview at `/` renders every component against live token controls, with
-Marketing, Components and App views.
+Marketing, Blocks, Components, App, Agent, Chat and Logo views.
+
+The next agent-facing components are tracked in the
+[agent component roadmap](docs/agent-component-roadmap.md).
 
 ## Blocks
 

@@ -1654,10 +1654,45 @@
         }
       ],
       "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/request.json",
         "https://swagui.rohoswagger.com/r/theme.json"
       ],
       "dependencies": [
         "class-variance-authority"
+      ]
+    },
+    {
+      "name": "request",
+      "type": "registry:ui",
+      "title": "Request",
+      "description": "The shared lifecycle and presentation shell for blocking agent requests, including pending, resolving, submitted and cancelled transcript states.",
+      "files": [
+        {
+          "path": "registry/ui/request.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "input-request",
+      "type": "registry:ui",
+      "title": "Input Request",
+      "description": "A blocking assistant request for choices, free text, files or structured fields that settles into a durable transcript receipt.",
+      "files": [
+        {
+          "path": "registry/ui/input-request.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/request.json",
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/input.json",
+        "https://swagui.rohoswagger.com/r/textarea.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },
     {

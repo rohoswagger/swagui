@@ -33,6 +33,23 @@ import {
   ApprovalQuestion,
 } from "@/registry/ui/approval"
 import {
+  InputRequest,
+  InputRequestActions,
+  InputRequestCancel,
+  InputRequestChoice,
+  InputRequestChoices,
+  InputRequestContent,
+  InputRequestDescription,
+  InputRequestField,
+  InputRequestFile,
+  InputRequestInput,
+  InputRequestQuestion,
+  InputRequestReceipt,
+  InputRequestSubmit,
+  InputRequestText,
+  type InputRequestStatus,
+} from "@/registry/ui/input-request"
+import {
   PromptInput,
   PromptInputAttachment,
   PromptInputAttachments,
@@ -647,7 +664,105 @@ function ApprovalDemo() {
   )
 }
 
-/* ----------------------------- 04 prompt input ---------------------------- */
+/* ---------------------------- 04 input request ---------------------------- */
+
+type InputRequestKind = "choice" | "text" | "file" | "fields"
+
+function InputRequestDemo() {
+  const [kind, setKind] = React.useState<InputRequestKind>("choice")
+  const [status, setStatus] = React.useState<InputRequestStatus>("pending")
+
+  React.useEffect(() => setStatus("pending"), [kind])
+
+  return (
+    <Demo
+      action={
+        <IconButton label="Reset" onClick={() => setStatus("pending")}>
+          <RetryIcon />
+        </IconButton>
+      }
+      controls={
+        <Segmented
+          label="Input"
+          value={kind}
+          onChange={(value) => setKind(value as InputRequestKind)}
+          options={[
+            { value: "choice", label: "Choice" },
+            { value: "text", label: "Text" },
+            { value: "file", label: "File" },
+            { value: "fields", label: "Fields" },
+          ]}
+        />
+      }
+    >
+      <InputRequest status={status} onStatusChange={setStatus}>
+        <InputRequestQuestion>
+          {kind === "choice"
+            ? "Which freezer window should I plan around?"
+            : kind === "text"
+              ? "What should the dashboard emphasize?"
+              : kind === "file"
+                ? "Which sales export should I use?"
+                : "What are the launch constraints?"}
+        </InputRequestQuestion>
+        <InputRequestDescription>
+          I need this before I can continue building the Saturday plan.
+        </InputRequestDescription>
+        <InputRequestContent>
+          {kind === "choice" ? (
+            <InputRequestChoices>
+              <InputRequestChoice
+                name="window"
+                value="early"
+                label="Early window"
+                hint="6:00–9:00 AM"
+                required
+              />
+              <InputRequestChoice
+                name="window"
+                value="afternoon"
+                label="Afternoon window"
+                hint="1:00–4:00 PM"
+                required
+              />
+            </InputRequestChoices>
+          ) : kind === "text" ? (
+            <InputRequestText
+              name="emphasis"
+              placeholder="For example: prioritize margin risk and freezer capacity…"
+              required
+            />
+          ) : kind === "file" ? (
+            <InputRequestFile name="sales-export" accept=".csv,.xlsx" required />
+          ) : (
+            <div className="grid gap-2 sm:grid-cols-2">
+              <InputRequestField label="Launch date">
+                <InputRequestInput name="launch-date" type="date" required />
+              </InputRequestField>
+              <InputRequestField label="Batch limit">
+                <InputRequestInput
+                  name="batch-limit"
+                  type="number"
+                  min="1"
+                  placeholder="36"
+                  unit="gallons"
+                  required
+                />
+              </InputRequestField>
+            </div>
+          )}
+        </InputRequestContent>
+        <InputRequestActions>
+          <InputRequestSubmit>Continue</InputRequestSubmit>
+          <InputRequestCancel>Skip for now</InputRequestCancel>
+        </InputRequestActions>
+        <InputRequestReceipt />
+      </InputRequest>
+    </Demo>
+  )
+}
+
+/* ----------------------------- 05 prompt input ---------------------------- */
 
 const MODELS = [
   { value: "sprinkles-5", label: "Sprinkles 5", hint: "Flagship" },
@@ -894,7 +1009,7 @@ function MicIcon() {
   )
 }
 
-/* -------------------------- 05 selection actions -------------------------- */
+/* -------------------------- 06 selection actions -------------------------- */
 
 const PASSAGE =
   "Pistachio holds the top slot all weekend. Churn it first thing Saturday so the batch has time to firm up before the afternoon rush. Rocky Road can wait until Monday — it has missed the 40-scoop threshold three weeks running, and the freezer window is better spent on the line that is actually growing."
@@ -1007,7 +1122,7 @@ function ShortenIcon() {
   )
 }
 
-/* ------------------------------ 06 tool calls ----------------------------- */
+/* ------------------------------ 07 tool calls ----------------------------- */
 
 type ToolScene = "run" | "kinds" | "failure" | "live"
 
@@ -1158,7 +1273,7 @@ function SceneLive() {
   )
 }
 
-/* -------------------------------- 07 tasks -------------------------------- */
+/* -------------------------------- 08 tasks -------------------------------- */
 
 type TaskScene = "working" | "complete" | "failure"
 
@@ -1263,7 +1378,7 @@ function TasksFailure() {
   )
 }
 
-/* ------------------------------- 08 artifact ------------------------------ */
+/* ------------------------------- 09 artifact ------------------------------ */
 
 type ArtifactScene = "app" | "slides" | "document" | "unavailable"
 
@@ -1482,7 +1597,7 @@ function SheetArtifactPreview() {
   )
 }
 
-/* ------------------------------ 09 subagents ------------------------------ */
+/* ------------------------------ 10 subagents ------------------------------ */
 
 function SubagentDemo() {
   const [opened, setOpened] = React.useState("")
@@ -1533,7 +1648,7 @@ function SubagentDemo() {
   )
 }
 
-/* -------------------------- 10 working mark lab -------------------------- */
+/* -------------------------- 11 working mark lab -------------------------- */
 
 const WORKING_MARKS: {
   variant: AgentWorkingMarkVariant
@@ -1724,31 +1839,35 @@ export function AgentView({
         <ApprovalDemo />
       </Section>
 
-      <Section index="04" title="Prompt input">
+      <Section index="04" title="Input request">
+        <InputRequestDemo />
+      </Section>
+
+      <Section index="05" title="Prompt input">
         <PromptInputDemo />
       </Section>
 
-      <Section index="05" title="Selection actions">
+      <Section index="06" title="Selection actions">
         <SelectionActionsDemo />
       </Section>
 
-      <Section index="06" title="Tool calls">
+      <Section index="07" title="Tool calls">
         <ToolCallsDemo />
       </Section>
 
-      <Section index="07" title="Tasks">
+      <Section index="08" title="Tasks">
         <TasksDemo />
       </Section>
 
-      <Section index="08" title="Artifact">
+      <Section index="09" title="Artifact">
         <ArtifactDemo />
       </Section>
 
-      <Section index="09" title="Subagents">
+      <Section index="10" title="Subagents">
         <SubagentDemo />
       </Section>
 
-      <Section index="10" title="Working mark studies">
+      <Section index="11" title="Working mark studies">
         <WorkingMarkDemo workingMark={workingMark} />
       </Section>
     </div>

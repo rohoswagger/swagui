@@ -3,7 +3,18 @@ import { readFileSync } from "node:fs"
 import { renderToStaticMarkup } from "react-dom/server"
 
 import { Artifact, ArtifactContent, ArtifactTitle, Artifacts } from "@/registry/ui/artifact"
+import { Approval, ApprovalOption, ApprovalOptions, ApprovalQuestion } from "@/registry/ui/approval"
 import { SiteFooter } from "@/registry/blocks/site-footer/site-footer"
+import {
+  InputRequest,
+  InputRequestChoice,
+  InputRequestChoices,
+  InputRequestContent,
+  InputRequestInput,
+  InputRequestQuestion,
+  InputRequestReceipt,
+} from "@/registry/ui/input-request"
+import { Request, RequestReceipt } from "@/registry/ui/request"
 import {
   ConversationSidebar,
   ConversationSidebarAction,
@@ -25,6 +36,60 @@ import { ToolCall, ToolCalls } from "@/registry/ui/tool-call"
 import { readWorkingMarkParam } from "@/app/_preview/working-mark-config"
 
 describe("agent component contracts", () => {
+  test("request shell is shared by approvals and input requests", () => {
+    const request = renderToStaticMarkup(
+      <Request status="submitted"><RequestReceipt>Saturday</RequestReceipt></Request>
+    )
+    const approval = renderToStaticMarkup(
+      <Approval defaultValue="approve">
+        <ApprovalOptions><ApprovalOption value="approve">Approve</ApprovalOption></ApprovalOptions>
+      </Approval>
+    )
+    const pendingApproval = renderToStaticMarkup(
+      <Approval><ApprovalQuestion>Proceed?</ApprovalQuestion></Approval>
+    )
+    const input = renderToStaticMarkup(
+      <InputRequest>
+        <InputRequestQuestion>Which window?</InputRequestQuestion>
+        <InputRequestContent>
+          <InputRequestChoices>
+            <InputRequestChoice name="window" value="early" label="Early" />
+          </InputRequestChoices>
+        </InputRequestContent>
+        <InputRequestReceipt />
+      </InputRequest>
+    )
+
+    expect(request).toContain('data-slot="request"')
+    expect(request).toContain('data-status="submitted"')
+    expect(request).toContain('data-slot="request-receipt"')
+    expect(approval).toContain('data-slot="approval"')
+    expect(approval).toContain('data-chosen="true"')
+    expect(pendingApproval).toContain('data-slot="approval-question"')
+    expect(input).toContain('data-slot="input-request"')
+    expect(input).toContain('data-slot="input-request-choice"')
+    expect(input).toContain('type="radio"')
+    expect(input).not.toContain('data-slot="request-receipt"')
+    const labelledBy = input.match(/aria-labelledby="([^"]+)"/)?.[1]
+    expect(Boolean(labelledBy)).toBe(true)
+    expect(input).toContain(`id="${labelledBy}"`)
+
+    const settledInput = renderToStaticMarkup(
+      <InputRequest defaultStatus="submitted">
+        <InputRequestReceipt>Early window</InputRequestReceipt>
+      </InputRequest>
+    )
+    expect(settledInput).toContain('data-status="submitted"')
+    expect(settledInput).toContain("Early window")
+
+    const unitInput = renderToStaticMarkup(
+      <InputRequestInput name="batch" type="number" unit="gallons" />
+    )
+    expect(unitInput).toContain('data-slot="input-request-unit"')
+    expect(unitInput).toContain(">gallons</span>")
+    expect(unitInput).toContain("aria-describedby=")
+  })
+
   test("conversation sidebar keeps working state visible and items navigable", () => {
     const html = renderToStaticMarkup(
       <ConversationSidebar open onOpenChange={() => {}}>
