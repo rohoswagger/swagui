@@ -36,6 +36,40 @@ import { ToolCall, ToolCalls } from "@/registry/ui/tool-call"
 import { readWorkingMarkParam } from "@/app/_preview/working-mark-config"
 
 describe("agent component contracts", () => {
+  test("published bundles cover the registry without circular dependencies", () => {
+    const registry = JSON.parse(readFileSync("registry.json", "utf8")) as {
+      items: Array<{
+        name: string
+        type: string
+        registryDependencies?: string[]
+      }>
+    }
+    const byName = new Map(registry.items.map((item) => [item.name, item]))
+    const dependencyNames = (name: string) =>
+      (byName.get(name)?.registryDependencies ?? []).map((dependency) =>
+        dependency.split("/").at(-1)?.replace(/\.json$/, "") ?? dependency
+      )
+    const agentNames = new Set([
+      "attachment", "bubble", "message-scroller", "message", "source",
+      "reasoning", "response", "approval", "request", "input-request",
+      "prompt-input", "selection-actions", "tool-call", "tasks", "artifact",
+      "chat-header", "conversation-sidebar", "agent-working-mark", "subagent",
+    ])
+    const expectedCore = registry.items
+      .filter((item) => item.type === "registry:ui" && !agentNames.has(item.name))
+      .map((item) => item.name)
+      .sort()
+    const expectedBlocks = registry.items
+      .filter((item) => item.type === "registry:block")
+      .map((item) => item.name)
+      .sort()
+
+    expect(JSON.stringify(dependencyNames("core").filter((name) => name !== "theme").sort())).toBe(JSON.stringify(expectedCore))
+    expect(JSON.stringify(dependencyNames("agent").sort())).toBe(JSON.stringify([...agentNames].sort()))
+    expect(JSON.stringify(dependencyNames("all").filter((name) => !["core", "agent"].includes(name)).sort())).toBe(JSON.stringify(expectedBlocks))
+    expect(dependencyNames("all")).not.toContain("all")
+  })
+
   test("request shell is shared by approvals and input requests", () => {
     const request = renderToStaticMarkup(
       <Request status="submitted"><RequestReceipt>Saturday</RequestReceipt></Request>

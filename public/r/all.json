@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "all",
+  "type": "registry:item",
+  "title": "All of swagui",
+  "description": "Every swagui primitive, agent component and marketing block in one installable bundle.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/core.json",
+    "https://swagui.rohoswagger.com/r/agent.json",
+    "https://swagui.rohoswagger.com/r/section.json",
+    "https://swagui.rohoswagger.com/r/reveal.json",
+    "https://swagui.rohoswagger.com/r/site-nav.json",
+    "https://swagui.rohoswagger.com/r/hero-centered.json",
+    "https://swagui.rohoswagger.com/r/logo-marquee.json",
+    "https://swagui.rohoswagger.com/r/stat-band.json",
+    "https://swagui.rohoswagger.com/r/feature-grid.json",
+    "https://swagui.rohoswagger.com/r/testimonial-grid.json",
+    "https://swagui.rohoswagger.com/r/pricing-tiers.json",
+    "https://swagui.rohoswagger.com/r/faq-accordion.json",
+    "https://swagui.rohoswagger.com/r/cta-band.json",
+    "https://swagui.rohoswagger.com/r/site-footer.json"
+  ],
+  "files": []
+}

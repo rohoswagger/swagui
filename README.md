@@ -17,6 +17,25 @@ vendored and restyled, so upstream changes are not inherited.
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/button.json
 ```
 
+Install one of the curated bundles:
+
+```bash
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/core.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/agent.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/all.json
+```
+
+Or configure the namespace once in a project with `components.json`:
+
+```bash
+bunx shadcn@latest registry add \
+  @swagui=https://swagui.rohoswagger.com/r/{name}.json
+
+bunx shadcn@latest add @swagui/button
+bunx shadcn@latest add @swagui/input-request
+bunx shadcn@latest add @swagui/agent
+```
+
 Every component declares the theme as a registry dependency, so the first install
 writes the whole token layer straight into your `globals.css`. There is no file to
 import and no manual step.

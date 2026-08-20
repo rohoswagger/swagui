@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "agent",
+  "type": "registry:item",
+  "title": "swagui Agent",
+  "description": "The complete AI chat and agent interaction system, including messages, reasoning, requests, tools, artifacts, tasks, subagents and navigation.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/attachment.json",
+    "https://swagui.rohoswagger.com/r/bubble.json",
+    "https://swagui.rohoswagger.com/r/message-scroller.json",
+    "https://swagui.rohoswagger.com/r/message.json",
+    "https://swagui.rohoswagger.com/r/source.json",
+    "https://swagui.rohoswagger.com/r/reasoning.json",
+    "https://swagui.rohoswagger.com/r/response.json",
+    "https://swagui.rohoswagger.com/r/approval.json",
+    "https://swagui.rohoswagger.com/r/request.json",
+    "https://swagui.rohoswagger.com/r/input-request.json",
+    "https://swagui.rohoswagger.com/r/prompt-input.json",
+    "https://swagui.rohoswagger.com/r/selection-actions.json",
+    "https://swagui.rohoswagger.com/r/tool-call.json",
+    "https://swagui.rohoswagger.com/r/tasks.json",
+    "https://swagui.rohoswagger.com/r/artifact.json",
+    "https://swagui.rohoswagger.com/r/chat-header.json",
+    "https://swagui.rohoswagger.com/r/conversation-sidebar.json",
+    "https://swagui.rohoswagger.com/r/agent-working-mark.json",
+    "https://swagui.rohoswagger.com/r/subagent.json"
+  ],
+  "files": []
+}
