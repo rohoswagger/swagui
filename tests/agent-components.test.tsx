@@ -5,10 +5,19 @@ import { renderToStaticMarkup } from "react-dom/server"
 import { Artifact, ArtifactContent, ArtifactTitle, Artifacts } from "@/registry/ui/artifact"
 import { SiteFooter } from "@/registry/blocks/site-footer/site-footer"
 import {
+  ConversationSidebar,
+  ConversationSidebarAction,
+  ConversationSidebarFooter,
+  ConversationSidebarItem,
+  ConversationSidebarList,
+  ConversationSidebarPanel,
+  ConversationSidebarToggle,
+} from "@/registry/ui/conversation-sidebar"
+import {
   AGENT_WORKING_MARK_OPTIONS,
   AgentWorkingMark,
 } from "@/registry/ui/agent-working-mark"
-import { ChatHeaderBreadcrumb } from "@/registry/ui/chat-header"
+import { ChatHeader, ChatHeaderBreadcrumb } from "@/registry/ui/chat-header"
 import { PromptInputContextIndicator, PromptInputModelSelect } from "@/registry/ui/prompt-input"
 import { Response, ResponseContent, ResponseUsage } from "@/registry/ui/response"
 import { Subagent, Subagents } from "@/registry/ui/subagent"
@@ -16,6 +25,78 @@ import { ToolCall, ToolCalls } from "@/registry/ui/tool-call"
 import { readWorkingMarkParam } from "@/app/_preview/working-mark-config"
 
 describe("agent component contracts", () => {
+  test("conversation sidebar keeps working state visible and items navigable", () => {
+    const html = renderToStaticMarkup(
+      <ConversationSidebar open onOpenChange={() => {}}>
+        <ConversationSidebarList>
+          <ConversationSidebarItem
+            title="Build Agent Chat Components"
+            status="working"
+            duration={68}
+            workingMark="circuit"
+            active
+          />
+          <ConversationSidebarItem title="Approval flow" status="needs-input" />
+        </ConversationSidebarList>
+      </ConversationSidebar>
+    )
+
+    expect(html).toContain('data-slot="conversation-sidebar"')
+    expect(html).toContain('data-state="open"')
+    expect(html).toContain('data-variant="circuit"')
+    expect(html).toContain('data-status="working"')
+    expect(html).toContain('data-status="needs-input"')
+    expect(html).toContain('aria-current="page"')
+    expect(html.match(/<button/g)).toHaveLength(3)
+  })
+
+  test("conversation sidebar expands without changing the chat layout rail", () => {
+    const open = renderToStaticMarkup(
+      <ConversationSidebar open onOpenChange={() => {}}>
+        <ConversationSidebarToggle
+          open
+          icon={<svg />}
+          label="swagui"
+        />
+        <ConversationSidebarAction icon={<svg />}>New chat</ConversationSidebarAction>
+        <ConversationSidebarPanel><button type="button">Thread</button></ConversationSidebarPanel>
+        <ConversationSidebarFooter><button type="button">Settings</button></ConversationSidebarFooter>
+      </ConversationSidebar>
+    )
+    const closed = renderToStaticMarkup(
+      <ConversationSidebar open={false} onOpenChange={() => {}}>
+        <ConversationSidebarToggle
+          open={false}
+          icon={<svg />}
+          hoverIcon={<svg />}
+          label="swagui"
+        />
+        <ConversationSidebarAction icon={<svg />}>New chat</ConversationSidebarAction>
+        <ConversationSidebarPanel><button type="button">Thread</button></ConversationSidebarPanel>
+        <ConversationSidebarFooter><button type="button">Settings</button></ConversationSidebarFooter>
+      </ConversationSidebar>
+    )
+    const openRail = open.match(/<aside[^>]*>/)?.[0] ?? ""
+    const closedRail = closed.match(/<aside[^>]*>/)?.[0] ?? ""
+    const header = renderToStaticMarkup(<ChatHeader />)
+
+    expect(openRail).toContain("md:w-11")
+    expect(closedRail).toContain("md:w-11")
+    expect(openRail).toContain("md:z-40")
+    expect(openRail).not.toContain("md:z-auto")
+    expect(openRail).not.toContain("md:w-64")
+    expect(open).toContain('data-slot="conversation-sidebar-surface"')
+    expect(open).toContain("md:w-64")
+    expect(open.match(/data-slot="conversation-sidebar-logo"/g)).toHaveLength(1)
+    expect(closed.match(/data-slot="conversation-sidebar-logo"/g)).toHaveLength(1)
+    expect(closed).not.toContain("peer-hover/toggle")
+    expect(closed).toContain('aria-label="New chat"')
+    expect(closed.match(/group-data-\[state=closed\]\/conversation-sidebar:invisible/g)).toHaveLength(2)
+    expect(open.match(/left-\[5\.5px\]/g)).toHaveLength(2)
+    expect(closed.match(/left-\[5\.5px\]/g)).toHaveLength(2)
+    expect(header).toContain("h-11")
+  })
+
   test("site footer ends with an overridable decorative wordmark", () => {
     const defaultWordmark = renderToStaticMarkup(<SiteFooter brand="swagui" />)
     const hiddenWordmark = renderToStaticMarkup(

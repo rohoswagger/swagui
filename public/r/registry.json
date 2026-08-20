@@ -1763,6 +1763,22 @@
       ]
     },
     {
+      "name": "conversation-sidebar",
+      "type": "registry:ui",
+      "title": "Conversation Sidebar",
+      "description": "A collapsible AI-chat rail and conversation history panel with host-owned navigation, live working marks and durable status states.",
+      "files": [
+        {
+          "path": "registry/ui/conversation-sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/agent-working-mark.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
       "name": "agent-working-mark",
       "type": "registry:ui",
       "title": "Agent Working Mark",

@@ -250,7 +250,7 @@ export function PreviewClient() {
           ) : state.view === "agent" ? (
             <AgentView displayStyle={displayStyle} workingMark={state.workingMark} />
           ) : state.view === "chat" ? (
-            <ChatView />
+            <ChatView workingMark={state.workingMark} />
           ) : state.view === "logo" ? (
             <LogoView displayStyle={displayStyle} />
           ) : state.view === "components" ? (

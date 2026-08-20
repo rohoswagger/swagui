@@ -8,7 +8,7 @@ function ChatHeader({ className, ...props }: React.ComponentProps<"header">) {
     <header
       data-slot="chat-header"
       className={cn(
-        "flex h-12 shrink-0 items-center gap-3 border-b border-border bg-background px-3",
+        "flex h-11 shrink-0 items-center gap-3 border-b border-border bg-background px-3",
         className
       )}
       {...props}

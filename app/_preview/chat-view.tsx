@@ -10,11 +10,21 @@ import {
   ChatHeaderBreadcrumb,
   ChatHeaderBreadcrumbs,
   ChatHeaderBreadcrumbSeparator,
-  ChatHeaderDivider,
-  ChatHeaderHome,
-  ChatHeaderIdentity,
   ChatHeaderTitle,
 } from "@/registry/ui/chat-header"
+import {
+  ConversationSidebar,
+  ConversationSidebarAction,
+  ConversationSidebarActions,
+  ConversationSidebarFooter,
+  ConversationSidebarGroup,
+  ConversationSidebarGroupLabel,
+  ConversationSidebarItem,
+  ConversationSidebarList,
+  ConversationSidebarPanel,
+  ConversationSidebarToggle,
+} from "@/registry/ui/conversation-sidebar"
+import { type AgentWorkingMarkVariant } from "@/registry/ui/agent-working-mark"
 import { Message, MessageContent } from "@/registry/ui/message"
 import { Bubble, BubbleContent } from "@/registry/ui/bubble"
 import {
@@ -113,12 +123,14 @@ const CONTEXT_ITEMS = [
   },
 ]
 
-export function ChatView() {
+export function ChatView({ workingMark = "mobius" }: { workingMark?: AgentWorkingMarkVariant }) {
   const [scene, setScene] = React.useState<ChatScene>("working")
   const [model, setModel] = React.useState("vanilla-1")
   const [reasoningEffort, setReasoningEffort] = React.useState("high")
   const [submitted, setSubmitted] = React.useState<string[]>([])
   const [threadPath, setThreadPath] = React.useState<ThreadId[]>(["main"])
+  const [sidebarOpen, setSidebarOpen] = React.useState(false)
+  const [selectedConversation, setSelectedConversation] = React.useState("inventory-dashboard")
   const activeThread = threadPath[threadPath.length - 1]
 
   if (activeThread !== "main") {
@@ -126,7 +138,16 @@ export function ChatView() {
       <SubagentThreadView
         path={threadPath}
         scene={scene}
-        onBackToMain={() => setThreadPath(["main"])}
+        sidebarOpen={sidebarOpen}
+        selectedConversation={selectedConversation}
+        workingMark={workingMark}
+        onSidebarOpenChange={setSidebarOpen}
+        onSelectConversation={setSelectedConversation}
+        onNewChat={() => {
+          setSubmitted([])
+          setScene("working")
+          setThreadPath(["main"])
+        }}
         onNavigate={(index) => setThreadPath(threadPath.slice(0, index + 1))}
         onOpenNested={(thread) => setThreadPath((path) => [...path, thread])}
       />
@@ -135,14 +156,22 @@ export function ChatView() {
 
   return (
     <div className="h-full min-h-[32rem]">
-      <section className="flex size-full min-h-0 min-w-0 overflow-hidden bg-background text-foreground">
+      <section className="relative flex size-full min-h-0 min-w-0 overflow-hidden bg-background text-foreground">
+        <ConversationSidebarDemo
+          open={sidebarOpen}
+          scene={scene}
+          selectedConversation={selectedConversation}
+          workingMark={workingMark}
+          onOpenChange={setSidebarOpen}
+          onSelectConversation={setSelectedConversation}
+          onNewChat={() => {
+            setSubmitted([])
+            setScene("working")
+            setThreadPath(["main"])
+          }}
+        />
         <div className="flex min-w-0 flex-1 flex-col">
           <ChatHeader>
-            <ChatHeaderIdentity>
-              <SwaguiMark size={20} />
-              <span className="hidden sm:inline">swagui</span>
-            </ChatHeaderIdentity>
-            <ChatHeaderDivider />
             <ChatHeaderTitle>
               Build Agent Chat Components
             </ChatHeaderTitle>
@@ -445,13 +474,23 @@ export function ChatView() {
 function SubagentThreadView({
   path,
   scene,
-  onBackToMain,
+  sidebarOpen,
+  selectedConversation,
+  workingMark,
+  onSidebarOpenChange,
+  onSelectConversation,
+  onNewChat,
   onNavigate,
   onOpenNested,
 }: {
   path: ThreadId[]
   scene: ChatScene
-  onBackToMain: () => void
+  sidebarOpen: boolean
+  selectedConversation: string
+  workingMark: AgentWorkingMarkVariant
+  onSidebarOpenChange: (open: boolean) => void
+  onSelectConversation: (conversation: string) => void
+  onNewChat: () => void
   onNavigate: (index: number) => void
   onOpenNested: (thread: ThreadId) => void
 }) {
@@ -477,14 +516,18 @@ function SubagentThreadView({
 
   return (
     <div className="h-full min-h-[32rem]">
-      <section className="flex size-full min-h-0 min-w-0 overflow-hidden bg-background text-foreground">
+      <section className="relative flex size-full min-h-0 min-w-0 overflow-hidden bg-background text-foreground">
+        <ConversationSidebarDemo
+          open={sidebarOpen}
+          scene={scene}
+          selectedConversation={selectedConversation}
+          workingMark={workingMark}
+          onOpenChange={onSidebarOpenChange}
+          onSelectConversation={onSelectConversation}
+          onNewChat={onNewChat}
+        />
         <div className="flex min-w-0 flex-1 flex-col">
           <ChatHeader>
-            <ChatHeaderHome onClick={onBackToMain} aria-label="Back to main agent">
-              <SwaguiMark size={20} />
-              <span className="hidden sm:inline">swagui</span>
-            </ChatHeaderHome>
-            <ChatHeaderDivider />
             <ChatHeaderBreadcrumbs>
               {path.map((item, index) => (
                 <React.Fragment key={item}>
@@ -635,6 +678,87 @@ function CompleteTasks() {
   )
 }
 
+function ConversationSidebarDemo({
+  open,
+  scene,
+  selectedConversation,
+  workingMark,
+  onOpenChange,
+  onSelectConversation,
+  onNewChat,
+}: {
+  open: boolean
+  scene: ChatScene
+  selectedConversation: string
+  workingMark: AgentWorkingMarkVariant
+  onOpenChange: (open: boolean) => void
+  onSelectConversation: (conversation: string) => void
+  onNewChat: () => void
+}) {
+  const conversations = [
+    {
+      id: "inventory-dashboard",
+      title: "Build Agent Chat Components",
+      status: scene === "working" ? "working" as const : "done" as const,
+      duration: scene === "working" ? 68 : 92,
+    },
+    { id: "approval-flow", title: "Tighten the approval flow", status: "needs-input" as const },
+    { id: "design-audit", title: "Audit dashboard spacing", status: "done" as const, duration: 214 },
+    { id: "mobile-shell", title: "Repair the mobile shell", status: "failed" as const, duration: 47 },
+    { id: "release-notes", title: "Draft release notes", status: "cancelled" as const, duration: 16 },
+  ]
+
+  return (
+    <ConversationSidebar open={open} onOpenChange={onOpenChange}>
+      <ConversationSidebarToggle
+        icon={<SwaguiMark size={22} />}
+        hoverIcon={<PanelIcon />}
+        label="swagui"
+        open={open}
+        closeIcon={<PanelCloseIcon />}
+        onClose={() => onOpenChange(false)}
+        aria-label={open ? "Close conversation sidebar" : "Open conversation sidebar"}
+        onClick={() => onOpenChange(!open)}
+      />
+      <ConversationSidebarActions aria-label="Chat actions">
+        <ConversationSidebarAction icon={<ComposeIcon />} onClick={onNewChat}>
+          New chat
+        </ConversationSidebarAction>
+        <ConversationSidebarAction icon={<SearchIcon />}>
+          Search chats
+        </ConversationSidebarAction>
+        <ConversationSidebarAction icon={<FolderIcon />}>
+          Artifacts
+        </ConversationSidebarAction>
+      </ConversationSidebarActions>
+      <ConversationSidebarPanel>
+        <ConversationSidebarGroup className="min-h-0 flex-1 overflow-y-auto">
+          <ConversationSidebarGroupLabel>Recent</ConversationSidebarGroupLabel>
+          <ConversationSidebarList>
+            {conversations.map((conversation) => (
+              <ConversationSidebarItem
+                key={conversation.id}
+                title={conversation.title}
+                status={conversation.status}
+                duration={conversation.duration}
+                active={conversation.id === selectedConversation}
+                workingMark={workingMark}
+                onClick={() => {
+                  onSelectConversation(conversation.id)
+                  if (window.matchMedia("(max-width: 767px)").matches) onOpenChange(false)
+                }}
+              />
+            ))}
+          </ConversationSidebarList>
+        </ConversationSidebarGroup>
+      </ConversationSidebarPanel>
+      <ConversationSidebarFooter>
+        <ConversationSidebarAction icon={<SettingsIcon />}>Settings</ConversationSidebarAction>
+      </ConversationSidebarFooter>
+    </ConversationSidebar>
+  )
+}
+
 function AppPreview() {
   return (
     <div className="size-full bg-background p-1.5">
@@ -661,5 +785,9 @@ function PlusIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="curren
 function MicIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="3" width="6" height="12" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg> }
 function FolderIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M3.5 6.5h6l2 2h9v10.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z" /></svg> }
 function PanelIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3.5" y="4" width="17" height="16" rx="2" /><path d="M15 4v16M7 12h4" /></svg> }
+function PanelCloseIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3.5" y="4" width="17" height="16" rx="2" /><path d="M9 4v16M17 12h-4" /></svg> }
+function ComposeIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 20H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h7M16.5 3.5a2.1 2.1 0 0 1 3 3L11 15l-4 1 1-4Z" /></svg> }
+function SearchIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg> }
+function SettingsIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z" /></svg> }
 function CopyIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></svg> }
 function RetryIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M21 12a9 9 0 1 1-3-6.7M21 3v6h-6" /></svg> }
