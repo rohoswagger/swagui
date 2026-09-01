@@ -3,9 +3,12 @@
 import * as React from "react"
 import { useSearchParams } from "next/navigation"
 import {
+  Bot,
   Check as ChromeCheck,
   ChevronDown,
+  Code2,
   Copy as ChromeCopy,
+  Link2,
   Shuffle,
 } from "lucide-react"
 
@@ -21,6 +24,13 @@ import {
   type AgentWorkingMarkVariant,
 } from "@/registry/ui/agent-working-mark"
 import { DEFAULT_WORKING_MARK, readWorkingMarkParam } from "./working-mark-config"
+import { agentSetupPrompt, installCommandFor, paletteUrlFor } from "./share-config"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/registry/ui/dropdown-menu"
 
 type State = {
   font: string
@@ -144,7 +154,7 @@ export function PreviewClient() {
     grain: params.get("grain") !== "0",
   }))
 
-  const [copied, setCopied] = React.useState(false)
+  const [copied, setCopied] = React.useState<"command" | "palette" | "agent" | null>(null)
 
   const set = <K extends keyof State>(k: K, v: State[K]) =>
     setState((s) => ({ ...s, [k]: v }))
@@ -199,11 +209,23 @@ export function PreviewClient() {
   }
 
 
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+  const copy = async (kind: NonNullable<typeof copied>, value: string) => {
+    await navigator.clipboard.writeText(value)
+    setCopied(kind)
+    window.setTimeout(() => setCopied(null), 1500)
   }
+
+  const paletteUrl =
+    typeof window === "undefined"
+      ? ""
+      : paletteUrlFor(state, `${window.location.origin}${window.location.pathname}`)
+  const installCommand = installCommandFor(state)
+  const setupPrompt = agentSetupPrompt({
+    configuration: state,
+    pairing,
+    accent,
+    paletteUrl,
+  })
 
   /** Randomise the whole permutation — the fastest way to find combinations
       you would never have assembled deliberately. */
@@ -366,14 +388,50 @@ export function PreviewClient() {
             >
               <Shuffle className="size-3.5" /> Shuffle
             </button>
-            <button
-              type="button"
-              onClick={copyLink}
-              className="flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-2.5 text-[12.5px] font-medium text-white transition-colors hover:bg-neutral-700"
-            >
-              {copied ? <ChromeCheck className="size-3.5" /> : <ChromeCopy className="size-3.5" />}
-              {copied ? "Copied" : "Share"}
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-2.5 text-[12.5px] font-medium text-white transition-colors hover:bg-neutral-700 focus-visible:ring-2 focus-visible:ring-neutral-900/30 focus-visible:ring-offset-2"
+                >
+                  {copied ? <ChromeCheck className="size-3.5" /> : <ChromeCopy className="size-3.5" />}
+                  {copied ? "Copied" : "Share"}
+                  <ChevronDown className="size-3.5 opacity-70" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-72 p-1.5">
+                <DropdownMenuItem
+                  onSelect={() => void copy("command", installCommand)}
+                  className="items-start gap-3 px-2.5 py-2"
+                >
+                  <Code2 className="mt-0.5 size-4" />
+                  <span className="grid gap-0.5">
+                    <span className="font-medium">Copy install command</span>
+                    <span className="text-xs leading-4 text-muted-foreground">Install the {state.view === "agent" || state.view === "chat" ? "agent" : state.view === "marketing" || state.view === "blocks" ? "full" : "core"} bundle.</span>
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => void copy("palette", paletteUrl)}
+                  className="items-start gap-3 px-2.5 py-2"
+                >
+                  <Link2 className="mt-0.5 size-4" />
+                  <span className="grid gap-0.5">
+                    <span className="font-medium">Copy palette link</span>
+                    <span className="text-xs leading-4 text-muted-foreground">Open this exact configuration in the preview.</span>
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => void copy("agent", setupPrompt)}
+                  className="items-start gap-3 px-2.5 py-2"
+                >
+                  <Bot className="mt-0.5 size-4" />
+                  <span className="grid gap-0.5">
+                    <span className="font-medium">Copy agent setup prompt</span>
+                    <span className="text-xs leading-4 text-muted-foreground">Give an agent exact tokens, scope, and implementation guidance.</span>
+                  </span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </footer>

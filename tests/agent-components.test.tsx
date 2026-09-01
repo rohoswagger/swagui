@@ -34,8 +34,35 @@ import { Response, ResponseContent, ResponseUsage } from "@/registry/ui/response
 import { Subagent, Subagents } from "@/registry/ui/subagent"
 import { ToolCall, ToolCalls } from "@/registry/ui/tool-call"
 import { readWorkingMarkParam } from "@/app/_preview/working-mark-config"
+import { agentSetupPrompt, installCommandFor, paletteUrlFor } from "@/app/_preview/share-config"
 
 describe("agent component contracts", () => {
+  test("share payloads preserve the selected palette and bundle", () => {
+    const configuration = {
+      font: "fraunces",
+      accent: "violet",
+      surface: "glass",
+      base: "mauve",
+      theme: "dark" as const,
+      view: "agent",
+      density: "compact" as const,
+      icons: "phosphor",
+      iconWeight: "regular",
+      workingMark: "mobius",
+      squircle: true,
+      grain: false,
+    }
+    const pairing = { id: "fraunces", label: "Fraunces", note: "", display: "Fraunces, serif", body: "Geist, sans-serif", mono: "JetBrains Mono, monospace", displayWeight: 600, displayTracking: "-0.02em", displayVariation: "'SOFT' 40" }
+    const accent = { id: "violet", label: "Violet", note: "", light: "oklch(0.55 0.22 285)", lightContent: "oklch(0.48 0.22 285)", dark: "oklch(0.7 0.18 285)" }
+
+    expect(installCommandFor(configuration)).toBe("bunx shadcn@latest add https://swagui.rohoswagger.com/r/agent.json")
+    expect(paletteUrlFor(configuration, "https://swagui.rohoswagger.com/")).toContain("accent=violet")
+    const prompt = agentSetupPrompt({ configuration, pairing, accent, paletteUrl: "https://swagui.rohoswagger.com?accent=violet" })
+    expect(prompt).toContain('data-base="mauve"')
+    expect(prompt).toContain('data-surface="glass"')
+    expect(prompt).toContain("--brand: oklch(0.7 0.18 285)")
+    expect(prompt).toContain("https://swagui.rohoswagger.com?accent=violet")
+  })
   test("published bundles cover the registry without circular dependencies", () => {
     const registry = JSON.parse(readFileSync("registry.json", "utf8")) as {
       items: Array<{
