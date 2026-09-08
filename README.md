@@ -77,7 +77,7 @@ Composed site blocks are also registry items:
 
 ```bash
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/hero-centered.json
-bunx shadcn@latest add https://swagui.rohoswagger.com/r/feature-grid.json
+bunx shadcn@latest add https://swagui.rohoswagger.com/r/feature-showcase.json
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/pricing-tiers.json
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/site-footer.json
 ```
@@ -185,7 +185,7 @@ Composed marketing sections, installed the same way:
 bunx shadcn@latest add https://swagui.rohoswagger.com/r/hero-centered.json
 ```
 
-`section`, `reveal`, `hero-centered`, `feature-grid`, `logo-marquee`, `cta-band`.
+`section`, `reveal`, `hero-centered`, `feature-showcase`, `logo-marquee`, `cta-band`.
 
 Blocks may depend on `motion`; components never do, so app bundles stay lean.
 

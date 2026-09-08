@@ -49,7 +49,7 @@ function SiteNav({
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
             <a
-              key={l.href}
+              key={l.label}
               href={l.href}
               className="text-muted-foreground hover:text-foreground text-[0.875rem] transition-colors duration-(--duration-fast) ease-(--ease-swagui)"
             >
@@ -78,7 +78,7 @@ function SiteNav({
               <nav className="flex flex-col gap-1 px-4">
                 {links.map((l) => (
                   <a
-                    key={l.href}
+                    key={l.label}
                     href={l.href}
                     className="hover:bg-accent rounded-md px-3 py-2 text-[0.9375rem] transition-colors"
                   >

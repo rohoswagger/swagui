@@ -704,7 +704,7 @@
         "https://swagui.rohoswagger.com/r/hero-centered.json",
         "https://swagui.rohoswagger.com/r/logo-marquee.json",
         "https://swagui.rohoswagger.com/r/stat-band.json",
-        "https://swagui.rohoswagger.com/r/feature-grid.json",
+        "https://swagui.rohoswagger.com/r/feature-showcase.json",
         "https://swagui.rohoswagger.com/r/testimonial-grid.json",
         "https://swagui.rohoswagger.com/r/pricing-tiers.json",
         "https://swagui.rohoswagger.com/r/faq-accordion.json",
@@ -817,13 +817,13 @@
       ]
     },
     {
-      "name": "feature-grid",
+      "name": "feature-showcase",
       "type": "registry:block",
-      "title": "Feature Grid",
-      "description": "Two, three or four column feature cards with staggered scroll reveal.",
+      "title": "Feature Showcase",
+      "description": "Large-media feature cards: a brand-washed canvas with a floating vignette, captioned below.",
       "files": [
         {
-          "path": "registry/blocks/feature-grid/feature-grid.tsx",
+          "path": "registry/blocks/feature-showcase/feature-showcase.tsx",
           "type": "registry:component"
         }
       ],

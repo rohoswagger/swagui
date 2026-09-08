@@ -64,7 +64,7 @@ function SiteFooter({
               </p>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((l) => (
-                  <li key={l.href}>
+                  <li key={l.label}>
                     <a
                       href={l.href}
                       className="text-muted-foreground hover:text-foreground text-[0.9375rem] transition-colors duration-(--duration-fast) ease-(--ease-swagui)"

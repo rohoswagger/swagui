@@ -42,3 +42,6 @@ next-env.d.ts
 
 # next static export
 /out/
+
+# impeccable: local session cache, machine-specific
+.impeccable/hook.cache.json
