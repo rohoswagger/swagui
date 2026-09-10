@@ -23,7 +23,9 @@
     "https://swagui.rohoswagger.com/r/chat-header.json",
     "https://swagui.rohoswagger.com/r/conversation-sidebar.json",
     "https://swagui.rohoswagger.com/r/agent-working-mark.json",
-    "https://swagui.rohoswagger.com/r/subagent.json"
+    "https://swagui.rohoswagger.com/r/subagent.json",
+    "https://swagui.rohoswagger.com/r/agent-workspace.json",
+    "https://swagui.rohoswagger.com/r/computer-frame.json"
   ],
   "files": []
 }

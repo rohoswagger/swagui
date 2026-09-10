@@ -310,7 +310,7 @@ function ConversationSidebarItem({
   status,
   duration = 0,
   active = false,
-  workingMark = "mobius",
+  workingMark,
   ...props
 }: Omit<React.ComponentProps<"button">, "title"> & {
   title: React.ReactNode
@@ -384,7 +384,7 @@ function ConversationSidebarStateMark({
   workingMark,
 }: {
   status: ConversationStatus
-  workingMark: AgentWorkingMarkVariant
+  workingMark?: AgentWorkingMarkVariant
 }) {
   if (status === "working") {
     return <AgentWorkingMark variant={workingMark} size={12} label="Working" />

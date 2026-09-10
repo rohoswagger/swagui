@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "computer-frame",
+  "type": "registry:ui",
+  "title": "Computer Frame",
+  "description": "A compound browser frame with toolbar, address, content and footer slots.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/computer-frame.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction ComputerFrame({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"computer-frame\"\n      className={cn(\n        \"flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-background text-foreground\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ComputerFrameToolbar({\n  className,\n  ...props\n}: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"computer-frame-toolbar\"\n      className={cn(\n        \"flex h-12 shrink-0 flex-row items-center gap-2 border-b border-border bg-muted/40 px-3\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ComputerFrameAddress({\n  className,\n  ...props\n}: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"computer-frame-address\"\n      className={cn(\n        \"min-w-0 flex-1 truncate text-sm text-muted-foreground\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ComputerFrameContent({\n  className,\n  ...props\n}: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"computer-frame-content\"\n      className={cn(\"min-h-0 flex-1 overflow-auto\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction ComputerFrameFooter({\n  className,\n  ...props\n}: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"computer-frame-footer\"\n      className={cn(\n        \"flex h-7 shrink-0 flex-row items-center gap-2 border-t border-border bg-muted/40 px-3 text-xs text-muted-foreground\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport {\n  ComputerFrame,\n  ComputerFrameAddress,\n  ComputerFrameContent,\n  ComputerFrameFooter,\n  ComputerFrameToolbar,\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

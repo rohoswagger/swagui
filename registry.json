@@ -686,7 +686,9 @@
         "https://swagui.rohoswagger.com/r/chat-header.json",
         "https://swagui.rohoswagger.com/r/conversation-sidebar.json",
         "https://swagui.rohoswagger.com/r/agent-working-mark.json",
-        "https://swagui.rohoswagger.com/r/subagent.json"
+        "https://swagui.rohoswagger.com/r/subagent.json",
+        "https://swagui.rohoswagger.com/r/agent-workspace.json",
+        "https://swagui.rohoswagger.com/r/computer-frame.json"
       ]
     },
     {
@@ -698,6 +700,7 @@
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/core.json",
         "https://swagui.rohoswagger.com/r/agent.json",
+        "https://swagui.rohoswagger.com/r/agent-workspace-demo.json",
         "https://swagui.rohoswagger.com/r/section.json",
         "https://swagui.rohoswagger.com/r/reveal.json",
         "https://swagui.rohoswagger.com/r/site-nav.json",
@@ -923,6 +926,28 @@
         }
       ],
       "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "agent-workspace-demo",
+      "type": "registry:block",
+      "title": "Agent Workspace Demo",
+      "description": "A browser-first agent workspace example with a local browser stage and conversation panel.",
+      "files": [
+        {
+          "path": "registry/blocks/agent-workspace-demo/agent-workspace-demo.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/agent-workspace.json",
+        "https://swagui.rohoswagger.com/r/bubble.json",
+        "https://swagui.rohoswagger.com/r/button.json",
+        "https://swagui.rohoswagger.com/r/computer-frame.json",
+        "https://swagui.rohoswagger.com/r/input.json",
+        "https://swagui.rohoswagger.com/r/message.json",
+        "https://swagui.rohoswagger.com/r/table.json",
         "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },
@@ -1928,6 +1953,38 @@
       ],
       "registryDependencies": [
         "https://swagui.rohoswagger.com/r/agent-working-mark.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "agent-workspace",
+      "type": "registry:ui",
+      "title": "Agent Workspace",
+      "description": "A responsive browser-first workspace with a resizable computer and conversation layout.",
+      "files": [
+        {
+          "path": "registry/ui/agent-workspace.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/resizable.json",
+        "https://swagui.rohoswagger.com/r/tabs.json",
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "computer-frame",
+      "type": "registry:ui",
+      "title": "Computer Frame",
+      "description": "A compound browser frame with toolbar, address, content and footer slots.",
+      "files": [
+        {
+          "path": "registry/ui/computer-frame.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
         "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },

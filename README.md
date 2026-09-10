@@ -191,6 +191,22 @@ Blocks may depend on `motion`; components never do, so app bundles stay lean.
 
 ## Contributing
 
+### Browser and computer workspaces
+
+The agent bundle includes `AgentWorkspace` and `ComputerFrame`. On desktop,
+`AgentWorkspace` places a compact conversation on the left and the computer
+on the right, with a keyboard-accessible resize handle. On mobile it provides
+Computer and Conversation tabs. The host supplies navigation, header, computer
+content, and conversation content; the component does not open remote sessions.
+
+`ComputerFrame` exports toolbar, address, content, and footer slots. A runnable
+composition is available as `agent-workspace-demo` in the registry.
+
+Wrap a shared layout in `AgentWorkingMarkProvider defaultVariant="tesseract"`
+to choose the working mark once. Direct marks and conversation-sidebar items
+inherit it, while explicit `variant` or `workingMark` props take precedence.
+Without a provider the default remains Möbius.
+
 Want to add a component, improve the showcase or publish a release? See
 [CONTRIBUTING.md](CONTRIBUTING.md) for the local setup, registry workflow,
 verification requirements and Cloudflare deployment process.

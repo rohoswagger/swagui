@@ -1,8 +1,14 @@
+"use client"
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
 type AgentWorkingMarkVariant = "mobius" | "tesseract" | "circuit" | "blocks"
+
+type AgentWorkingMarkProviderProps = React.PropsWithChildren<{
+  defaultVariant?: AgentWorkingMarkVariant
+}>
 
 const AGENT_WORKING_MARK_OPTIONS: readonly {
   id: AgentWorkingMarkVariant
@@ -14,9 +20,22 @@ const AGENT_WORKING_MARK_OPTIONS: readonly {
   { id: "blocks", label: "Blocks" },
 ]
 
+const AgentWorkingMarkContext = React.createContext<AgentWorkingMarkVariant>("mobius")
+
+function AgentWorkingMarkProvider({
+  defaultVariant = "mobius",
+  children,
+}: AgentWorkingMarkProviderProps) {
+  return (
+    <AgentWorkingMarkContext.Provider value={defaultVariant}>
+      {children}
+    </AgentWorkingMarkContext.Provider>
+  )
+}
+
 function AgentWorkingMark({
   className,
-  variant = "mobius",
+  variant,
   size = 16,
   label = "Working",
   paused = false,
@@ -27,10 +46,13 @@ function AgentWorkingMark({
   label?: string
   paused?: boolean
 }) {
+  const defaultVariant = React.useContext(AgentWorkingMarkContext)
+  const resolvedVariant = variant ?? defaultVariant
+
   return (
     <svg
       data-slot="agent-working-mark"
-      data-variant={variant}
+      data-variant={resolvedVariant}
       data-paused={paused || undefined}
       width={size}
       height={size}
@@ -45,11 +67,11 @@ function AgentWorkingMark({
       )}
       {...props}
     >
-      {variant === "mobius" ? (
+      {resolvedVariant === "mobius" ? (
         <MobiusWeave />
-      ) : variant === "tesseract" ? (
+      ) : resolvedVariant === "tesseract" ? (
         <TesseractFold />
-      ) : variant === "circuit" ? (
+      ) : resolvedVariant === "circuit" ? (
         <InwardCircuit />
       ) : (
         <BumpingBlocks />
@@ -151,5 +173,7 @@ function BumpingBlocks() {
 export {
   AGENT_WORKING_MARK_OPTIONS,
   AgentWorkingMark,
+  AgentWorkingMarkProvider,
+  type AgentWorkingMarkProviderProps,
   type AgentWorkingMarkVariant,
 }
