@@ -7,6 +7,7 @@
   "registryDependencies": [
     "https://swagui.rohoswagger.com/r/core.json",
     "https://swagui.rohoswagger.com/r/agent.json",
+    "https://swagui.rohoswagger.com/r/agent-workspace-demo.json",
     "https://swagui.rohoswagger.com/r/section.json",
     "https://swagui.rohoswagger.com/r/reveal.json",
     "https://swagui.rohoswagger.com/r/site-nav.json",

@@ -81,6 +81,7 @@ describe("agent component contracts", () => {
       "reasoning", "response", "approval", "request", "input-request",
       "prompt-input", "selection-actions", "tool-call", "tasks", "artifact",
       "chat-header", "conversation-sidebar", "agent-working-mark", "subagent",
+      "agent-workspace", "computer-frame",
     ])
     const expectedCore = registry.items
       .filter((item) => item.type === "registry:ui" && !agentNames.has(item.name))

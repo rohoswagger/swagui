@@ -54,7 +54,7 @@ function ConversationSidebar({
     if (!open || !isMobile) return
 
     const aside = asideRef.current
-    const parent = aside?.parentElement
+    const parent = aside?.closest<HTMLElement>("[data-slot=\"agent-workspace\"]") ?? aside?.parentElement
     if (!aside || !parent) return
 
     const previousFocus = document.activeElement instanceof HTMLElement
@@ -64,7 +64,8 @@ function ConversationSidebar({
       (element): element is HTMLElement =>
         element instanceof HTMLElement &&
         element !== aside &&
-        element !== backdropRef.current
+        !element.contains(aside) &&
+        !element.contains(backdropRef.current)
     )
     const previousStates = siblings.map((element) => ({
       element,
@@ -98,7 +99,7 @@ function ConversationSidebar({
         tabIndex={-1}
         onClick={() => onOpenChange(false)}
         className={cn(
-          "absolute inset-0 z-30 bg-foreground/12 opacity-0 transition-opacity duration-(--duration-base) ease-(--ease-swagui) md:hidden",
+          "fixed inset-0 z-30 bg-foreground/12 opacity-0 transition-opacity duration-(--duration-base) ease-(--ease-swagui) md:absolute md:hidden",
           open ? "pointer-events-auto opacity-100" : "pointer-events-none"
         )}
       />
@@ -310,7 +311,7 @@ function ConversationSidebarItem({
   status,
   duration = 0,
   active = false,
-  workingMark = "mobius",
+  workingMark,
   ...props
 }: Omit<React.ComponentProps<"button">, "title"> & {
   title: React.ReactNode
@@ -384,7 +385,7 @@ function ConversationSidebarStateMark({
   workingMark,
 }: {
   status: ConversationStatus
-  workingMark: AgentWorkingMarkVariant
+  workingMark?: AgentWorkingMarkVariant
 }) {
   if (status === "working") {
     return <AgentWorkingMark variant={workingMark} size={12} label="Working" />
