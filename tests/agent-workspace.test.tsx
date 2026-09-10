@@ -9,6 +9,8 @@ import {
   ComputerFrameContent,
   ComputerFrameFooter,
   ComputerFrameTab,
+  ComputerFrameTabAction,
+  ComputerFrameTabItem,
   ComputerFrameTabs,
   ComputerFrameToolbar,
 } from "@/registry/ui/computer-frame"
@@ -57,8 +59,14 @@ describe("agent workspace contracts", () => {
       <Tabs value="tracker">
         <ComputerFrame>
           <ComputerFrameTabs aria-label="Workspace views">
-            <ComputerFrameTab value="tracker">Tracker</ComputerFrameTab>
-            <ComputerFrameTab value="sources">Sources</ComputerFrameTab>
+            <ComputerFrameTabItem>
+              <ComputerFrameTab value="tracker">Tracker</ComputerFrameTab>
+              <ComputerFrameTabAction aria-label="Close Tracker tab">Close</ComputerFrameTabAction>
+            </ComputerFrameTabItem>
+            <ComputerFrameTabItem>
+              <ComputerFrameTab value="sources">Sources</ComputerFrameTab>
+              <ComputerFrameTabAction aria-label="Close Sources tab">Close</ComputerFrameTabAction>
+            </ComputerFrameTabItem>
           </ComputerFrameTabs>
           <ComputerFrameToolbar>Controls</ComputerFrameToolbar>
           <ComputerFrameAddress>workspace.local/notes</ComputerFrameAddress>
@@ -72,6 +80,8 @@ describe("agent workspace contracts", () => {
     expect(html).toContain('data-slot="computer-frame-toolbar"')
     expect(html).toContain('data-slot="computer-frame-tabs"')
     expect(html).toContain('data-slot="computer-frame-tab"')
+    expect(html).toContain('data-slot="computer-frame-tab-item"')
+    expect(html).toContain('data-slot="computer-frame-tab-action"')
     expect(html).toContain('data-slot="computer-frame-address"')
     expect(html).toContain('data-slot="computer-frame-content"')
     expect(html).toContain('data-slot="computer-frame-footer"')
@@ -158,6 +168,17 @@ describe("agent workspace contracts", () => {
     expect(html).toContain('data-slot="agent-workspace-demo"')
     expect(html).toContain("workspace.local/overview")
     expect(html).toContain("Which part of the workspace should we inspect?")
+    expect(html).toContain("Open new tab")
+    expect(html).toContain("placeholder=\"Enter an address\"")
+    expect(source).toContain("New tab")
+    expect(source).toContain("Open a page from this workflow.")
+    expect(source).toContain("forceMount")
+    expect(source).toContain("event.nativeEvent.isComposing")
+    expect(source).toContain("Navigation not executed")
+    expect(source).toContain('const tabAriaLabel = page.kind === "new" ? "New tab"')
+    expect(source).toContain('const closeLabel = page.kind === "new" ? "Close new tab"')
+    expect(source).not.toContain('"New tab tab"')
+    expect(source).not.toContain('"Close New tab tab"')
     expect(source).not.toContain("<iframe")
     expect(source).not.toContain("fetch(")
     expect(source).not.toContain("window.location")
@@ -184,6 +205,9 @@ describe("agent workspace contracts", () => {
       "https://swagui.rohoswagger.com/r/tabs.json",
       "https://swagui.rohoswagger.com/r/theme.json",
     ]))
+    expect(dependencies("agent-workspace-demo")).toContain(
+      "https://swagui.rohoswagger.com/r/empty.json"
+    )
     expect(new Set(dependencies("agent-workspace-demo")).size).toBe(
       dependencies("agent-workspace-demo").length
     )
@@ -193,5 +217,26 @@ describe("agent workspace contracts", () => {
     expect(JSON.stringify(byName.get("computer-frame")?.dependencies ?? [])).toBe(
       JSON.stringify([])
     )
+  })
+
+  test("tab items keep close targets usable when the strip overflows", () => {
+    const frameSource = readFileSync("registry/ui/computer-frame.tsx", "utf8")
+    expect(frameSource).toContain("min-w-24 flex-none")
+  })
+
+  test("published browser payloads stay byte-identical to their canonical sources", () => {
+    const payloads = [
+      ["public/r/computer-frame.json", "registry/ui/computer-frame.tsx"],
+      ["public/r/agent-workspace-demo.json", "registry/blocks/agent-workspace-demo/agent-workspace-demo.tsx"],
+    ] as const
+
+    for (const [payloadPath, sourcePath] of payloads) {
+      const payload = JSON.parse(readFileSync(payloadPath, "utf8")) as {
+        files: Array<{ path: string; content: string }>
+      }
+      const source = readFileSync(sourcePath, "utf8")
+      const file = payload.files.find((entry) => entry.path === sourcePath)
+      expect(file?.content).toBe(source)
+    }
   })
 })
