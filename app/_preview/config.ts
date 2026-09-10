@@ -45,14 +45,26 @@ export const PAIRINGS: Pairing[] = [
   },
   {
     id: "serif",
-    label: "Instrument Serif",
-    note: "Serif italic display over a neutral sans. Free, editorial, the most distinctive option.",
+    label: "Instrument Italic",
+    note: "Serif italic display over a neutral sans. Free, romantic, unmistakable.",
     display: "var(--font-instrument), Georgia, serif",
     body: "var(--font-geist), sans-serif",
     mono: "var(--font-geist-mono), ui-monospace, monospace",
     displayWeight: 400,
     displayTracking: "-0.02em",
     displayItalic: true,
+  },
+  {
+    id: "editorial",
+    label: "Instrument Serif",
+    note: "Upright high-contrast serif display over a neutral sans. Editorial; headlines carry the page.",
+    display: "var(--font-instrument), Georgia, serif",
+    body: "var(--font-geist), sans-serif",
+    mono: "var(--font-geist-mono), ui-monospace, monospace",
+    displayWeight: 400,
+    // The upright roman is tightly fitted already; -0.01em is the most it
+    // takes before hairline terminals collide at display sizes.
+    displayTracking: "-0.01em",
   },
   {
     id: "manrope",
