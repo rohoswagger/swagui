@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { ArrowLeftIcon, ArrowRightIcon, RefreshCwIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { AgentWorkspace } from "@/registry/ui/agent-workspace"
@@ -10,7 +11,8 @@ import {
   ComputerFrame,
   ComputerFrameAddress,
   ComputerFrameContent,
-  ComputerFrameFooter,
+  ComputerFrameTab,
+  ComputerFrameTabs,
   ComputerFrameToolbar,
 } from "@/registry/ui/computer-frame"
 import { Input } from "@/registry/ui/input"
@@ -23,6 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/registry/ui/table"
+import { Tabs, TabsContent } from "@/registry/ui/tabs"
 
 const SAMPLE_PAGES = [
   {
@@ -78,6 +81,7 @@ function AgentWorkspaceDemo({
   ...props
 }: React.ComponentProps<"section">) {
   const [pageId, setPageId] = React.useState<SamplePageId>("overview")
+  const [pageRevision, setPageRevision] = React.useState(0)
   const [messages, setMessages] = React.useState(INITIAL_MESSAGES)
   const [draft, setDraft] = React.useState("")
 
@@ -130,84 +134,102 @@ function AgentWorkspaceDemo({
             ))}
           </nav>
         }
-        header={
-          <div
-            data-slot="agent-workspace-demo-header"
-            className="flex h-11 items-center gap-3 border-b border-border bg-background px-3"
-          >
-            <span className="min-w-0 flex-1 truncate text-sm font-medium">
-              Browser workspace
-            </span>
-            <span className="hidden text-xs text-muted-foreground sm:inline">
-              Local sample
-            </span>
-          </div>
-        }
         computer={
-          <ComputerFrame>
-            <ComputerFrameToolbar>
-              <div className="flex shrink-0 items-center gap-1" role="group" aria-label="Page navigation">
+          <Tabs
+            value={pageId}
+            onValueChange={(value) => setPageId(value as SamplePageId)}
+            className="h-full min-h-0 flex-1 gap-0"
+          >
+            <ComputerFrame>
+              <ComputerFrameTabs aria-label="Workspace pages">
+                {SAMPLE_PAGES.map((samplePage) => (
+                  <ComputerFrameTab key={samplePage.id} value={samplePage.id}>
+                    {samplePage.label}
+                  </ComputerFrameTab>
+                ))}
+              </ComputerFrameTabs>
+              <ComputerFrameToolbar>
+                <div className="flex shrink-0 items-center gap-1" role="group" aria-label="Page navigation">
                 <Button
                   type="button"
-                  aria-label="Previous page"
-                  disabled={pageIndex <= 0}
-                  onClick={() => setPageId(SAMPLE_PAGES[pageIndex - 1]?.id ?? page.id)}
+                  aria-label="Go back"
+                  disabled
                   variant="ghost"
-                  size="xs"
+                  size="icon-xs"
                   className="rounded-md text-muted-foreground"
                 >
-                  Back
+                  <ArrowLeftIcon />
                 </Button>
                 <Button
                   type="button"
-                  aria-label="Next page"
-                  disabled={pageIndex >= SAMPLE_PAGES.length - 1}
-                  onClick={() => setPageId(SAMPLE_PAGES[pageIndex + 1]?.id ?? page.id)}
+                  aria-label="Go forward"
+                  disabled
                   variant="ghost"
-                  size="xs"
+                  size="icon-xs"
                   className="rounded-md text-muted-foreground"
                 >
-                  Next
+                  <ArrowRightIcon />
+                </Button>
+                <Button
+                  type="button"
+                  aria-label="Refresh current view"
+                  onClick={() => setPageRevision((current) => current + 1)}
+                  variant="ghost"
+                  size="icon-xs"
+                  className="rounded-md text-muted-foreground"
+                >
+                  <RefreshCwIcon />
                 </Button>
               </div>
-              <ComputerFrameAddress>{page.address}</ComputerFrameAddress>
-            </ComputerFrameToolbar>
-            <ComputerFrameContent>
-              <article className="mx-auto flex max-w-2xl flex-col gap-6 p-5 sm:p-8">
-                <div className="flex flex-col gap-2">
-                  <p className="text-xs font-medium text-muted-foreground">Local page</p>
-                  <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-(--display-tracking)">
-                    {page.title}
-                  </h2>
-                  <p className="max-w-[65ch] text-sm leading-6 text-muted-foreground">
-                    {page.description}
-                  </p>
-                </div>
-                <div className="overflow-hidden rounded-lg border border-border bg-card">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Item</TableHead>
-                        <TableHead>State</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {page.items.map(([label, value]) => (
-                        <TableRow key={label}>
-                          <TableCell className="font-medium">{label}</TableCell>
-                          <TableCell className="text-muted-foreground">{value}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </article>
-            </ComputerFrameContent>
-            <ComputerFrameFooter>
-              <span>Source-controlled stage</span>
-              <span className="ms-auto font-mono tabular-nums">{pageIndex + 1} / {SAMPLE_PAGES.length}</span>
-            </ComputerFrameFooter>
-          </ComputerFrame>
+                <ComputerFrameAddress className="min-w-0">
+                  <Input
+                    readOnly
+                    value={page.address}
+                    aria-label="Current page address"
+                    className="h-7 font-sans text-xs shadow-none"
+                  />
+                </ComputerFrameAddress>
+              </ComputerFrameToolbar>
+              <ComputerFrameContent key={`${page.id}-${pageRevision}`}>
+                {SAMPLE_PAGES.map((samplePage) => (
+                  <TabsContent
+                    key={samplePage.id}
+                    value={samplePage.id}
+                    className="h-full overflow-auto"
+                  >
+                    <article className="mx-auto flex max-w-2xl flex-col gap-6 p-5 sm:p-8">
+                      <div className="flex flex-col gap-2">
+                        <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-(--display-tracking)">
+                          {samplePage.title}
+                        </h2>
+                        <p className="max-w-[65ch] text-sm leading-6 text-muted-foreground">
+                          {samplePage.description}
+                        </p>
+                      </div>
+                      <div className="overflow-hidden rounded-lg border border-border bg-card">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Item</TableHead>
+                              <TableHead>State</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {samplePage.items.map(([label, value]) => (
+                              <TableRow key={label}>
+                                <TableCell className="font-medium">{label}</TableCell>
+                                <TableCell className="text-muted-foreground">{value}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </article>
+                  </TabsContent>
+                ))}
+              </ComputerFrameContent>
+            </ComputerFrame>
+          </Tabs>
         }
         conversation={
           <div

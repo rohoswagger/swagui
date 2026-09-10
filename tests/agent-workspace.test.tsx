@@ -8,6 +8,8 @@ import {
   ComputerFrameAddress,
   ComputerFrameContent,
   ComputerFrameFooter,
+  ComputerFrameTab,
+  ComputerFrameTabs,
   ComputerFrameToolbar,
 } from "@/registry/ui/computer-frame"
 import {
@@ -52,16 +54,24 @@ describe("agent workspace contracts", () => {
 
   test("keeps computer frame slots host-owned", () => {
     const html = renderToStaticMarkup(
-      <ComputerFrame>
-        <ComputerFrameToolbar>Controls</ComputerFrameToolbar>
-        <ComputerFrameAddress>workspace.local/notes</ComputerFrameAddress>
-        <ComputerFrameContent>Page</ComputerFrameContent>
-        <ComputerFrameFooter>Status</ComputerFrameFooter>
-      </ComputerFrame>
+      <Tabs value="tracker">
+        <ComputerFrame>
+          <ComputerFrameTabs aria-label="Workspace views">
+            <ComputerFrameTab value="tracker">Tracker</ComputerFrameTab>
+            <ComputerFrameTab value="sources">Sources</ComputerFrameTab>
+          </ComputerFrameTabs>
+          <ComputerFrameToolbar>Controls</ComputerFrameToolbar>
+          <ComputerFrameAddress>workspace.local/notes</ComputerFrameAddress>
+          <ComputerFrameContent>Page</ComputerFrameContent>
+          <ComputerFrameFooter>Status</ComputerFrameFooter>
+        </ComputerFrame>
+      </Tabs>
     )
 
     expect(html).toContain('data-slot="computer-frame"')
     expect(html).toContain('data-slot="computer-frame-toolbar"')
+    expect(html).toContain('data-slot="computer-frame-tabs"')
+    expect(html).toContain('data-slot="computer-frame-tab"')
     expect(html).toContain('data-slot="computer-frame-address"')
     expect(html).toContain('data-slot="computer-frame-content"')
     expect(html).toContain('data-slot="computer-frame-footer"')
@@ -159,6 +169,7 @@ describe("agent workspace contracts", () => {
         name: string
         type: string
         registryDependencies?: string[]
+        dependencies?: string[]
       }>
     }
     const byName = new Map(registry.items.map((item) => [item.name, item]))
@@ -170,10 +181,17 @@ describe("agent workspace contracts", () => {
       "https://swagui.rohoswagger.com/r/theme.json",
     ]))
     expect(JSON.stringify(dependencies("computer-frame"))).toBe(JSON.stringify([
+      "https://swagui.rohoswagger.com/r/tabs.json",
       "https://swagui.rohoswagger.com/r/theme.json",
     ]))
     expect(new Set(dependencies("agent-workspace-demo")).size).toBe(
       dependencies("agent-workspace-demo").length
+    )
+    expect(JSON.stringify(byName.get("agent-workspace-demo")?.dependencies ?? [])).toBe(
+      JSON.stringify(["lucide-react"])
+    )
+    expect(JSON.stringify(byName.get("computer-frame")?.dependencies ?? [])).toBe(
+      JSON.stringify([])
     )
   })
 })

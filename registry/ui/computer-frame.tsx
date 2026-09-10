@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { TabsList, TabsTrigger } from "@/registry/ui/tabs"
 
 function ComputerFrame({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -24,6 +25,40 @@ function ComputerFrameToolbar({
       data-slot="computer-frame-toolbar"
       className={cn(
         "flex h-12 shrink-0 flex-row items-center gap-2 border-b border-border bg-muted/40 px-3",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function ComputerFrameTabs({
+  className,
+  variant = "line",
+  ...props
+}: React.ComponentProps<typeof TabsList>) {
+  return (
+    <TabsList
+      data-slot="computer-frame-tabs"
+      variant={variant}
+      className={cn(
+        "flex h-8 min-h-8 w-full shrink-0 items-end justify-start gap-0 rounded-none border-b border-border bg-muted/40 px-2 pt-0 group-data-[orientation=horizontal]/tabs:h-8",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function ComputerFrameTab({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsTrigger>) {
+  return (
+    <TabsTrigger
+      data-slot="computer-frame-tab"
+      className={cn(
+        "h-[calc(100%-1px)] max-w-48 flex-none rounded-t-md rounded-b-none px-2 text-xs after:hidden data-[state=active]:bg-background group-data-[variant=line]/tabs-list:data-[state=active]:!bg-card",
         className
       )}
       {...props}
@@ -81,5 +116,7 @@ export {
   ComputerFrameAddress,
   ComputerFrameContent,
   ComputerFrameFooter,
+  ComputerFrameTab,
+  ComputerFrameTabs,
   ComputerFrameToolbar,
 }
