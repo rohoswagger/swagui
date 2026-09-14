@@ -626,6 +626,7 @@
         "https://swagui.rohoswagger.com/r/dropdown-menu.json",
         "https://swagui.rohoswagger.com/r/empty.json",
         "https://swagui.rohoswagger.com/r/field.json",
+        "https://swagui.rohoswagger.com/r/feature-card.json",
         "https://swagui.rohoswagger.com/r/form.json",
         "https://swagui.rohoswagger.com/r/hover-card.json",
         "https://swagui.rohoswagger.com/r/input-group.json",
@@ -1196,6 +1197,22 @@
         }
       ],
       "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "feature-card",
+      "type": "registry:ui",
+      "title": "Feature Card",
+      "description": "A minimal media-first card with composable caption slots.",
+      "files": [
+        {
+          "path": "registry/ui/feature-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/card.json",
         "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },

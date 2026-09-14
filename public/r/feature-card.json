@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "feature-card",
+  "type": "registry:ui",
+  "title": "Feature Card",
+  "description": "A minimal media-first card with composable caption slots.",
+  "registryDependencies": [
+    "https://swagui.rohoswagger.com/r/card.json",
+    "https://swagui.rohoswagger.com/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/feature-card.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Card, CardContent } from \"@/registry/ui/card\"\n\nfunction FeatureCard({ className, ...props }: React.ComponentProps<typeof Card>) {\n  return (\n    <Card\n      data-slot=\"feature-card\"\n      className={cn(\n        \"gap-0 rounded-none border-0 bg-transparent p-0 shadow-none\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction FeatureCardMedia({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"feature-card-media\"\n      className={cn(\"relative aspect-[4/3] w-full overflow-hidden rounded-2xl\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction FeatureCardContent({ className, ...props }: React.ComponentProps<typeof CardContent>) {\n  return (\n    <CardContent\n      data-slot=\"feature-card-content\"\n      className={cn(\"px-0 pt-6\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction FeatureCardTitle({ className, ...props }: React.ComponentProps<\"h3\">) {\n  return (\n    <h3\n      data-slot=\"feature-card-title\"\n      className={cn(\n        \"font-[family-name:var(--font-display)] text-[1.375rem] leading-[1.15] tracking-[-0.025em]\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction FeatureCardDescription({ className, ...props }: React.ComponentProps<\"p\">) {\n  return (\n    <p\n      data-slot=\"feature-card-description\"\n      className={cn(\"text-muted-foreground text-[0.9375rem] leading-[1.6] text-pretty\", className)}\n      {...props}\n    />\n  )\n}\n\nexport {\n  FeatureCard,\n  FeatureCardMedia,\n  FeatureCardContent,\n  FeatureCardTitle,\n  FeatureCardDescription,\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}
