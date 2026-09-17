@@ -62,7 +62,9 @@
     "https://swagui.rohoswagger.com/r/textarea.json",
     "https://swagui.rohoswagger.com/r/toggle-group.json",
     "https://swagui.rohoswagger.com/r/toggle.json",
-    "https://swagui.rohoswagger.com/r/tooltip.json"
+    "https://swagui.rohoswagger.com/r/tooltip.json",
+    "https://swagui.rohoswagger.com/r/piano-keyboard.json",
+    "https://swagui.rohoswagger.com/r/piano-roll.json"
   ],
   "files": []
 }
