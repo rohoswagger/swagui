@@ -166,39 +166,26 @@ function PianoKeyboard({
       className={cn("w-full overflow-x-auto", className)}
     >
       <div
-        className="relative pb-1"
-        style={{ width: "100%", height: WHITE_KEY_HEIGHT, minWidth: Math.min(720, containerWidth) }}
+        className="relative isolate overflow-hidden rounded-b-md bg-foreground/[0.08] shadow-[inset_0_1px_0_rgb(255_255_255/0.22),inset_0_-1px_0_rgb(0_0_0/0.18)] dark:bg-background/35"
+        style={{
+          width: "100%",
+          height: WHITE_KEY_HEIGHT,
+          minWidth: Math.min(720, containerWidth),
+        }}
       >
-        {keys
-          .filter((key) => key.white)
-          .map((key) => (
-            <PianoKeyButton
-              key={key.midi}
-              keyLayout={key}
-              containerWidth={containerWidth}
-              active={activeSet.has(key.midi)}
-              disabled={disabled}
-              label={showLabels ? noteName(key.midi) : undefined}
-              hint={keyHints?.[key.midi]}
-              onPress={press}
-              onRelease={release}
-            />
-          ))}
-        {keys
-          .filter((key) => !key.white)
-          .map((key) => (
-            <PianoKeyButton
-              key={key.midi}
-              keyLayout={key}
-              containerWidth={containerWidth}
-              active={activeSet.has(key.midi)}
-              disabled={disabled}
-              label={undefined}
-              hint={keyHints?.[key.midi]}
-              onPress={press}
-              onRelease={release}
-            />
-          ))}
+        {keys.map((key) => (
+          <PianoKeyButton
+            key={key.midi}
+            keyLayout={key}
+            containerWidth={containerWidth}
+            active={activeSet.has(key.midi)}
+            disabled={disabled}
+            label={showLabels && key.white ? noteName(key.midi) : undefined}
+            hint={keyHints?.[key.midi]}
+            onPress={press}
+            onRelease={release}
+          />
+        ))}
       </div>
     </div>
   )
@@ -301,22 +288,24 @@ function PianoKeyButton({
         zIndex: white ? 0 : 10,
       }}
       className={cn(
-        "motion-reduce:transition-none motion-reduce:transform-none flex touch-none flex-col items-center justify-end gap-1 pb-2 text-[11px] font-medium select-none",
+        "motion-reduce:transition-none motion-reduce:transform-none flex touch-none flex-col items-center justify-end gap-1 text-[11px] font-medium select-none",
         "transition-[transform,filter,background-color,box-shadow] duration-(--duration-press) ease-(--ease-swagui)",
-        "focus-visible:z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "focus-visible:z-20 focus-visible:outline-none",
         "disabled:pointer-events-none disabled:opacity-40",
         white
           ? cn(
-              "rounded-b-lg border border-neutral-300/80 bg-gradient-to-b from-white to-neutral-100 text-neutral-600 shadow-[inset_0_-8px_10px_-8px_rgba(0,0,0,0.15)]",
-              "hover:brightness-95 active:translate-y-0.5",
+              "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neutral-800",
+              "rounded-b-[5px] border-x border-b border-t-0 border-neutral-300/90 bg-[linear-gradient(90deg,rgb(255_255_255)_0%,rgb(252_250_245)_12%,rgb(244_240_231)_88%,rgb(218_211_199)_100%)] pb-3 text-neutral-700 shadow-[inset_1px_0_0_rgb(255_255_255/0.9),inset_-1px_0_0_rgb(120_113_108/0.2),inset_0_-14px_18px_-16px_rgb(0_0_0/0.42),0_5px_8px_-7px_rgb(0_0_0/0.5)]",
+              "hover:brightness-[0.985] active:translate-y-0.5",
               active &&
-                "translate-y-0.5 border-brand-content/40 bg-gradient-to-b from-white to-brand/50 text-neutral-800 shadow-[inset_0_-8px_12px_-6px_var(--brand-content)]"
+                "translate-y-0.5 border-brand/45 bg-[linear-gradient(180deg,rgb(255_255_255)_0%,rgb(250_247_239)_58%,color-mix(in_oklab,var(--brand)_34%,rgb(242_236_225))_100%)] text-neutral-950 shadow-[inset_0_-18px_18px_-15px_var(--brand),inset_1px_0_0_rgb(255_255_255/0.9),0_3px_6px_-6px_rgb(0_0_0/0.55)]"
             )
           : cn(
-              "rounded-b-md border border-black/80 bg-gradient-to-b from-neutral-700 to-neutral-950 text-neutral-300 shadow-[0_3px_4px_rgba(0,0,0,0.4),inset_0_-6px_8px_-6px_rgba(0,0,0,0.6)]",
+              "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand",
+              "rounded-b-[4px] border border-neutral-950 bg-[linear-gradient(90deg,rgb(10_10_10)_0%,rgb(39_39_42)_16%,rgb(8_8_8)_84%,rgb(0_0_0)_100%)] pb-2 text-neutral-200 shadow-[0_5px_7px_-3px_rgb(0_0_0/0.72),inset_1px_0_0_rgb(255_255_255/0.12),inset_-1px_0_0_rgb(0_0_0/0.8),inset_0_-14px_13px_-13px_rgb(255_255_255/0.22)]",
               "hover:brightness-110 active:translate-y-0.5",
               active &&
-                "translate-y-0.5 border-brand-content/60 bg-gradient-to-b from-brand/40 to-brand-content/60 text-white shadow-[0_2px_4px_rgba(0,0,0,0.4),inset_0_-6px_10px_-6px_var(--brand-content)]"
+                "translate-y-0.5 border-brand/70 bg-[linear-gradient(180deg,color-mix(in_oklab,var(--brand)_46%,rgb(24_24_27))_0%,rgb(12_12_14)_100%)] text-white shadow-[0_3px_6px_-3px_rgb(0_0_0/0.72),inset_0_-12px_13px_-13px_var(--brand),inset_1px_0_0_rgb(255_255_255/0.16)]"
             )
       )}
       onPointerDown={handlePointerDown}
@@ -331,14 +320,14 @@ function PianoKeyButton({
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute top-2 text-[11px] font-semibold tracking-wide",
+            "pointer-events-none absolute top-2 text-[11px] font-semibold",
             white ? "text-neutral-600" : "text-neutral-300"
           )}
         >
           {hint}
         </span>
       ) : null}
-      {label ? <span aria-hidden>{label}</span> : null}
+      {label ? <span aria-hidden className="pointer-events-none tabular-nums">{label}</span> : null}
     </button>
   )
 }
