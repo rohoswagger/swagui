@@ -170,7 +170,7 @@ function PianoKeyboard({
         style={{
           width: "100%",
           height: WHITE_KEY_HEIGHT,
-          minWidth: Math.min(720, containerWidth),
+          minWidth: Math.max(Math.min(720, containerWidth), containerWidth * 0.8),
         }}
       >
         {keys.map((key) => (
