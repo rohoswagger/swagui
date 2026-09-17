@@ -658,7 +658,9 @@
         "https://swagui.rohoswagger.com/r/textarea.json",
         "https://swagui.rohoswagger.com/r/toggle-group.json",
         "https://swagui.rohoswagger.com/r/toggle.json",
-        "https://swagui.rohoswagger.com/r/tooltip.json"
+        "https://swagui.rohoswagger.com/r/tooltip.json",
+        "https://swagui.rohoswagger.com/r/piano-keyboard.json",
+        "https://swagui.rohoswagger.com/r/piano-roll.json"
       ]
     },
     {
@@ -1691,6 +1693,36 @@
       ],
       "dependencies": [
         "lucide-react"
+      ]
+    },
+    {
+      "name": "piano-keyboard",
+      "type": "registry:ui",
+      "title": "Piano Keyboard",
+      "description": "A polished, accurately-spaced piano keyboard spanning a configurable MIDI range. Controlled, audio-agnostic, pointer- and keyboard-playable.",
+      "files": [
+        {
+          "path": "registry/ui/piano-keyboard.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
+      ]
+    },
+    {
+      "name": "piano-roll",
+      "type": "registry:ui",
+      "title": "Piano Roll",
+      "description": "A horizontal, time-left-to-right note visualisation with playhead, measure grid and left/right-hand colouring.",
+      "files": [
+        {
+          "path": "registry/ui/piano-roll.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://swagui.rohoswagger.com/r/theme.json"
       ]
     },
     {
