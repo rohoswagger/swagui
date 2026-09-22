@@ -271,6 +271,15 @@
       "--foreground": "oklch(0.18 0.020 110)",
       "--muted-foreground": "oklch(0.498 0.028 110)"
     },
+    "[data-base=\"ink\"]": {
+      "--background": "oklch(1 0 0)",
+      "--card": "oklch(1 0 0)",
+      "--foreground": "oklch(0.28 0.018 275)",
+      "--muted-foreground": "oklch(0.49 0.014 275)",
+      "--border": "color-mix(in oklch, var(--foreground) 14%, transparent)",
+      "--input": "color-mix(in oklch, var(--foreground) 16%, transparent)",
+      "--sidebar-border": "color-mix(in oklch, var(--foreground) 14%, transparent)"
+    },
     ".dark[data-base=\"ash\"],\n.dark [data-base=\"ash\"]": {
       "--background": "oklch(0.148 0 0)",
       "--card": "oklch(0.2 0 0)",
@@ -306,6 +315,15 @@
       "--card": "oklch(0.2 0.017 110)",
       "--foreground": "oklch(0.958 0.009 110)",
       "--muted-foreground": "oklch(0.716 0.024 110)"
+    },
+    ".dark[data-base=\"ink\"],\n.dark [data-base=\"ink\"]": {
+      "--background": "oklch(0.218 0.004 265)",
+      "--card": "oklch(0.238 0.007 268)",
+      "--foreground": "oklch(0.985 0 0)",
+      "--muted-foreground": "oklch(0.78 0.013 276)",
+      "--border": "color-mix(in oklch, var(--foreground) 14%, transparent)",
+      "--input": "color-mix(in oklch, var(--foreground) 16%, transparent)",
+      "--sidebar-border": "color-mix(in oklch, var(--foreground) 14%, transparent)"
     },
     ":root,\n[data-surface=\"elevation\"]": {
       "--shadow-hairline": "0 0 0 0.5px color-mix(in oklch, var(--foreground) 12%, transparent)",

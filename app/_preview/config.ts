@@ -44,6 +44,16 @@ export const PAIRINGS: Pairing[] = [
     displayTracking: "-0.03em",
   },
   {
+    id: "inter",
+    label: "Inter",
+    note: "The interface workhorse. Neutral, open, and built to stay legible at 12–13px.",
+    display: "var(--font-inter), sans-serif",
+    body: "var(--font-inter), sans-serif",
+    mono: "var(--font-geist-mono), ui-monospace, monospace",
+    displayWeight: 500,
+    displayTracking: "-0.02em",
+  },
+  {
     id: "serif",
     label: "Instrument Italic",
     note: "Serif italic display over a neutral sans. Free, romantic, unmistakable.",
@@ -184,4 +194,42 @@ export const BASES = [
   { id: "sage", label: "Sage", note: "Desaturated green. Calm, unusual." },
   { id: "mauve", label: "Mauve", note: "Muted purple. Soft without being sweet." },
   { id: "olive", label: "Olive", note: "Yellow-green. Dry, editorial." },
+  { id: "ink", label: "Ink", note: "Soft cool ink on pure white. Quiet and dense; hairlines carry the structure." },
 ] as const
+
+/**
+ * Named combinations of the knobs above. A preset is only a starting point:
+ * every value it sets stays individually adjustable, and the palette URL and
+ * setup prompt carry the resulting values, not the preset's name.
+ */
+export type Preset = {
+  id: string
+  label: string
+  note: string
+  settings: {
+    font: string
+    base: string
+    surface: string
+    accent: string
+    density: "comfortable" | "compact"
+    squircle: boolean
+    grain: boolean
+  }
+}
+
+export const PRESETS: Preset[] = [
+  {
+    id: "studio",
+    label: "Studio",
+    note: "Inter on the Ink base with true radii and no grain. A quiet, dense surface for tools and agent chat.",
+    settings: {
+      font: "inter",
+      base: "ink",
+      surface: "elevation",
+      accent: "ocean",
+      density: "comfortable",
+      squircle: false,
+      grain: false,
+    },
+  },
+]
