@@ -240,7 +240,7 @@ function ApprovalOptions({ className, children, ...props }: React.ComponentProps
  * lands on identical geometry and is invisible.
  */
 const OPTION_BOX =
-  "flex h-9 w-full items-center gap-3 rounded-md border px-2 text-left text-[13px]"
+  "flex h-9 w-full items-center gap-3 rounded-md border px-2 text-left text-[13px] leading-[16px]"
 
 const optionVariants = cva(
   [
@@ -397,7 +397,7 @@ function ApprovalConfirm({
         disabled={!count || !!resolving}
         onClick={submit}
         className={cn(
-          "inline-flex h-6 items-center gap-1.5 rounded-md px-2 text-[13px] font-medium outline-none",
+          "inline-flex h-6 items-center gap-1.5 rounded-md px-2 text-[13px] leading-[16px] font-medium outline-none",
           // Not a brand fill. --brand-content is the darker step meant for text
           // on light surfaces, so on a brand background it measured 1.39:1 and
           // the label all but disappeared. The system's own primary pair is
@@ -418,7 +418,7 @@ function ApprovalConfirm({
           // Keyed on the count so it re-runs the pop on every pick.
           <span
             key={count}
-            className="inline-flex min-w-4 animate-in items-center justify-center rounded-full bg-primary-foreground/20 px-1 text-[11px] tabular-nums zoom-in-50 duration-(--duration-fast) ease-(--ease-spring)"
+            className="inline-flex min-w-4 animate-in items-center justify-center rounded-full bg-primary-foreground/20 px-1 text-[11px] leading-[14px] tabular-nums zoom-in-50 duration-(--duration-fast) ease-(--ease-spring)"
           >
             {count}
           </span>
@@ -453,7 +453,7 @@ function ApprovalDismiss({ className, ...props }: React.ComponentProps<"button">
       type="button"
       data-slot="approval-dismiss"
       className={cn(
-        "rounded-md text-[12px] text-muted-foreground outline-none",
+        "rounded-md text-[12px] leading-[15px] text-muted-foreground outline-none",
         "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-card",

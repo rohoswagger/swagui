@@ -177,7 +177,7 @@ function RequestReceipt({
       data-status={status}
       aria-live="polite"
       className={cn(
-        "flex min-h-6 items-center gap-1.5 rounded-md px-2 py-1 text-[12px] text-muted-foreground",
+        "flex min-h-6 items-center gap-1.5 rounded-md px-2 py-1 text-[12px] leading-[15px] text-muted-foreground",
         className
       )}
       {...props}

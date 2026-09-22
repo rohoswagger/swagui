@@ -21,7 +21,7 @@ function ChatHeaderIdentity({ className, ...props }: React.ComponentProps<"div">
     <div
       data-slot="chat-header-identity"
       className={cn(
-        "flex min-w-0 shrink-0 items-center gap-2 text-[13px] font-medium text-muted-foreground",
+        "flex min-w-0 shrink-0 items-center gap-2 text-[13px] leading-[16px] font-medium text-muted-foreground",
         className
       )}
       {...props}
@@ -36,7 +36,7 @@ function ChatHeaderHome({ className, ...props }: React.ComponentProps<"button">)
       type="button"
       data-slot="chat-header-home"
       className={cn(
-        "inline-flex min-w-0 shrink-0 items-center gap-2 rounded-md text-[13px] font-medium text-muted-foreground outline-none",
+        "inline-flex min-w-0 shrink-0 items-center gap-2 rounded-md text-[13px] leading-[16px] font-medium text-muted-foreground outline-none",
         "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
         className
@@ -63,7 +63,7 @@ function ChatHeaderTitle({ className, ...props }: React.ComponentProps<"h1">) {
   return (
     <h1
       data-slot="chat-header-title"
-      className={cn("min-w-0 flex-1 truncate text-[13px] font-medium", className)}
+      className={cn("min-w-0 flex-1 truncate text-[13px] leading-[16px] font-medium", className)}
       {...props}
     />
   )
@@ -103,7 +103,7 @@ function ChatHeaderAction({
         "rounded-md [&_svg]:size-3.5",
         isIcon
           ? "size-6 border-border bg-card text-muted-foreground shadow-xs hover:bg-accent hover:text-foreground"
-          : "h-6 gap-1.5 border-transparent bg-transparent px-2 text-[13px] text-muted-foreground shadow-none hover:bg-accent hover:text-foreground",
+          : "h-6 gap-1.5 border-transparent bg-transparent px-2 text-[13px] leading-[16px] text-muted-foreground shadow-none hover:bg-accent hover:text-foreground",
         className
       )}
       {...props}
@@ -124,7 +124,7 @@ function ChatHeaderBack({
       data-slot="chat-header-back"
       variant="ghost"
       size="sm"
-      className={cn("h-6 rounded-md px-2 text-[13px] [&_svg]:size-3.5", className)}
+      className={cn("h-6 rounded-md px-2 text-[13px] leading-[16px] [&_svg]:size-3.5", className)}
       {...props}
     >
       <BackIcon />
@@ -156,7 +156,7 @@ function ChatHeaderBreadcrumb({
       <span
         data-slot="chat-header-breadcrumb"
         aria-current="page"
-        className={cn("min-w-0 truncate text-[13px] font-medium text-foreground", className)}
+        className={cn("min-w-0 truncate text-[13px] leading-[16px] font-medium text-foreground", className)}
         {...props}
       >
         {children}
@@ -169,7 +169,7 @@ function ChatHeaderBreadcrumb({
       type="button"
       data-slot="chat-header-breadcrumb"
       className={cn(
-        "min-w-0 truncate rounded-md px-1 py-0.5 text-[13px] text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
+        "min-w-0 truncate rounded-md px-1 py-0.5 text-[13px] leading-[16px] text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
         className
       )}
       {...props}

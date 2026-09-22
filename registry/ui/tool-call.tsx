@@ -135,7 +135,7 @@ function ToolCalls({
           data-slot="tool-calls-trigger"
           disabled={failures > 0}
           className={cn(
-            "group/tools flex h-7 items-center gap-2 rounded-md text-left text-[13px] outline-none",
+            "group/tools flex h-7 items-center gap-2 rounded-md text-left text-[13px] leading-[16px] outline-none",
             "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
             "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             failures ? "cursor-default text-destructive" : "text-foreground"
@@ -154,7 +154,7 @@ function ToolCalls({
               )}
             />
           </span>
-          <span className="text-[12px]">
+          <span className="text-[12px] leading-[15px]">
             {label ?? `${items.length} ${items.length === 1 ? "tool call" : "tool calls"}`}
             {failures ? ` · ${failures} failed` : null}
           </span>
@@ -187,7 +187,7 @@ function ToolCalls({
 
 const rowVariants = cva(
   [
-    "group/call flex h-7 w-full min-w-0 items-center gap-2 rounded-md px-2 text-left text-[12px] outline-none",
+    "group/call flex h-7 w-full min-w-0 items-center gap-2 rounded-md px-2 text-left text-[12px] leading-[15px] outline-none",
     // A call is appended to a run as it happens, so it arrives rather than
     // simply existing.
     "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-soft)",
@@ -251,7 +251,7 @@ function ToolCall({
             // Arguments read as plain text, not an object with a surface of
             // its own — the verb before it already carries "this changed
             // something", so the target does not need to repeat it.
-            "min-w-0 truncate text-[12px]",
+            "min-w-0 truncate text-[12px] leading-[15px]",
             failed ? "text-destructive" : "text-muted-foreground",
             status === "running" && "shimmer"
           )}
@@ -259,7 +259,7 @@ function ToolCall({
           {target}
         </span>
       ) : null}
-      <span className="mono ml-auto shrink-0 pl-2 text-[11px] tabular-nums text-muted-foreground/70">
+      <span className="mono ml-auto shrink-0 pl-2 text-[11px] leading-[14px] tabular-nums text-muted-foreground/70">
         {meta}
       </span>
       {/*
@@ -365,7 +365,7 @@ function ToolCallDiff({
   return (
     <span
       data-slot="tool-call-diff"
-      className={cn("mono shrink-0 text-[12px] tabular-nums", className)}
+      className={cn("mono shrink-0 text-[12px] leading-[15px] tabular-nums", className)}
       {...props}
     >
       {added ? <span className="text-success">+{added}</span> : null}
@@ -401,7 +401,7 @@ function ToolCallImage({
         {...props}
       />
       {caption ? (
-        <figcaption className="mono pt-1 text-[11px] text-muted-foreground">
+        <figcaption className="mono pt-1 text-[11px] leading-[14px] text-muted-foreground">
           {caption}
         </figcaption>
       ) : null}
@@ -476,7 +476,7 @@ function ToolCallFile({
       type="button"
       data-slot="tool-call-file"
       className={cn(
-        "mono inline-flex shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-[12px] outline-none",
+        "mono inline-flex shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-[12px] leading-[15px] outline-none",
         "transition-[border-color,background-color] duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:border-muted-foreground/40 hover:bg-accent",
         "focus-visible:ring-2 focus-visible:ring-ring/60",

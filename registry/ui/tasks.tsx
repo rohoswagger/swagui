@@ -57,7 +57,7 @@ function Tasks({
           disabled={failed}
           aria-disabled={failed || undefined}
           className={cn(
-            "group/tasks flex h-7 w-full items-center gap-2 rounded-md text-left text-[13px] outline-none",
+            "group/tasks flex h-7 w-full items-center gap-2 rounded-md text-left text-[13px] leading-[16px] outline-none",
             "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
             "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             failed ? "cursor-default" : "hover:text-foreground"
@@ -81,7 +81,7 @@ function Tasks({
             {title}
           </span>
           <span className="sr-only">{STATUS_LABEL[status]}.</span>
-          <span className="mono w-10 shrink-0 text-right text-[11px] tabular-nums text-muted-foreground/70">
+          <span className="mono w-10 shrink-0 text-right text-[11px] leading-[14px] tabular-nums text-muted-foreground/70">
             {done}/{count}
           </span>
         </CollapsiblePrimitive.Trigger>
@@ -134,7 +134,7 @@ function TaskHeader({
   status: TaskStatus
 }) {
   return (
-    <div className="flex h-7 min-w-0 items-center gap-2 text-[13px]">
+    <div className="flex h-7 min-w-0 items-center gap-2 text-[13px] leading-[16px]">
       <StatusMark status={status} />
       <span
         className={cn(
@@ -150,7 +150,7 @@ function TaskHeader({
       </span>
       <span className="sr-only">{STATUS_LABEL[status]}.</span>
       {meta ? (
-        <span className="mono shrink-0 pl-2 text-right text-[11px] tabular-nums text-muted-foreground/70">
+        <span className="mono shrink-0 pl-2 text-right text-[11px] leading-[14px] tabular-nums text-muted-foreground/70">
           {meta}
         </span>
       ) : null}

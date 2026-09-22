@@ -97,7 +97,7 @@ function ReasoningTrigger({
     <CollapsiblePrimitive.Trigger
       data-slot="reasoning-trigger"
       className={cn(
-        "group/reasoning flex h-7 items-center gap-2 rounded-md text-left text-[13px] outline-none",
+        "group/reasoning flex h-7 items-center gap-2 rounded-md text-left text-[13px] leading-[16px] outline-none",
         "text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
@@ -129,7 +129,7 @@ function ReasoningTrigger({
         )}
       </span>
 
-      <span className={cn("min-w-0 truncate text-[12px]", streaming && "shimmer")}>
+      <span className={cn("min-w-0 truncate text-[12px] leading-[15px]", streaming && "shimmer")}>
         {children ??
           (streaming ? "Thinking" : `Thought for ${formatDuration(elapsed)}`)}
       </span>
@@ -188,7 +188,7 @@ function ReasoningRow({
     <div
       data-slot="reasoning-row"
       className={cn(
-        "grid min-w-0 grid-cols-[4rem_minmax(0,1fr)] items-baseline gap-2 text-[13px]",
+        "grid min-w-0 grid-cols-[4rem_minmax(0,1fr)] items-baseline gap-2 text-[13px] leading-[16px]",
         "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-swagui)",
         className
       )}
@@ -199,7 +199,7 @@ function ReasoningRow({
       ) : null}
       <span
         className={cn(
-          "min-w-0 truncate text-[12px] text-muted-foreground",
+          "min-w-0 truncate text-[12px] leading-[15px] text-muted-foreground",
           !label && "col-span-2"
         )}
       >

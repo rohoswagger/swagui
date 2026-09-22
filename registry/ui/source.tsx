@@ -109,7 +109,7 @@ function Source({
   return (
     <div
       data-slot="source"
-      className={cn("flex min-w-0 items-center gap-2 text-[12px]", className)}
+      className={cn("flex min-w-0 items-center gap-2 text-[12px] leading-[15px]", className)}
       {...props}
     >
       {icon ?? <SourceIcon name={name} host={host} iconSrc={iconSrc} />}

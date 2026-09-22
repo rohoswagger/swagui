@@ -538,7 +538,7 @@ function SelectionActionsInput({
         // Sized to the instruction it invites, not to a round number. At w-44
         // the placeholder ended a third of the way across the field and the
         // gap before the first action read as a hole in the bar.
-        "h-6 w-32 shrink-0 bg-transparent px-2 text-[13px] outline-none",
+        "h-6 w-32 shrink-0 bg-transparent px-2 text-[13px] leading-[16px] outline-none",
         "text-foreground placeholder:text-muted-foreground/70",
         className
       )}
@@ -586,7 +586,7 @@ function SelectionActionsAction({
       onMouseDown={(e) => e.preventDefault()}
       onClick={() => run(value)}
       className={cn(
-        "inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md px-2 text-[13px] outline-none",
+        "inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md px-2 text-[13px] leading-[16px] outline-none",
         "text-muted-foreground",
         "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-swagui)",
         "hover:bg-accent hover:text-foreground active:scale-[0.97]",

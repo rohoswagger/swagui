@@ -181,7 +181,7 @@ function ResponseSources({
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         className={cn(
-          "group/sources flex items-center gap-2 rounded-md text-[12px] outline-none",
+          "group/sources flex items-center gap-2 rounded-md text-[12px] leading-[15px] outline-none",
           "text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
           "hover:text-foreground",
           "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -277,7 +277,7 @@ function ResponseUsage({
     <div
       data-slot="response-usage"
       className={cn(
-        "flex items-center gap-1.5 text-[11px] text-muted-foreground/70",
+        "flex items-center gap-1.5 text-[11px] leading-[14px] text-muted-foreground/70",
         className
       )}
       {...props}
@@ -371,7 +371,7 @@ function ResponseFollowUp({
       data-slot="response-follow-up"
       className={cn(
         "group/followup inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5",
-        "text-left text-[13px] text-muted-foreground outline-none",
+        "text-left text-[13px] leading-[16px] text-muted-foreground outline-none",
         "transition-[color,background-color,border-color] duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:border-border hover:bg-accent hover:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",

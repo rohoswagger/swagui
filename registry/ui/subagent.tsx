@@ -73,18 +73,18 @@ function Subagent({
       {status === "running" ? <SubagentTrail /> : null}
       <SubagentMark color={AGENT_COLORS[colorIndex]} colorIndex={colorIndex} status={status} />
       <span className="flex min-w-0 flex-1 items-baseline gap-1.5">
-        <span className="max-w-[45%] shrink-0 truncate text-[13px] font-medium text-foreground">
+        <span className="max-w-[45%] shrink-0 truncate text-[13px] leading-[16px] font-medium text-foreground">
           {name}
         </span>
         <span className="sr-only">{STATUS_LABEL[status]}.</span>
         {description ? (
           <>
             <span aria-hidden className="shrink-0 text-[10px] text-muted-foreground/45">·</span>
-            <span className="min-w-0 truncate text-[12px] text-muted-foreground">{description}</span>
+            <span className="min-w-0 truncate text-[12px] leading-[15px] text-muted-foreground">{description}</span>
           </>
         ) : null}
       </span>
-      <span className="mono shrink-0 text-[11px] tabular-nums text-muted-foreground/70">
+      <span className="mono shrink-0 text-[11px] leading-[14px] tabular-nums text-muted-foreground/70">
         {formatDuration(elapsed)}
       </span>
       <SubagentStateMark status={status} navigable={navigable} />
