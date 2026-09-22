@@ -145,7 +145,7 @@ function InputRequestField({
     >
       <span className="text-[12px] font-medium text-foreground">{label}</span>
       {children}
-      {hint ? <span className="text-[11.5px] text-muted-foreground">{hint}</span> : null}
+      {hint ? <span className="text-[11px] text-muted-foreground">{hint}</span> : null}
     </label>
   )
 }
@@ -181,7 +181,7 @@ function InputRequestInput({
       <span
         id={unitId}
         data-slot="input-request-unit"
-        className="pointer-events-none absolute top-1/2 right-9 -translate-y-1/2 text-[11.5px] text-muted-foreground"
+        className="pointer-events-none absolute top-1/2 right-9 -translate-y-1/2 text-[11px] text-muted-foreground"
       >
         {unit}
       </span>
@@ -224,9 +224,9 @@ function InputRequestChoice({
     <label
       data-slot="input-request-choice"
       className={cn(
-        "group/choice relative flex min-h-9 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-left outline-none",
+        "group/choice relative flex h-9 cursor-pointer items-center gap-3 rounded-md border border-border bg-card px-2 text-left outline-none",
         "transition-[background-color,border-color] duration-(--duration-fast) ease-(--ease-swagui)",
-        "hover:bg-accent has-[:checked]:border-brand/55 has-[:checked]:bg-brand/5",
+        "hover:border-foreground/20 hover:bg-accent has-[:checked]:border-foreground/40 has-[:checked]:bg-accent",
         "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60 has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-card",
         className
       )}
@@ -252,7 +252,7 @@ function InputRequestChoice({
         )}
       </span>
       <span className="min-w-0 flex-1 text-[13px] font-medium text-foreground">{label}</span>
-      {hint ? <span className="truncate text-[11.5px] text-muted-foreground">{hint}</span> : null}
+      {hint ? <span className="truncate text-[11px] text-muted-foreground">{hint}</span> : null}
     </label>
   )
 }
@@ -279,11 +279,11 @@ function InputRequestFile({
         }}
         {...props}
       />
-      <span className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 text-[12.5px] font-medium shadow-(--shadow-hairline) hover:bg-accent">
+      <span className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 text-[13px] font-medium shadow-(--shadow-hairline) hover:bg-accent">
         <PaperclipIcon />
         {label}
       </span>
-      <span className="min-w-0 truncate text-[11.5px] text-muted-foreground">
+      <span className="min-w-0 truncate text-[11px] text-muted-foreground">
         {files.length ? files.join(", ") : "No file selected"}
       </span>
     </label>

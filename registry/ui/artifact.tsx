@@ -61,7 +61,7 @@ function Artifact({
         data-kind={kind}
         data-status={status}
         className={cn(
-          "group/artifact relative grid w-full max-w-[23rem] self-start grid-cols-[5.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-border bg-card text-card-foreground",
+          "group/artifact relative grid w-full max-w-[23rem] self-start grid-cols-[5.25rem_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-card text-card-foreground",
           "transition-[border-color,background-color,transform] duration-(--duration-fast) ease-(--ease-swagui)",
           unavailable
             ? "border-destructive/25"

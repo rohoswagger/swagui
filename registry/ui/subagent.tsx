@@ -71,7 +71,7 @@ function Subagent({
   const content = (
     <>
       {status === "running" ? <SubagentTrail /> : null}
-      <SubagentMark color={AGENT_COLORS[colorIndex]} colorIndex={colorIndex} />
+      <SubagentMark color={AGENT_COLORS[colorIndex]} colorIndex={colorIndex} status={status} />
       <span className="flex min-w-0 flex-1 items-baseline gap-1.5">
         <span className="max-w-[45%] shrink-0 truncate text-[13px] font-medium text-foreground">
           {name}
@@ -84,7 +84,7 @@ function Subagent({
           </>
         ) : null}
       </span>
-      <span className="shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground/70">
+      <span className="mono shrink-0 text-[11px] tabular-nums text-muted-foreground/70">
         {formatDuration(elapsed)}
       </span>
       <SubagentStateMark status={status} navigable={navigable} />
@@ -92,9 +92,9 @@ function Subagent({
   )
 
   const classes = cn(
-    "relative flex min-h-8 w-full min-w-0 items-center gap-2 rounded-md border border-transparent bg-brand/7 px-1.5 py-1 text-left",
+    "relative flex h-7 w-full min-w-0 items-center gap-2 rounded-md border border-transparent px-1.5 text-left",
     "transition-[background-color,transform] duration-(--duration-fast) ease-(--ease-swagui)",
-    navigable && "cursor-pointer hover:bg-brand/11 active:scale-[0.997] focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none",
+    navigable && "cursor-pointer hover:bg-accent active:scale-[0.997] focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none",
     className
   )
 
@@ -128,7 +128,15 @@ function Subagent({
   )
 }
 
-function SubagentMark({ color, colorIndex }: { color: string; colorIndex: number }) {
+function SubagentMark({
+  color,
+  colorIndex,
+  status,
+}: {
+  color: string
+  colorIndex: number
+  status: SubagentStatus
+}) {
   return (
     <span
       aria-hidden
@@ -137,6 +145,9 @@ function SubagentMark({ color, colorIndex }: { color: string; colorIndex: number
       className={cn("relative flex size-4 shrink-0 items-center justify-center", color)}
     >
       <AgentGlyph />
+      {status === "running" ? (
+        <span className="absolute -right-0.5 -bottom-0.5 size-1.5 animate-pulse rounded-full bg-brand motion-reduce:animate-none" />
+      ) : null}
     </span>
   )
 }
@@ -168,6 +179,12 @@ function SubagentStateMark({ status, navigable }: { status: SubagentStatus; navi
   )
 }
 
+/**
+ * The running affordance: a 1px brand-colour line tracing the row. Stays a
+ * `rect` (not a straight `line`) inset by 1px on every side so the stroke
+ * never clips against the row's own edge — see the "running subagent trails
+ * stay inset without clipping the row" test.
+ */
 function SubagentTrail() {
   return (
     <svg

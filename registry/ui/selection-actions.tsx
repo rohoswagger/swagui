@@ -489,8 +489,8 @@ function SelectionActionsToolbar({
         // reads as coming out of the selection rather than arriving at it.
         style={{ transformOrigin: flipped ? "center top" : "center bottom" }}
         className={cn(
-          "emerge no-scrollbar flex items-center gap-1 overflow-x-auto rounded-full p-1",
-          "border border-border bg-popover shadow-(--shadow-overlay)",
+          "emerge no-scrollbar flex items-center gap-1 overflow-x-auto rounded-lg p-1",
+          "border border-border bg-card shadow-(--shadow-overlay)",
           className
         )}
         {...props}
@@ -538,8 +538,8 @@ function SelectionActionsInput({
         // Sized to the instruction it invites, not to a round number. At w-44
         // the placeholder ended a third of the way across the field and the
         // gap before the first action read as a hole in the bar.
-        "w-32 shrink-0 bg-transparent px-2.5 text-[13px] outline-none",
-        "text-foreground placeholder:text-muted-foreground",
+        "h-6 w-32 shrink-0 bg-transparent px-2 text-[13px] outline-none",
+        "text-foreground placeholder:text-muted-foreground/70",
         className
       )}
       {...props}
@@ -586,10 +586,10 @@ function SelectionActionsAction({
       onMouseDown={(e) => e.preventDefault()}
       onClick={() => run(value)}
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[13px] outline-none",
+        "inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md px-2 text-[13px] outline-none",
         "text-muted-foreground",
-        "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-spring)",
-        "hover:bg-accent hover:text-foreground active:scale-95",
+        "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-swagui)",
+        "hover:bg-accent hover:text-foreground active:scale-[0.97]",
         "focus-visible:ring-2 focus-visible:ring-ring/60",
         "[&_svg]:size-3.5 [&_svg]:shrink-0",
         className
@@ -631,12 +631,12 @@ function SelectionActionsMore({
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => setExpanded(!expanded)}
         className={cn(
-          "inline-flex size-7 shrink-0 items-center justify-center rounded-full outline-none",
+          "inline-flex size-6 shrink-0 items-center justify-center rounded-md outline-none",
           "text-muted-foreground",
-          "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-spring)",
-          "hover:bg-accent hover:text-foreground active:scale-90",
+          "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-swagui)",
+          "hover:bg-accent hover:text-foreground active:scale-[0.97]",
           "focus-visible:ring-2 focus-visible:ring-ring/60",
-          "[&_svg]:size-4 [&_svg]:shrink-0",
+          "[&_svg]:size-3.5 [&_svg]:shrink-0",
           className
         )}
         {...props}

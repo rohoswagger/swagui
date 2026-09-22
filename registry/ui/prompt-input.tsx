@@ -285,7 +285,7 @@ function PromptInput({
           "relative w-full",
           // Focus is drawn on the wrapper rather than the field, so the whole
           // composer lights up as one control instead of a box inside a box.
-          "border border-input bg-card shadow-(--shadow-hairline)",
+          "border border-border bg-card shadow-(--shadow-raised)",
           "transition-[border-color,box-shadow] duration-(--duration-fast) ease-(--ease-swagui)",
           "focus-within:border-brand/50 focus-within:ring-2 focus-within:ring-ring/40",
           // One radius class rather than two competing ones. The squircle
@@ -325,7 +325,7 @@ function PromptInputEditor({
       {empty ? (
         <p
           aria-hidden
-          className="pointer-events-none absolute inset-0 px-4 pt-3 text-[14px] leading-normal text-muted-foreground"
+          className="pointer-events-none absolute inset-0 px-3 pt-3 text-[13px] leading-normal text-muted-foreground/70"
         >
           {placeholder}
         </p>
@@ -362,7 +362,7 @@ function PromptInputEditor({
         }}
         style={{ maxHeight: `calc(${maxRows} * 1.5em)` }}
         className={cn(
-          "block w-full overflow-y-auto px-4 pt-3 text-[14px] leading-normal outline-none",
+          "block w-full overflow-y-auto px-3 pt-3 pb-3 text-[13px] leading-normal outline-none",
           "text-foreground caret-foreground selection:bg-brand/25",
           "break-words whitespace-pre-wrap",
           status === "submitted" && "opacity-50",
@@ -379,7 +379,7 @@ function PromptInputToolbar({ className, ...props }: React.ComponentProps<"div">
   return (
     <div
       data-slot="prompt-input-toolbar"
-      className={cn("flex items-center gap-1 px-2 pt-1 pb-2", className)}
+      className={cn("flex items-center gap-1 px-3 pt-0 pb-3", className)}
       {...props}
     />
   )
@@ -423,13 +423,13 @@ function PromptInputButton({
         editorRef.current?.focus()
       }}
       className={cn(
-        "inline-flex size-8 items-center justify-center rounded-lg outline-none",
+        "inline-flex size-6 items-center justify-center rounded-md outline-none",
         "text-muted-foreground",
-        "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-spring)",
-        "hover:bg-accent hover:text-foreground active:scale-90",
+        "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-swagui)",
+        "hover:bg-accent hover:text-foreground active:scale-[0.97]",
         "focus-visible:ring-2 focus-visible:ring-ring/60",
         "disabled:pointer-events-none disabled:opacity-40",
-        "[&_svg]:size-4 [&_svg]:shrink-0",
+        "[&_svg]:size-3.5 [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -462,14 +462,14 @@ function PromptInputSubmit({
       onClick={busy ? stop : undefined}
       disabled={!busy && empty}
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-lg outline-none",
+        "inline-flex size-6 shrink-0 items-center justify-center rounded-md outline-none",
         "bg-primary text-primary-foreground shadow-(--shadow-raised)",
-        "transition-[filter,transform,background-color,color,opacity] duration-(--duration-press) ease-(--ease-spring)",
-        "hover:brightness-125 active:scale-90",
+        "transition-[filter,transform,background-color,color,opacity] duration-(--duration-press) ease-(--ease-swagui)",
+        "hover:brightness-125 active:scale-[0.97]",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-card",
         // Nothing to send reads as waiting, not as broken.
         "disabled:pointer-events-none disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none",
-        "[&_svg]:size-4 [&_svg]:shrink-0",
+        "[&_svg]:size-3.5 [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -522,7 +522,7 @@ function PromptInputModelSelect({
     return (
       <label
         className={cn(
-          "relative inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2 py-1.5",
+          "relative inline-flex h-6 shrink-0 cursor-pointer items-center gap-1 rounded-md pr-1.5 pl-2",
           "text-[13px] text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
           "hover:bg-accent hover:text-foreground focus-within:ring-2 focus-within:ring-ring/60",
           className
@@ -556,7 +556,7 @@ function PromptInputModelSelect({
           data-slot="prompt-input-model"
           aria-label={`Model: ${active?.label ?? value}; reasoning: ${activeEffort?.label ?? reasoningEffort}`}
           className={cn(
-            "inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1.5 text-[13px] text-muted-foreground outline-none",
+            "inline-flex h-6 shrink-0 items-center gap-1 rounded-md pr-1.5 pl-2 text-[13px] text-muted-foreground outline-none",
             "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
             "hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
             className
@@ -678,13 +678,13 @@ function PromptInputContextIndicator({
             aria-valuetext={summary}
             aria-label={`${label}: ${summary}`}
             className={cn(
-              "inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground outline-none",
+              "inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none",
               "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
               "hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
               className
             )}
           >
-            <svg viewBox="0 0 20 20" className="size-[18px] -rotate-90" aria-hidden>
+            <svg viewBox="0 0 20 20" className="size-4 -rotate-90" aria-hidden>
               <circle cx="10" cy="10" r="7" pathLength="100" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-20" />
               <circle
                 cx="10"

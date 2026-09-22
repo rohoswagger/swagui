@@ -171,7 +171,7 @@ function ConversationSidebarToggle({
     <div
       data-slot="conversation-sidebar-toggle"
       className={cn(
-        "relative flex h-8 w-full -translate-y-[2.5px] items-center",
+        "relative flex h-8 w-full items-center",
         className
       )}
     >
@@ -197,7 +197,7 @@ function ConversationSidebarToggle({
         data-slot="conversation-sidebar-logo"
         className="pointer-events-none absolute left-[5.5px] flex size-5 items-center justify-center"
       >
-        {showHoverIcon ? <span className="[&>svg]:size-4">{hoverIcon}</span> : icon}
+        {showHoverIcon ? <span className="[&>svg]:size-3.5">{hoverIcon}</span> : icon}
       </span>
       {open ? (
         <span className="min-w-0 truncate pr-10 pl-[34.5px] text-[13px] font-medium">
@@ -214,7 +214,7 @@ function ConversationSidebarToggle({
             setFocused(false)
             onClose?.()
           }}
-          className="absolute right-0 flex size-8 items-center justify-center rounded-md text-sidebar-foreground/65 outline-none transition-colors duration-(--duration-fast) ease-(--ease-swagui) hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring/60 [&>svg]:size-4"
+          className="absolute right-0 flex size-8 items-center justify-center rounded-md text-sidebar-foreground/65 outline-none transition-colors duration-(--duration-fast) ease-(--ease-swagui) hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring/60 [&>svg]:size-3.5"
         >
           {closeIcon}
         </button>
@@ -245,14 +245,14 @@ function ConversationSidebarAction({
       data-slot="conversation-sidebar-action"
       aria-label={typeof children === "string" ? children : undefined}
       className={cn(
-        "relative flex h-8 w-full items-center rounded-md pr-2 text-left text-[13px] text-sidebar-foreground/72 outline-none",
+        "relative flex h-7 w-full items-center rounded-md pr-2 text-left text-[13px] text-sidebar-foreground/72 outline-none",
         "transition-colors duration-(--duration-fast) ease-(--ease-swagui) hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring/60",
         "group-data-[state=closed]/conversation-sidebar:mx-auto group-data-[state=closed]/conversation-sidebar:w-[31px] group-data-[state=closed]/conversation-sidebar:pr-0",
         className
       )}
       {...props}
     >
-      <span className="absolute left-[5.5px] flex size-5 items-center justify-center [&>svg]:size-4">{icon}</span>
+      <span className="absolute left-[5.5px] flex size-5 items-center justify-center [&>svg]:size-3.5">{icon}</span>
       <span className="min-w-0 truncate pl-[33.5px] group-data-[state=closed]/conversation-sidebar:hidden">
         {children}
       </span>
@@ -288,7 +288,7 @@ function ConversationSidebarGroupLabel({ className, ...props }: React.ComponentP
   return (
     <h2
       data-slot="conversation-sidebar-group-label"
-      className={cn("px-2 pb-1.5 text-[11px] font-medium text-sidebar-foreground/58", className)}
+      className={cn("px-2 pb-1.5 text-[12px] font-medium text-sidebar-foreground/70", className)}
       {...props}
     />
   )
@@ -351,7 +351,7 @@ function ConversationSidebarItem({
         {...props}
       >
         <span className="w-full truncate text-[13px] font-medium">{title}</span>
-        <span className="flex h-4 w-full items-center gap-1.5 text-[10px] text-sidebar-foreground/60">
+        <span className="flex h-4 w-full items-center gap-1.5 text-[11px] text-sidebar-foreground/60">
           <ConversationSidebarStateMark status={status} workingMark={workingMark} />
           <span>{STATUS_LABEL[status]}</span>
           {duration > 0 || status === "working" ? (
@@ -371,7 +371,7 @@ function ConversationSidebarFooter({ className, ...props }: React.ComponentProps
     <div
       data-slot="conversation-sidebar-footer"
       className={cn(
-        "mt-auto min-w-0 border-t border-sidebar-border pt-2 opacity-100 transition-opacity duration-(--duration-fast)",
+        "mt-auto min-w-0 border-t border-sidebar-border/60 pt-2 opacity-100 transition-opacity duration-(--duration-fast)",
         "group-data-[state=closed]/conversation-sidebar:invisible group-data-[state=closed]/conversation-sidebar:pointer-events-none group-data-[state=closed]/conversation-sidebar:opacity-0",
         className
       )}

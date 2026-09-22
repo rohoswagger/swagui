@@ -221,7 +221,7 @@ describe("agent component contracts", () => {
     expect(closed.match(/group-data-\[state=closed\]\/conversation-sidebar:invisible/g)).toHaveLength(2)
     expect(open.match(/left-\[5\.5px\]/g)).toHaveLength(2)
     expect(closed.match(/left-\[5\.5px\]/g)).toHaveLength(2)
-    expect(header).toContain("h-11")
+    expect(header).toContain("h-12")
   })
 
   test("site footer ends with an overridable decorative wordmark", () => {

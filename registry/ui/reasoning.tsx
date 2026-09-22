@@ -97,7 +97,7 @@ function ReasoningTrigger({
     <CollapsiblePrimitive.Trigger
       data-slot="reasoning-trigger"
       className={cn(
-        "group/reasoning flex items-center gap-2 rounded-md py-1 text-left text-sm outline-none",
+        "group/reasoning flex h-7 items-center gap-2 rounded-md text-left text-[13px] outline-none",
         "text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
@@ -114,8 +114,9 @@ function ReasoningTrigger({
         )}
       />
       <span
+        aria-hidden
         className={cn(
-          "flex size-4 shrink-0 items-center justify-center",
+          "grid size-4 shrink-0 place-items-center rounded-sm border border-border bg-card shadow-xs",
           // The mark is the only thing that moves once the label settles, and
           // it turns rather than blinks — a bloom opening, not a spinner.
           streaming ? "text-muted-foreground" : "text-muted-foreground/70"
@@ -123,12 +124,12 @@ function ReasoningTrigger({
       >
         {icon ?? (
           <TraceMark
-            className={cn("size-4", streaming && "animate-[spin_9s_linear_infinite]")}
+            className={cn("size-2.5", streaming && "animate-[spin_9s_linear_infinite]")}
           />
         )}
       </span>
 
-      <span className={cn("min-w-0 truncate", streaming && "shimmer")}>
+      <span className={cn("min-w-0 truncate text-[12px]", streaming && "shimmer")}>
         {children ??
           (streaming ? "Thinking" : `Thought for ${formatDuration(elapsed)}`)}
       </span>
@@ -162,7 +163,7 @@ function ReasoningText({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="reasoning-text"
       className={cn(
-        "text-sm leading-normal text-muted-foreground",
+        "text-[13px] leading-[22px] text-muted-foreground",
         // Each paragraph fades up as it arrives rather than snapping in.
         "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-swagui)",
         className
@@ -187,7 +188,7 @@ function ReasoningRow({
     <div
       data-slot="reasoning-row"
       className={cn(
-        "grid min-w-0 grid-cols-[4rem_minmax(0,1fr)] items-baseline gap-2 text-sm",
+        "grid min-w-0 grid-cols-[4rem_minmax(0,1fr)] items-baseline gap-2 text-[13px]",
         "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-swagui)",
         className
       )}
@@ -198,7 +199,7 @@ function ReasoningRow({
       ) : null}
       <span
         className={cn(
-          "mono min-w-0 truncate text-[13px] text-muted-foreground",
+          "min-w-0 truncate text-[12px] text-muted-foreground",
           !label && "col-span-2"
         )}
       >
