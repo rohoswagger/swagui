@@ -135,21 +135,26 @@ function ToolCalls({
           data-slot="tool-calls-trigger"
           disabled={failures > 0}
           className={cn(
-            "group/tools flex items-center gap-2 rounded-md py-1 text-left text-sm outline-none",
+            "group/tools flex h-7 items-center gap-2 rounded-md text-left text-[13px] leading-[16px] outline-none",
             "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
             "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-            failures ? "cursor-default text-destructive" : "text-muted-foreground hover:text-foreground"
+            failures ? "cursor-default text-destructive" : "text-foreground"
           )}
         >
-          <Chevron
-            className={cn(
-              "size-3.5 shrink-0 text-muted-foreground/50",
-              "transition-transform duration-(--duration-base) ease-(--ease-swagui)",
-              "group-data-[state=open]/tools:rotate-180",
-              failures && "opacity-0"
-            )}
-          />
-          <span>
+          <span
+            aria-hidden
+            className="grid size-4 shrink-0 place-items-center rounded-sm border border-border bg-card text-muted-foreground shadow-xs"
+          >
+            <Chevron
+              className={cn(
+                "size-3 shrink-0",
+                "transition-transform duration-(--duration-base) ease-(--ease-swagui)",
+                "group-data-[state=open]/tools:rotate-180",
+                failures && "opacity-0"
+              )}
+            />
+          </span>
+          <span className="text-[12px] leading-[15px]">
             {label ?? `${items.length} ${items.length === 1 ? "tool call" : "tool calls"}`}
             {failures ? ` · ${failures} failed` : null}
           </span>
@@ -158,7 +163,7 @@ function ToolCalls({
           data-slot="tool-calls-content"
           className="overflow-hidden data-[state=open]:animate-reveal data-[state=closed]:animate-conceal"
         >
-          <div role="list" className="flex flex-col gap-1 pt-1 pb-0.5 pl-6">
+          <div role="list" className="relative flex flex-col gap-0 border-l border-border pt-0.5 pb-0.5 pl-[15px]">
             {children}
           </div>
         </CollapsiblePrimitive.Content>
@@ -182,7 +187,7 @@ function ToolCalls({
 
 const rowVariants = cva(
   [
-    "group/call flex w-full items-center gap-2 rounded-md px-1 py-1 text-left text-sm outline-none",
+    "group/call flex h-7 w-full min-w-0 items-center gap-2 rounded-md px-2 text-left text-[12px] leading-[15px] outline-none",
     // A call is appended to a run as it happens, so it arrives rather than
     // simply existing.
     "animate-in fade-in slide-in-from-bottom-1 duration-(--duration-base) ease-(--ease-soft)",
@@ -243,24 +248,18 @@ function ToolCall({
         <span
           data-slot="tool-call-target"
           className={cn(
-            // rounded-sm, not `rounded`. The bare utility is a hardcoded 4px
-            // that sits off the ladder and ignores --squircle-factor, so it
-            // stayed square while every other corner in the system moved.
-            "mono min-w-0 truncate rounded-sm px-2 py-[3px] text-[12.5px]",
-            // The surface is the tell. An observation reads as plain text; a
-            // change reads as an object that now exists.
-            failed
-              ? "bg-destructive/10 text-destructive"
-              : OBSERVES[kind]
-                ? "text-muted-foreground"
-                : "bg-muted text-foreground",
+            // Arguments read as plain text, not an object with a surface of
+            // its own — the verb before it already carries "this changed
+            // something", so the target does not need to repeat it.
+            "min-w-0 truncate text-[12px] leading-[15px]",
+            failed ? "text-destructive" : "text-muted-foreground",
             status === "running" && "shimmer"
           )}
         >
           {target}
         </span>
       ) : null}
-      <span className="mono ml-auto shrink-0 pl-2 text-[11px] text-muted-foreground/70">
+      <span className="mono ml-auto shrink-0 pl-2 text-[11px] leading-[14px] tabular-nums text-muted-foreground/70">
         {meta}
       </span>
       {/*
@@ -301,7 +300,7 @@ function ToolCall({
           >
             <CollapsiblePrimitive.Trigger
               disabled={failed}
-              className={cn(rowVariants({ tone }), !failed && "hover:bg-accent/50")}
+              className={cn(rowVariants({ tone }), !failed && "hover:bg-accent")}
             >
               {head}
             </CollapsiblePrimitive.Trigger>
@@ -366,7 +365,7 @@ function ToolCallDiff({
   return (
     <span
       data-slot="tool-call-diff"
-      className={cn("mono shrink-0 text-[12px] tabular-nums", className)}
+      className={cn("mono shrink-0 text-[12px] leading-[15px] tabular-nums", className)}
       {...props}
     >
       {added ? <span className="text-success">+{added}</span> : null}
@@ -402,7 +401,7 @@ function ToolCallImage({
         {...props}
       />
       {caption ? (
-        <figcaption className="mono pt-1 text-[11px] text-muted-foreground">
+        <figcaption className="mono pt-1 text-[11px] leading-[14px] text-muted-foreground">
           {caption}
         </figcaption>
       ) : null}
@@ -477,7 +476,7 @@ function ToolCallFile({
       type="button"
       data-slot="tool-call-file"
       className={cn(
-        "mono inline-flex shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-[12px] outline-none",
+        "mono inline-flex shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-[12px] leading-[15px] outline-none",
         "transition-[border-color,background-color] duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:border-muted-foreground/40 hover:bg-accent",
         "focus-visible:ring-2 focus-visible:ring-ring/60",
@@ -500,17 +499,23 @@ function ToolIcon({ kind, status }: { kind: Kind; status: Status }) {
     <span
       aria-hidden
       className={cn(
-        "flex size-4 shrink-0 items-center justify-center",
+        "grid size-4 shrink-0 place-items-center rounded-sm border border-border bg-card shadow-xs",
         status === "error"
           ? "text-destructive"
           : status === "running"
             ? "text-foreground"
-            : "text-muted-foreground/70",
-        // Only the running call moves, and it turns rather than blinks.
-        status === "running" && "animate-[spin_2.4s_linear_infinite]"
+            : "text-muted-foreground/70"
       )}
     >
-      {status === "running" ? <Spinner /> : <Glyph />}
+      <span
+        className={cn(
+          "flex items-center justify-center",
+          // Only the running call moves, and it turns rather than blinks.
+          status === "running" && "animate-[spin_2.4s_linear_infinite]"
+        )}
+      >
+        {status === "running" ? <Spinner /> : <Glyph />}
+      </span>
     </span>
   )
 }
@@ -522,7 +527,7 @@ const stroke = {
   strokeWidth: 1.8,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
-  className: "size-4",
+  className: "size-2.5",
 }
 
 const GLYPHS: Record<Kind, () => React.JSX.Element> = {
@@ -593,7 +598,7 @@ const GLYPHS: Record<Kind, () => React.JSX.Element> = {
     </svg>
   ),
   think: () => (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="size-4">
+    <svg viewBox="0 0 24 24" fill="currentColor" className="size-2.5">
       {[0, 120, 240].map((a) => (
         <path key={a} d="M12 12 9.4 7.5 12 3 14.6 7.5Z" transform={`rotate(${a} 12 12)`} />
       ))}

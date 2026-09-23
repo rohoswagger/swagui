@@ -143,9 +143,9 @@ function InputRequestField({
       className={cn("flex min-w-0 flex-col gap-1.5", className)}
       {...props}
     >
-      <span className="text-[12px] font-medium text-foreground">{label}</span>
+      <span className="text-[12px] leading-[15px] font-medium text-foreground">{label}</span>
       {children}
-      {hint ? <span className="text-[11.5px] text-muted-foreground">{hint}</span> : null}
+      {hint ? <span className="text-[11px] leading-[14px] text-muted-foreground">{hint}</span> : null}
     </label>
   )
 }
@@ -163,7 +163,7 @@ function InputRequestInput({
       <Input
         data-slot="input-request-input"
         aria-describedby={describedBy}
-        className={cn("h-8 text-[13px]", className)}
+        className={cn("h-8 text-[13px] leading-[16px]", className)}
         {...props}
       />
     )
@@ -175,13 +175,13 @@ function InputRequestInput({
         data-slot="input-request-input"
         data-request-unit={typeof unit === "string" ? unit : undefined}
         aria-describedby={[describedBy, unitId].filter(Boolean).join(" ")}
-        className={cn("h-8 pr-20 text-[13px]", className)}
+        className={cn("h-8 pr-20 text-[13px] leading-[16px]", className)}
         {...props}
       />
       <span
         id={unitId}
         data-slot="input-request-unit"
-        className="pointer-events-none absolute top-1/2 right-9 -translate-y-1/2 text-[11.5px] text-muted-foreground"
+        className="pointer-events-none absolute top-1/2 right-9 -translate-y-1/2 text-[11px] leading-[14px] text-muted-foreground"
       >
         {unit}
       </span>
@@ -193,7 +193,7 @@ function InputRequestText({ className, ...props }: React.ComponentProps<typeof T
   return (
     <Textarea
       data-slot="input-request-text"
-      className={cn("min-h-20 resize-y text-[13px]", className)}
+      className={cn("min-h-20 resize-y text-[13px] leading-[16px]", className)}
       {...props}
     />
   )
@@ -224,9 +224,9 @@ function InputRequestChoice({
     <label
       data-slot="input-request-choice"
       className={cn(
-        "group/choice relative flex min-h-9 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-left outline-none",
+        "group/choice relative flex h-9 cursor-pointer items-center gap-3 rounded-md border border-border bg-card px-2 text-left outline-none",
         "transition-[background-color,border-color] duration-(--duration-fast) ease-(--ease-swagui)",
-        "hover:bg-accent has-[:checked]:border-brand/55 has-[:checked]:bg-brand/5",
+        "hover:border-foreground/20 hover:bg-accent has-[:checked]:border-foreground/40 has-[:checked]:bg-accent",
         "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60 has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-card",
         className
       )}
@@ -251,8 +251,8 @@ function InputRequestChoice({
           <CheckIcon className="size-2.5 opacity-0 group-has-[:checked]/choice:opacity-100" />
         )}
       </span>
-      <span className="min-w-0 flex-1 text-[13px] font-medium text-foreground">{label}</span>
-      {hint ? <span className="truncate text-[11.5px] text-muted-foreground">{hint}</span> : null}
+      <span className="min-w-0 flex-1 text-[13px] leading-[16px] font-medium text-foreground">{label}</span>
+      {hint ? <span className="truncate text-[11px] leading-[14px] text-muted-foreground">{hint}</span> : null}
     </label>
   )
 }
@@ -279,11 +279,11 @@ function InputRequestFile({
         }}
         {...props}
       />
-      <span className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 text-[12.5px] font-medium shadow-(--shadow-hairline) hover:bg-accent">
+      <span className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 text-[13px] leading-[16px] font-medium shadow-(--shadow-hairline) hover:bg-accent">
         <PaperclipIcon />
         {label}
       </span>
-      <span className="min-w-0 truncate text-[11.5px] text-muted-foreground">
+      <span className="min-w-0 truncate text-[11px] leading-[14px] text-muted-foreground">
         {files.length ? files.join(", ") : "No file selected"}
       </span>
     </label>

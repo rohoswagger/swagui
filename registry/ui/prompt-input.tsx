@@ -139,7 +139,7 @@ function buildChip(trigger: string, mention: Mention) {
   // A hairline in the same hue as the fill. The tint alone left the chip
   // floating in the sentence; an edge gives it a shape without making it loud.
   chip.className =
-    "mx-px inline-flex translate-y-[1px] items-center gap-1 rounded-md border border-brand/25 bg-brand/12 px-1.5 py-px align-baseline text-[13px] font-medium text-brand-content"
+    "mx-px inline-flex translate-y-[1px] items-center gap-1 rounded-md border border-brand/25 bg-brand/12 px-1.5 py-px align-baseline text-[13px] leading-[16px] font-medium text-brand-content"
 
   if (mention.iconSrc) {
     const img = document.createElement("img")
@@ -285,7 +285,7 @@ function PromptInput({
           "relative w-full",
           // Focus is drawn on the wrapper rather than the field, so the whole
           // composer lights up as one control instead of a box inside a box.
-          "border border-input bg-card shadow-(--shadow-hairline)",
+          "border border-border bg-card shadow-(--shadow-raised)",
           "transition-[border-color,box-shadow] duration-(--duration-fast) ease-(--ease-swagui)",
           "focus-within:border-brand/50 focus-within:ring-2 focus-within:ring-ring/40",
           // One radius class rather than two competing ones. The squircle
@@ -325,7 +325,7 @@ function PromptInputEditor({
       {empty ? (
         <p
           aria-hidden
-          className="pointer-events-none absolute inset-0 px-4 pt-3 text-[14px] leading-normal text-muted-foreground"
+          className="pointer-events-none absolute inset-0 px-3 pt-3 text-[13px] leading-[16px] text-muted-foreground/70"
         >
           {placeholder}
         </p>
@@ -362,7 +362,7 @@ function PromptInputEditor({
         }}
         style={{ maxHeight: `calc(${maxRows} * 1.5em)` }}
         className={cn(
-          "block w-full overflow-y-auto px-4 pt-3 text-[14px] leading-normal outline-none",
+          "block w-full overflow-y-auto px-3 pt-3 pb-3 text-[13px] leading-[16px] outline-none",
           "text-foreground caret-foreground selection:bg-brand/25",
           "break-words whitespace-pre-wrap",
           status === "submitted" && "opacity-50",
@@ -379,7 +379,7 @@ function PromptInputToolbar({ className, ...props }: React.ComponentProps<"div">
   return (
     <div
       data-slot="prompt-input-toolbar"
-      className={cn("flex items-center gap-1 px-2 pt-1 pb-2", className)}
+      className={cn("flex items-center gap-1 px-3 pt-0 pb-3", className)}
       {...props}
     />
   )
@@ -423,13 +423,13 @@ function PromptInputButton({
         editorRef.current?.focus()
       }}
       className={cn(
-        "inline-flex size-8 items-center justify-center rounded-lg outline-none",
+        "inline-flex size-6 items-center justify-center rounded-md outline-none",
         "text-muted-foreground",
-        "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-spring)",
-        "hover:bg-accent hover:text-foreground active:scale-90",
+        "transition-[color,background-color,transform] duration-(--duration-press) ease-(--ease-swagui)",
+        "hover:bg-accent hover:text-foreground active:scale-[0.97]",
         "focus-visible:ring-2 focus-visible:ring-ring/60",
         "disabled:pointer-events-none disabled:opacity-40",
-        "[&_svg]:size-4 [&_svg]:shrink-0",
+        "[&_svg]:size-3.5 [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -462,14 +462,14 @@ function PromptInputSubmit({
       onClick={busy ? stop : undefined}
       disabled={!busy && empty}
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-lg outline-none",
+        "inline-flex size-6 shrink-0 items-center justify-center rounded-md outline-none",
         "bg-primary text-primary-foreground shadow-(--shadow-raised)",
-        "transition-[filter,transform,background-color,color,opacity] duration-(--duration-press) ease-(--ease-spring)",
-        "hover:brightness-125 active:scale-90",
+        "transition-[filter,transform,background-color,color,opacity] duration-(--duration-press) ease-(--ease-swagui)",
+        "hover:brightness-125 active:scale-[0.97]",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-card",
         // Nothing to send reads as waiting, not as broken.
         "disabled:pointer-events-none disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none",
-        "[&_svg]:size-4 [&_svg]:shrink-0",
+        "[&_svg]:size-3.5 [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -502,6 +502,7 @@ function PromptInputModelSelect({
   reasoningEffort = "medium",
   onReasoningEffortChange,
   reasoningEfforts = DEFAULT_REASONING_EFFORTS,
+  menuAlign = "end",
   ...nativeProps
 }: Omit<React.ComponentProps<"select">, "value" | "onChange" | "children"> & {
   models: { value: string; label: string; hint?: string; detail?: string }[]
@@ -510,6 +511,9 @@ function PromptInputModelSelect({
   reasoningEffort?: string
   onReasoningEffortChange?: (value: string) => void
   reasoningEfforts?: { value: string; label: string; hint?: string }[]
+  /** Which edge of the trigger the menu lines up with. Use "start" when the
+      picker sits at the leading edge of the toolbar, so the menu opens inward. */
+  menuAlign?: "start" | "end"
 }) {
   const active = models.find((m) => m.value === value)
   const activeEffort = reasoningEfforts.find((effort) => effort.value === reasoningEffort)
@@ -522,8 +526,8 @@ function PromptInputModelSelect({
     return (
       <label
         className={cn(
-          "relative inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2 py-1.5",
-          "text-[13px] text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
+          "relative inline-flex h-6 shrink-0 cursor-pointer items-center gap-1 rounded-md pr-1.5 pl-2",
+          "text-[13px] leading-[16px] text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
           "hover:bg-accent hover:text-foreground focus-within:ring-2 focus-within:ring-ring/60",
           className
         )}
@@ -556,7 +560,7 @@ function PromptInputModelSelect({
           data-slot="prompt-input-model"
           aria-label={`Model: ${active?.label ?? value}; reasoning: ${activeEffort?.label ?? reasoningEffort}`}
           className={cn(
-            "inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1.5 text-[13px] text-muted-foreground outline-none",
+            "inline-flex h-6 shrink-0 items-center gap-1 rounded-md pr-1.5 pl-2 text-[13px] leading-[16px] text-muted-foreground outline-none",
             "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
             "hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
             className
@@ -564,12 +568,12 @@ function PromptInputModelSelect({
         >
           <span className="min-w-0 flex-1 truncate text-left">{active?.label ?? value}</span>
           <span aria-hidden className="text-muted-foreground/40">·</span>
-          <span className="hidden text-[11px] sm:inline">{activeEffort?.label ?? reasoningEffort}</span>
+          <span className="hidden text-[11px] leading-[14px] sm:inline">{activeEffort?.label ?? reasoningEffort}</span>
           <Chevron className="size-3 shrink-0 opacity-60" />
         </button>
       </PopoverTrigger>
-      <PopoverContent side="top" align="end" sideOffset={8} className="w-56 p-2">
-        <div className="px-2 pt-1 pb-1.5 text-[11px] font-medium text-muted-foreground">Model</div>
+      <PopoverContent side="top" align={menuAlign} sideOffset={8} className="w-56 p-2">
+        <div className="px-2 pt-1 pb-1.5 text-[11px] leading-[14px] font-medium text-muted-foreground">Model</div>
         <div
           role="radiogroup"
           aria-label="Model"
@@ -610,9 +614,9 @@ function PromptInputModelSelect({
                 )}
               >
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[13px] font-medium text-foreground">{model.label}</span>
+                  <span className="block text-[13px] leading-[16px] font-medium text-foreground">{model.label}</span>
                   {model.hint || model.detail ? (
-                    <span className="block truncate text-[11px] text-muted-foreground">
+                    <span className="block truncate text-[11px] leading-[14px] text-muted-foreground">
                       {[model.hint, model.detail].filter(Boolean).join(" · ")}
                     </span>
                   ) : null}
@@ -626,7 +630,7 @@ function PromptInputModelSelect({
         </div>
 
         <div className="my-2 h-px bg-border" />
-        <div className="flex items-center justify-between px-2 pb-2 text-[11px] font-medium text-muted-foreground">
+        <div className="flex items-center justify-between px-2 pb-2 text-[11px] leading-[14px] font-medium text-muted-foreground">
           <span>Reasoning effort</span>
           <span className="text-foreground">{activeEffort?.label ?? reasoningEffort}</span>
         </div>
@@ -678,13 +682,13 @@ function PromptInputContextIndicator({
             aria-valuetext={summary}
             aria-label={`${label}: ${summary}`}
             className={cn(
-              "inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground outline-none",
+              "inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none",
               "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
               "hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60",
               className
             )}
           >
-            <svg viewBox="0 0 20 20" className="size-[18px] -rotate-90" aria-hidden>
+            <svg viewBox="0 0 20 20" className="size-4 -rotate-90" aria-hidden>
               <circle cx="10" cy="10" r="7" pathLength="100" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-20" />
               <circle
                 cx="10"
@@ -736,7 +740,7 @@ function PromptInputAttachment({
       data-slot="prompt-input-attachment"
       className={cn(
         "inline-flex max-w-[22ch] items-center gap-1.5 rounded-md border border-border bg-background py-1 pr-1 pl-2",
-        "text-[12px] text-foreground",
+        "text-[12px] leading-[15px] text-foreground",
         "animate-in fade-in zoom-in-95 duration-(--duration-base) ease-(--ease-spring)",
         className
       )}
@@ -968,7 +972,7 @@ function PromptInputMenu({
                 }}
                 onMouseEnter={() => setActive(i)}
                 className={cn(
-                  "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] outline-none",
+                  "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] leading-[16px] outline-none",
                   "transition-colors duration-(--duration-press) ease-(--ease-swagui)",
                   i === active ? "bg-accent" : ""
                 )}
@@ -985,7 +989,7 @@ function PromptInputMenu({
                   </span>
                 ) : null}
                 {item.badge ? (
-                  <span className="ml-auto shrink-0 text-[12px] text-success">
+                  <span className="ml-auto shrink-0 text-[12px] leading-[15px] text-success">
                     {item.badge}
                   </span>
                 ) : null}
@@ -994,7 +998,7 @@ function PromptInputMenu({
           )
         })
       ) : (
-        <div className="px-3 py-2 text-[13px] text-muted-foreground">{empty}</div>
+        <div className="px-3 py-2 text-[13px] leading-[16px] text-muted-foreground">{empty}</div>
       )}
     </div>
   )

@@ -72,7 +72,7 @@ function Request({
         role={settled ? undefined : "group"}
         aria-labelledby={settled ? undefined : (labelledBy ?? questionId)}
         className={cn(
-          "snake relative mx-auto w-full max-w-[46ch] overflow-hidden rounded-xl bg-card shadow-(--shadow-raised)",
+          "snake relative mx-auto w-full max-w-[46ch] overflow-hidden rounded-lg border border-border bg-card shadow-(--shadow-raised)",
           "after:transition-opacity after:duration-(--duration-fast) after:ease-(--ease-out-expo)",
           settled && "after:opacity-0 wave-once",
           className
@@ -106,7 +106,7 @@ function RequestQuestion({ className, children, id, ...props }: React.ComponentP
         id={id ?? questionId}
         data-slot="request-question"
         className={cn(
-          "text-[13.5px] leading-snug font-medium text-balance text-foreground",
+          "text-[13px] leading-[16px] font-medium text-balance text-foreground",
           className
         )}
         {...props}
@@ -125,7 +125,7 @@ function RequestDescription({ className, ...props }: React.ComponentProps<"p">) 
     <RequestCollapse collapsed={resolving}>
       <p
         data-slot="request-description"
-        className={cn("pt-1 text-[12.5px] leading-normal text-muted-foreground", className)}
+        className={cn("pt-1 text-[12px] leading-[15px] text-muted-foreground", className)}
         {...props}
       />
     </RequestCollapse>
@@ -177,7 +177,7 @@ function RequestReceipt({
       data-status={status}
       aria-live="polite"
       className={cn(
-        "flex min-h-8 items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-foreground",
+        "flex min-h-6 items-center gap-1.5 rounded-md px-2 py-1 text-[12px] leading-[15px] text-muted-foreground",
         className
       )}
       {...props}
@@ -185,8 +185,8 @@ function RequestReceipt({
       <span
         aria-hidden
         className={cn(
-          "flex size-[18px] shrink-0 items-center justify-center rounded-full",
-          cancelled ? "bg-muted text-muted-foreground" : "bg-success text-white"
+          "flex size-3.5 shrink-0 items-center justify-center",
+          cancelled ? "text-muted-foreground/70" : "text-success"
         )}
       >
         {cancelled ? <CrossIcon /> : <CheckIcon />}

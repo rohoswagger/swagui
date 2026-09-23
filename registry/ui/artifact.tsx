@@ -61,7 +61,7 @@ function Artifact({
         data-kind={kind}
         data-status={status}
         className={cn(
-          "group/artifact relative grid w-full max-w-[23rem] self-start grid-cols-[5.25rem_minmax(0,1fr)] overflow-hidden rounded-xl border border-border bg-card text-card-foreground",
+          "group/artifact relative grid w-full max-w-[23rem] self-start grid-cols-[5.25rem_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-card text-card-foreground",
           "transition-[border-color,background-color,transform] duration-(--duration-fast) ease-(--ease-swagui)",
           unavailable
             ? "border-destructive/25"
@@ -154,7 +154,7 @@ function ArtifactTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="artifact-title"
-      className={cn("truncate text-[13px] font-medium text-foreground", className)}
+      className={cn("truncate text-[13px] leading-[16px] font-medium text-foreground", className)}
       {...props}
     />
   )
@@ -167,7 +167,7 @@ function ArtifactDescription({ className, ...props }: React.ComponentProps<"p">)
     <p
       data-slot="artifact-description"
       className={cn(
-        "line-clamp-2 text-[12px] leading-snug text-muted-foreground",
+        "line-clamp-2 text-[12px] leading-[15px] text-muted-foreground",
         status === "error" && "text-destructive/80",
         className
       )}

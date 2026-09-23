@@ -52,7 +52,7 @@ function Response({
       <div
         data-slot="response"
         data-streaming={streaming || undefined}
-        className={cn("group/response flex w-full flex-col gap-3", className)}
+        className={cn("group/response flex w-full flex-col gap-5", className)}
         {...props}
       >
         {children}
@@ -77,8 +77,10 @@ function ResponseContent({
     <div
       data-slot="response-content"
       className={cn(
-        "max-w-[68ch] text-[15px] leading-relaxed text-foreground",
+        "max-w-[68ch] text-[13px] leading-[22px] text-foreground",
         "[&_strong]:font-medium [&_strong]:text-foreground",
+        "[&_code]:rounded-sm [&_code]:bg-muted [&_code]:px-1 [&_code]:text-[12px]",
+        "[&_pre]:rounded-lg [&_pre]:border [&_pre]:border-border [&_pre]:bg-muted [&_pre]:p-3 [&_pre]:text-[12px] [&_pre_code]:bg-transparent [&_pre_code]:p-0",
         className
       )}
       {...props}
@@ -179,7 +181,7 @@ function ResponseSources({
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         className={cn(
-          "group/sources flex items-center gap-2 rounded-md text-sm outline-none",
+          "group/sources flex items-center gap-2 rounded-md text-[12px] leading-[15px] outline-none",
           "text-muted-foreground transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
           "hover:text-foreground",
           "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -275,7 +277,7 @@ function ResponseUsage({
     <div
       data-slot="response-usage"
       className={cn(
-        "flex items-center gap-1.5 text-[11px] text-muted-foreground/70",
+        "flex items-center gap-1.5 text-[11px] leading-[14px] text-muted-foreground/70",
         className
       )}
       {...props}
@@ -369,7 +371,7 @@ function ResponseFollowUp({
       data-slot="response-follow-up"
       className={cn(
         "group/followup inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5",
-        "text-left text-sm text-muted-foreground outline-none",
+        "text-left text-[13px] leading-[16px] text-muted-foreground outline-none",
         "transition-[color,background-color,border-color] duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:border-border hover:bg-accent hover:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",

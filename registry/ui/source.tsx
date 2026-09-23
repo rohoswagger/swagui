@@ -56,33 +56,36 @@ function SourceIcon({
       <span
         aria-hidden
         className={cn(
-          "flex size-4 shrink-0 items-center justify-center rounded-full text-[9px] font-semibold text-background",
+          "grid size-4 shrink-0 place-items-center rounded-sm border border-border bg-card text-[9px] font-semibold text-background shadow-xs",
           className
         )}
-        style={{ background: `oklch(0.62 0.075 ${sourceHue(host)})` }}
       >
-        {name.slice(0, 1).toUpperCase()}
+        <span
+          className="flex size-2.5 items-center justify-center rounded-[2px]"
+          style={{ background: `oklch(0.62 0.075 ${sourceHue(host)})` }}
+        >
+          {name.slice(0, 1).toUpperCase()}
+        </span>
       </span>
     )
   }
 
   return (
-    // A plain img, not next/image: these components have to work in any React
-    // app, not only a Next one.
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={iconSrc ?? faviconSrc(host)}
-      alt=""
-      width={16}
-      height={16}
-      loading="lazy"
-      onError={() => setFailed(true)}
-      className={cn(
-        "size-4 shrink-0 rounded-full bg-muted object-cover ring-1 ring-border/60",
-        className
-      )}
-      {...props}
-    />
+    <span className="grid size-4 shrink-0 place-items-center rounded-sm border border-border bg-card shadow-xs">
+      {/* A plain img, not next/image: these components have to work in any
+          React app, not only a Next one. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={iconSrc ?? faviconSrc(host)}
+        alt=""
+        width={10}
+        height={10}
+        loading="lazy"
+        onError={() => setFailed(true)}
+        className={cn("size-2.5 shrink-0 rounded-[2px] object-cover", className)}
+        {...props}
+      />
+    </span>
   )
 }
 
@@ -106,7 +109,7 @@ function Source({
   return (
     <div
       data-slot="source"
-      className={cn("flex min-w-0 items-center gap-2 text-sm", className)}
+      className={cn("flex min-w-0 items-center gap-2 text-[12px] leading-[15px]", className)}
       {...props}
     >
       {icon ?? <SourceIcon name={name} host={host} iconSrc={iconSrc} />}

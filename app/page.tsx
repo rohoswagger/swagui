@@ -4,6 +4,7 @@ import {
   Geist,
   Geist_Mono,
   Instrument_Serif,
+  Inter,
   JetBrains_Mono,
   Manrope,
   Plus_Jakarta_Sans,
@@ -14,6 +15,7 @@ import "./_preview/preview.css"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist" })
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" })
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
 const instrument = Instrument_Serif({
@@ -34,7 +36,7 @@ const fraunces = Fraunces({
 export default function Home() {
   return (
     <div
-      className={`${geist.variable} ${geistMono.variable} ${jakarta.variable} ${jetbrains.variable} ${instrument.variable} ${manrope.variable} ${fraunces.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${inter.variable} ${jakarta.variable} ${jetbrains.variable} ${instrument.variable} ${manrope.variable} ${fraunces.variable}`}
     >
       <Suspense>
         <PreviewClient />

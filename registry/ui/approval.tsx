@@ -240,7 +240,7 @@ function ApprovalOptions({ className, children, ...props }: React.ComponentProps
  * lands on identical geometry and is invisible.
  */
 const OPTION_BOX =
-  "flex w-full items-center gap-2 rounded-md border px-2.5 py-1.5 text-left text-[13px]"
+  "flex h-9 w-full items-center gap-3 rounded-md border px-2 text-left text-[13px] leading-[16px]"
 
 const optionVariants = cva(
   [
@@ -255,11 +255,11 @@ const optionVariants = cva(
     variants: {
       intent: {
         default:
-          "border-border bg-background text-foreground hover:border-brand/50 hover:bg-accent",
+          "border-border bg-card text-foreground hover:border-foreground/20 hover:bg-accent",
         // Destructive approvals are the ones worth slowing down for, so the
         // colour is present before the click rather than only after it.
         danger:
-          "border-destructive/30 bg-background text-destructive hover:border-destructive/60 hover:bg-destructive/5",
+          "border-destructive/30 bg-card text-destructive hover:border-destructive/60 hover:bg-destructive/5",
       },
     },
     defaultVariants: {
@@ -336,7 +336,7 @@ function ApprovalOption({
         optionVariants({ intent }),
         "active:bg-accent",
         // Picked but not yet submitted, in a multiple question.
-        chosen && !acknowledged && "border-brand/60 bg-brand/5",
+        chosen && !acknowledged && "border-foreground/40 bg-accent",
         // Acknowledged, the surface dissolves toward the record it is about to
         // become, so the swap at the end has nothing left to change.
         acknowledged && "border-transparent bg-transparent",
@@ -397,14 +397,14 @@ function ApprovalConfirm({
         disabled={!count || !!resolving}
         onClick={submit}
         className={cn(
-          "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-[13px] font-medium outline-none",
+          "inline-flex h-6 items-center gap-1.5 rounded-md px-2 text-[13px] leading-[16px] font-medium outline-none",
           // Not a brand fill. --brand-content is the darker step meant for text
           // on light surfaces, so on a brand background it measured 1.39:1 and
           // the label all but disappeared. The system's own primary pair is
           // near-black on white and keeps the hot colour reserved.
           "bg-primary text-primary-foreground shadow-(--shadow-raised)",
-          "transition-[filter,transform,background-color,color] duration-(--duration-press) ease-(--ease-spring)",
-          "hover:brightness-125 active:scale-[0.97]",
+          "transition-[filter,transform,background-color,color] duration-(--duration-press) ease-(--ease-swagui)",
+          "hover:bg-primary/90 active:scale-[0.97]",
           // A ghosted fill reads as broken; an unfilled control reads as
           // waiting, which is what this is until something is picked.
           "disabled:pointer-events-none disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none",
@@ -418,7 +418,7 @@ function ApprovalConfirm({
           // Keyed on the count so it re-runs the pop on every pick.
           <span
             key={count}
-            className="inline-flex min-w-4 animate-in items-center justify-center rounded-full bg-primary-foreground/20 px-1 text-[11px] tabular-nums zoom-in-50 duration-(--duration-fast) ease-(--ease-spring)"
+            className="inline-flex min-w-4 animate-in items-center justify-center rounded-full bg-primary-foreground/20 px-1 text-[11px] leading-[14px] tabular-nums zoom-in-50 duration-(--duration-fast) ease-(--ease-spring)"
           >
             {count}
           </span>
@@ -453,7 +453,7 @@ function ApprovalDismiss({ className, ...props }: React.ComponentProps<"button">
       type="button"
       data-slot="approval-dismiss"
       className={cn(
-        "rounded-md text-[12.5px] text-muted-foreground outline-none",
+        "rounded-md text-[12px] leading-[15px] text-muted-foreground outline-none",
         "transition-colors duration-(--duration-fast) ease-(--ease-swagui)",
         "hover:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-card",

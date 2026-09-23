@@ -17,7 +17,7 @@ import { ComponentsView } from "./components-view"
 import { AgentView } from "./agent-view"
 import { ChatView } from "./chat-view"
 import { LogoView } from "./logo-view"
-import { ACCENTS, BASES, PAIRINGS, SURFACES } from "./config"
+import { ACCENTS, BASES, PAIRINGS, SURFACES, PRESETS } from "./config"
 import { ArrowRight, IconLib, IconProvider, IconWeight, Search } from "./icons"
 import {
   AGENT_WORKING_MARK_OPTIONS,
@@ -139,25 +139,36 @@ function Toggle({
 export function PreviewClient() {
   const params = useSearchParams()
 
-  const [state, setState] = React.useState<State>(() => ({
-    font: params.get("font") ?? DEFAULTS.font,
-    accent: params.get("accent") ?? DEFAULTS.accent,
-    surface: params.get("surface") ?? DEFAULTS.surface,
-    base: params.get("base") ?? DEFAULTS.base,
-    theme: (params.get("theme") as State["theme"]) ?? DEFAULTS.theme,
-    view: (params.get("view") as State["view"]) ?? DEFAULTS.view,
-    density: (params.get("density") as State["density"]) ?? DEFAULTS.density,
-    icons: (params.get("icons") as IconLib) ?? DEFAULTS.icons,
-    iconWeight: (params.get("iconWeight") as IconWeight) ?? DEFAULTS.iconWeight,
-    workingMark: readWorkingMarkParam(params),
-    squircle: params.get("squircle") !== "0",
-    grain: params.get("grain") !== "0",
-  }))
+  const [state, setState] = React.useState<State>(() => {
+    // A preset seeds the defaults; any explicit parameter still wins over it.
+    const preset = PRESETS.find((p) => p.id === params.get("preset"))
+    const start: State = preset ? { ...DEFAULTS, ...preset.settings } : DEFAULTS
+    return {
+      font: params.get("font") ?? start.font,
+      accent: params.get("accent") ?? start.accent,
+      surface: params.get("surface") ?? start.surface,
+      base: params.get("base") ?? start.base,
+      theme: (params.get("theme") as State["theme"]) ?? DEFAULTS.theme,
+      view: (params.get("view") as State["view"]) ?? DEFAULTS.view,
+      density: (params.get("density") as State["density"]) ?? start.density,
+      icons: (params.get("icons") as IconLib) ?? DEFAULTS.icons,
+      iconWeight: (params.get("iconWeight") as IconWeight) ?? DEFAULTS.iconWeight,
+      workingMark: readWorkingMarkParam(params),
+      squircle: params.has("squircle") ? params.get("squircle") !== "0" : start.squircle,
+      grain: params.has("grain") ? params.get("grain") !== "0" : start.grain,
+    }
+  })
 
   const [copied, setCopied] = React.useState<"command" | "palette" | "agent" | null>(null)
 
   const set = <K extends keyof State>(k: K, v: State[K]) =>
     setState((s) => ({ ...s, [k]: v }))
+
+  // The picker reads "Custom" as soon as any value it set is changed.
+  const activePreset =
+    PRESETS.find((p) =>
+      (Object.keys(p.settings) as (keyof typeof p.settings)[]).every((k) => state[k] === p.settings[k]),
+    )?.id ?? "custom"
 
   // Keep the URL in sync so a configuration is shareable and bookmarkable.
   React.useEffect(() => {
@@ -299,6 +310,18 @@ export function PreviewClient() {
               { id: "logo" as const, label: "Logo" },
             ]}
             onChange={(v) => set("view", v)}
+          />
+          <Control
+            label="Preset"
+            value={activePreset}
+            options={[
+              { id: "custom", label: "Custom", note: "Your own combination of the controls to the right." },
+              ...PRESETS.map((p) => ({ id: p.id, label: p.label, note: p.note })),
+            ]}
+            onChange={(v) => {
+              const preset = PRESETS.find((p) => p.id === v)
+              if (preset) setState((s) => ({ ...s, ...preset.settings }))
+            }}
           />
           <Control
             label="Type"
