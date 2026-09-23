@@ -502,6 +502,7 @@ function PromptInputModelSelect({
   reasoningEffort = "medium",
   onReasoningEffortChange,
   reasoningEfforts = DEFAULT_REASONING_EFFORTS,
+  menuAlign = "end",
   ...nativeProps
 }: Omit<React.ComponentProps<"select">, "value" | "onChange" | "children"> & {
   models: { value: string; label: string; hint?: string; detail?: string }[]
@@ -510,6 +511,9 @@ function PromptInputModelSelect({
   reasoningEffort?: string
   onReasoningEffortChange?: (value: string) => void
   reasoningEfforts?: { value: string; label: string; hint?: string }[]
+  /** Which edge of the trigger the menu lines up with. Use "start" when the
+      picker sits at the leading edge of the toolbar, so the menu opens inward. */
+  menuAlign?: "start" | "end"
 }) {
   const active = models.find((m) => m.value === value)
   const activeEffort = reasoningEfforts.find((effort) => effort.value === reasoningEffort)
@@ -568,7 +572,7 @@ function PromptInputModelSelect({
           <Chevron className="size-3 shrink-0 opacity-60" />
         </button>
       </PopoverTrigger>
-      <PopoverContent side="top" align="end" sideOffset={8} className="w-56 p-2">
+      <PopoverContent side="top" align={menuAlign} sideOffset={8} className="w-56 p-2">
         <div className="px-2 pt-1 pb-1.5 text-[11px] leading-[14px] font-medium text-muted-foreground">Model</div>
         <div
           role="radiogroup"

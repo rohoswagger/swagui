@@ -946,18 +946,19 @@ function PromptInputDemo() {
               <PromptInputButton label="Add context" opensMenu="@">
                 <PlusIcon />
               </PromptInputButton>
-              <PromptInputButton label="Dictate">
-                <MicIcon />
-              </PromptInputButton>
+              <PromptInputModelSelect
+                models={MODELS}
+                value={model}
+                onValueChange={setModel}
+                reasoningEffort={reasoningEffort}
+                onReasoningEffortChange={setReasoningEffort}
+                menuAlign="start"
+              />
             </PromptInputTools>
             <PromptInputContextIndicator used={28400} total={128000} />
-            <PromptInputModelSelect
-              models={MODELS}
-              value={model}
-              onValueChange={setModel}
-              reasoningEffort={reasoningEffort}
-              onReasoningEffortChange={setReasoningEffort}
-            />
+            <PromptInputButton label="Dictate">
+              <MicIcon />
+            </PromptInputButton>
             <PromptInputSubmit />
           </PromptInputToolbar>
         </PromptInput>
